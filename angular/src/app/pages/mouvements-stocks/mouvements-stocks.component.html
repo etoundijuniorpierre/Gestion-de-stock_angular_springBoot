@@ -1,0 +1,75 @@
+<div class="col mouvements-stocks">
+  <div class="row m-3">
+    <div class="col-md-8 p-0">
+      <h1>Mouvements du stock</h1>
+    </div>
+    <div class="col-md-4 p-0 text-right">
+      <app-button-action
+      [isImporterVisible]="false"
+      [isNouveauVisible]="false"
+      ></app-button-action>
+    </div>
+  </div>
+  <div class="col">
+    <div class="accordion" id="mvtStkDetails">
+      <div class="card">
+        <div class="card-body" id="headingOne">
+          <button class="btn btn-block text-left" type="button" 
+                  (click)="toggleCollapseOne()" 
+                  [attr.aria-expanded]="getAriaExpandedOne()" 
+                  aria-controls="collapseOne">
+            <app-detail-mvt-stk-article></app-detail-mvt-stk-article>
+          </button>
+        </div>
+        <div [id]="'collapseOne'" 
+             [class]="getCollapseOneClass()" 
+             aria-labelledby="headingOne" 
+             data-parent="#mvtStkDetails" 
+             style="max-height: 300px; overflow-y: scroll;
+            ">
+          <div class="card-body">
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+          </div>
+        </div>
+      </div>
+      <!-- +++++++++++++ -->
+      <div class="card">
+        <div class="card-body" id="headingTwo">
+          <button class="btn btn-block text-left" type="button" 
+                  (click)="toggleCollapseTwo()" 
+                  [attr.aria-expanded]="getAriaExpandedTwo()" 
+                  aria-controls="collapseTwo">
+            <app-detail-mvt-stk-article></app-detail-mvt-stk-article>
+          </button>
+        </div>
+        <div [id]="'collapseTwo'" 
+             [class]="getCollapseTwoClass()" 
+             aria-labelledby="headingTwo" 
+             data-parent="#mvtStkDetails" 
+             style="max-height: 300px; overflow-y: scroll;">
+          <div class="card-body">
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <app-detail-mvt-stk></app-detail-mvt-stk>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class=" col-md-12 text-center">
+      <app-pagination></app-pagination>
+    </div>
+  </div>
+
+</div>

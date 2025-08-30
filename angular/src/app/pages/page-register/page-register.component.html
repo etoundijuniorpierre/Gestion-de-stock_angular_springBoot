@@ -1,0 +1,173 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100 p-5">
+  <div class="card shadow-lg" style="max-width: 600px; width: 100%;">
+    <div class="card-body p-5">
+      <div class="text-center mb-4">
+        <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+        <h2>S'inscrire</h2>
+        <p class="text-muted">Créez votre compte pour commencer</p>
+      </div>
+
+      <form>
+        <!-- Nom et Code Fiscal -->
+        <div class="row mb-4">
+
+          <div class="form-outline">
+            <label mdbLabel class="form-label" for="nom">Nom</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-user"></i>
+              </span>
+              <input mdbInput type="text" id="nom" class="form-control" [(ngModel)]="nom" name="nom"
+                placeholder="Entrez votre nom" />
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Email -->
+        <div class="mb-4">
+          <div class="form-outline">
+            <label mdbLabel class="form-label" for="email">Email</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <input mdbInput type="email" id="email" class="form-control" [(ngModel)]="email" name="email"
+                placeholder="Entrez votre email" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Adresse 1 et 2 -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="adresse1">Adresse 1</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-map-marker-alt"></i>
+                </span>
+                <input mdbInput type="text" id="adresse1" class="form-control" [(ngModel)]="adresse1" name="adresse1"
+                  placeholder="Adresse principale" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="adresse2">Adresse 2</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-building"></i>
+                </span>
+                <input mdbInput type="text" id="adresse2" class="form-control" [(ngModel)]="adresse2" name="adresse2"
+                  placeholder="Complément d'adresse" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code postal et Code fiscal -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="codeFiscal">Code Fiscal</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-id-card"></i>
+                </span>
+                <input mdbInput type="text" id="codeFiscal" class="form-control" [(ngModel)]="codeFiscal"
+                  name="codeFiscal" placeholder="Code fiscal" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="codePostal">Code postal</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-mail-bulk"></i>
+                </span>
+                <input mdbInput type="text" id="codePostal" class="form-control" [(ngModel)]="codePostal"
+                  name="codePostal" placeholder="Code postal" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Ville et Pays -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="ville">Ville</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-city"></i>
+                </span>
+                <input mdbInput type="text" id="ville" class="form-control" [(ngModel)]="ville" name="ville"
+                  placeholder="Ville" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="pays">Pays</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-flag"></i>
+                </span>
+                <input mdbInput type="text" id="pays" class="form-control" [(ngModel)]="pays" name="pays"
+                  placeholder="Pays" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mot de passe et confirmation -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="password">Mot de passe</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input mdbInput type="password" id="password" class="form-control" [(ngModel)]="password"
+                  name="password" placeholder="Mot de passe" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-outline">
+              <label mdbLabel class="form-label" for="confirmPassword">Confirmer mot de passe</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+                <input mdbInput type="password" id="confirmPassword" class="form-control" [(ngModel)]="confirmPassword"
+                  name="confirmPassword" placeholder="Confirmer le mot de passe" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+     
+        <!-- Submit buttons -->
+        <div class="d-flex justify-content-between gap-3">
+          <!-- Back to login button -->
+          <a [routerLink]="['/login']" mdbRipple type="button" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>
+            Se connecter
+          </a>
+
+          <!-- Register button -->
+          <button mdbRipple type="submit" class="btn btn-primary" (click)="onSubmit()">
+            <i class="fas fa-user-plus me-2"></i>
+            S'inscrire
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

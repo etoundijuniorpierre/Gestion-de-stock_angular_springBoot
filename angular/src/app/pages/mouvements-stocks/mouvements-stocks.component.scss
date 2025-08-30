@@ -1,0 +1,109 @@
+// Mouvements Stocks Component Styles
+.mouvements-stocks {
+  .accordion {
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-body {
+        padding: 0;
+        
+        button {
+          width: 100%;
+          text-align: left;
+          border: none;
+          background: transparent;
+          padding: 1rem;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          
+          &:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+          }
+          
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          }
+        }
+      }
+    }
+  }
+  
+  // Collapse animation
+  .collapse {
+    transition: all 0.3s ease;
+    overflow: hidden;
+    
+    &.show {
+      max-height: 1000px;
+      opacity: 1;
+    }
+    
+    &:not(.show) {
+      max-height: 0;
+      opacity: 0;
+    }
+  }
+  
+  // Button styling for accordion headers
+  .btn-block {
+    border-radius: 8px 8px 0 0;
+    font-weight: 500;
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+  
+  // Content area styling
+  .card-body {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  // Scrollable content
+  .overflow-y-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+      
+      &:hover {
+        background: #a8a8a8;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .mouvements-stocks {
+    .accordion .card .card-body button {
+      padding: 0.75rem;
+    }
+    
+    .collapse.show {
+      max-height: 800px;
+    }
+  }
+}

@@ -1,0 +1,169 @@
+
+.main-container {
+  margin: 50px;
+  
+  .row {
+    min-height: 600px; // Correspond à la classe min-height-600
+    height: 100%; // Prend toute la hauteur disponible
+    
+    &.no-flex-wrap {
+      flex-wrap: inherit !important;
+    }
+    
+    &.h-100 {
+      height: 100% !important;
+    }
+  }
+  
+  .card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.375rem;
+    
+    &.col-md-2 {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      height: 100%; // Même hauteur que le dashboard
+      
+      &.d-flex {
+        display: flex !important;
+      }
+      
+      &.flex-column {
+        flex-direction: column !important;
+      }
+      
+      .col {
+        &.d-flex {
+          display: flex !important;
+        }
+        
+        &.flex-column {
+          flex-direction: column !important;
+        }
+        
+        &.h-100 {
+          height: 100% !important;
+        }
+        
+        // Titre de l'application
+        .card.flex-shrink-0 {
+          flex-shrink: 0 !important; // Ne rétrécit pas
+        }
+        
+        // Menu
+        div.flex-grow-1 {
+          flex-grow: 1 !important; // Prend l'espace restant
+          overflow-y: auto; // Scroll si le menu est trop long
+        }
+      }
+    }
+    
+    &.col-md-10 {
+      background-color: #ffffff;
+      height: 100%; // Prend toute la hauteur disponible
+      
+      &.backgroung-grey {
+        background-color: #f8f9fa;
+      }
+      
+      &.d-flex {
+        display: flex !important;
+      }
+      
+      &.flex-column {
+        flex-direction: column !important;
+      }
+      
+      // Conteneur principal avec flexbox
+      .col {
+        &.d-flex {
+          display: flex !important;
+        }
+        
+        &.flex-column {
+          flex-direction: column !important;
+        }
+        
+        &.h-100 {
+          height: 100% !important;
+        }
+        
+        // Header
+        .card.flex-shrink-0:first-of-type {
+          flex-shrink: 0 !important; // Ne rétrécit pas
+          min-height: 80px; // Hauteur minimale du header
+        }
+        
+        // Contenu principal (router-outlet)
+        .card.flex-grow-1 {
+          flex-grow: 1 !important; // Prend l'espace restant
+          min-height: 400px; // Hauteur minimale du contenu
+          overflow-y: auto; // Scroll si nécessaire
+        }
+        
+        // Footer
+        .card.flex-shrink-0:last-of-type {
+          flex-shrink: 0 !important; // Ne rétrécit pas
+          min-height: 80px; // Hauteur minimale du footer
+        }
+      }
+    }
+  }
+}
+
+// Styles pour le menu
+#appMenuAccordion {
+  .card {
+    border: none;
+    margin-bottom: 0.25rem;
+    
+    .card-header {
+      //background-color: transparent;
+      border: none;
+      padding: 0.5rem 1rem;
+      
+      .btn-link {
+        color: #495057;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 0.5rem 0;
+        
+        &:hover {
+          color: #007bff;
+          background-color: rgba(0, 123, 255, 0.1);
+        }
+      }
+    }
+    
+    .card-body {
+      padding: 0;
+      
+      .list-group-item {
+        border: none;
+        padding: 0;
+        
+        a {
+          padding: 0.5rem 1rem 0.5rem 2rem;
+          color: #6c757d;
+          text-decoration: none;
+          display: block;
+          
+          &:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+          }
+        }
+        
+        &.bg-primary {
+          a {
+            color: white;
+            
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.1);
+            }
+          }
+        }
+      }
+    }
+  }
+}

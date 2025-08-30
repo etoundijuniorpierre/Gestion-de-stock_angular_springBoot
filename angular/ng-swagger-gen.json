@@ -1,0 +1,29 @@
+{
+  "swagger": "http://localhost:2035/v3/api-docs",
+  "output": "./src/app/api",
+  "moduleName": "ApiModule",
+  "serviceName": "ApiService",
+  "modelName": "ApiModel",
+  "enumName": "ApiEnum",
+  "configuration": {
+    "ngVersion": "19.0.0",
+    "supportsES6": true,        
+    "modelPropertyNaming": "camelCase",
+    "enumPropertyNaming": "camelCase",
+    "stringEnums": true,
+    "fileNaming": "kebab-case",
+    "serviceSuffix": "Service",
+    "modelSuffix": "Model",
+    "enumSuffix": "Enum",
+    "interfacePrefix": "I",
+    "typeScriptVersion": "5.0.0",
+    "nullSafe": true,
+    "useSingleRequestParameter": false,
+    "withInterfaces": true,
+    "withSeparateModelsAndApi": true,
+    "sortParamsByRequiredFlag": true,
+    "ensureUniqueParams": true,
+    "allowUnicodeIdentifiers": false,
+    "prependFormOrBodyParameters": false
+  }
+} 

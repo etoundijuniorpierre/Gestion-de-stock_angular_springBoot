@@ -1,0 +1,72 @@
+// Styles pour le composant Header
+.header-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  
+  .row {
+    width: 100%;
+    align-items: center;
+    min-height: 60px; // Hauteur minimale du header
+  }
+
+  .input-group {
+    .form-control {
+      border-radius: 20px 0 0 20px;
+      border: 1px solid #ced4da;
+      height: 40px; // Hauteur fixe pour l'input
+      
+      &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+      }
+    }
+    
+    .input-group-text {
+      border-radius: 0 20px 20px 0;
+      border: 1px solid #ced4da;
+      border-left: none;
+      background-color: #f8f9fa;
+      height: 40px; // Même hauteur que l'input
+      
+      i {
+        color: #6c757d;
+      }
+    }
+  }
+  
+  .user-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+
+    .text-right {
+      span {
+        color: #495057;
+        font-weight: 500;
+        margin-right: 10px;
+      }
+    }
+    
+    img {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      margin: 0 10px;
+        
+      &:hover {
+        border-color: #007bff;
+        transform: scale(1.05);
+      }
+    }
+    
+    .btn {
+      height: 40px;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+}
+  

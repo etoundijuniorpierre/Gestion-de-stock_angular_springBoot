@@ -1,0 +1,56 @@
+.header-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.header-container .row {
+  width: 100%;
+  align-items: center;
+  min-height: 60px;
+}
+.header-container .input-group .form-control {
+  border-radius: 20px 0 0 20px;
+  border: 1px solid #ced4da;
+  height: 40px;
+}
+.header-container .input-group .form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #80bdff;
+}
+.header-container .input-group .input-group-text {
+  border-radius: 0 20px 20px 0;
+  border: 1px solid #ced4da;
+  border-left: none;
+  background-color: #f8f9fa;
+  height: 40px;
+}
+.header-container .input-group .input-group-text i {
+  color: #6c757d;
+}
+.header-container .user-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.header-container .user-section .text-right span {
+  color: #495057;
+  font-weight: 500;
+  margin-right: 10px;
+}
+.header-container .user-section img {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+}
+.header-container .user-section img:hover {
+  border-color: #007bff;
+  transform: scale(1.05);
+}
+.header-container .user-section .btn {
+  height: 40px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}/*# sourceMappingURL=header.component.css.map */

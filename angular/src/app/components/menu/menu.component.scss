@@ -1,0 +1,95 @@
+#appMenuAccordion {
+  height: 100%; // Prend toute la hauteur disponible
+  overflow-y: auto; // Scroll si le menu est trop long
+  
+  .card {
+    border: none;
+    margin-bottom: 0.25rem;
+    
+    .card-header {
+      padding: 0.75rem 1rem;
+      
+      .btn-link {
+        font-weight: 500;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        text-align: left;
+        
+        .fa-chevron-down {
+          transition: transform 0.3s ease;
+          
+          &.rotate {
+            transform: rotate(180deg);
+          }
+        }
+        
+        &:hover {
+          background-color: rgba(0, 123, 255, 0.1);
+          color: #007bff !important;
+        }
+        
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+    
+    .card-body {
+      padding: 0;
+      
+      .list-group-item {
+        padding: 0;
+        border: none;
+        
+        a {
+          padding: 0.5rem 1rem 0.5rem 2rem;
+          font-size: 0.85rem;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff !important;
+            text-decoration: none;
+          }
+        }
+        
+        &.bg-primary {
+          a {
+            color: white !important;
+            
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.1) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styles pour les icônes
+.fas, .fab {
+  width: 16px;
+  text-align: center;
+}
+
+// Animation pour l'expansion du menu
+.collapse {
+  transition: all 0.3s ease;
+  
+  &.show {
+    display: block;
+  }
+}
+
+// Style pour le menu principal
+.main-container {
+  .card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.375rem;
+  }
+}
+  
