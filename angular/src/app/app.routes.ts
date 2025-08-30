@@ -7,7 +7,7 @@ import { NouvelArticleComponent } from './pages/page-articles/nouvel-article/nou
 import { PageCategoriesComponent } from './pages/categories/page-categories/page-categories.component';
 import { PageStatistiquesComponent } from './pages/page-statistiques/page-statistiques.component';
 import { PageClientsComponent } from './pages/page-clients/page-clients.component';
-import { NouveauClientComponent } from './pages/nouveau-client/nouveau-client.component';
+import { NouveauClientComponent } from './components/nouveau-client/nouveau-client.component';
 import { NouveauFournisseurComponent } from './components/nouveau-fournisseur/nouveau-fournisseur.component';
 import { PageCommandesClientsComponent } from './pages/page-commandes-clients/page-commandes-clients.component';
 import { MouvementsStocksComponent } from './pages/mouvements-stocks/mouvements-stocks.component';
