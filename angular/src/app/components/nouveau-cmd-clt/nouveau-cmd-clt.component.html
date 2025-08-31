@@ -1,7 +1,7 @@
 <div class="col mb-3">
     <div class="col-md-12">
       <div class="col-md-12 mb-3 mt-3">
-        <h2>Nouvelle commande {{origin}}</h2>
+        <h2>Nouvelle commande client</h2>
       </div>
       <div class="alert alert-danger" *ngIf="errorMsg.length">
         <div *ngFor="let msg of errorMsg">
@@ -18,28 +18,28 @@
               <input type="text" class="form-control" placeholder="Date commande">
             </div>
             <div class="form-group">
-              <select class="form-control" name="cltFrs" [(ngModel)]="selectedClientFournisseur">
-                <option>Selectionner un {{ origin }}</option>
-                <option *ngFor="let obj of listClientsFournisseurs" [ngValue]="obj">
+              <select class="form-control" name="clt" [(ngModel)]="selectedClient">
+                <option>Selectionner un client</option>
+                <option *ngFor="let obj of listClients" [ngValue]="obj">
                   {{ obj.nom }}&nbsp;{{ obj.prenom }}
                 </option>
               </select>
             </div>
           </form>
         </div>
-        <div class="col-md-5 custom-border-right" *ngIf="selectedClientFournisseur.nom">
+        <div class="col-md-5 custom-border-right" *ngIf="selectedClient.nom">
           <div class="col">
             <div class="row">
               <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-              <div class="col-md-10">{{ selectedClientFournisseur.nom }}</div>
+              <div class="col-md-10">{{ selectedClient.nom }}</div>
             </div>
             <div class="row">
               <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-              <div class="col-md-10">{{ selectedClientFournisseur.prenom }}</div>
+              <div class="col-md-10">{{ selectedClient.prenom }}</div>
             </div>
             <div class="row">
               <div class="col-md-1"><i class="fas fa-phone-alt blue-color"></i></div>
-              <div class="col-md-10"> {{ selectedClientFournisseur.numTel }}</div>
+              <div class="col-md-10"> {{ selectedClient.numTel }}</div>
             </div>
             <div class="row">
               <div class="col-md-1"><i class="fas fa-hourglass-half blue-color"></i></div>
@@ -47,8 +47,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-2 text-center" *ngIf="selectedClientFournisseur.nom">
-          <img [src]="selectedClientFournisseur.photo ? selectedClientFournisseur.photo :  'assets/product.png' " class="rounded-circle" width="150px"
+        <div class="col-md-2 text-center" *ngIf="selectedClient.nom">
+          <img [src]="selectedClient.photo ? selectedClient.photo :  'assets/product.png' " class="rounded-circle" width="150px"
                height="150px" />
         </div>
       </div>
@@ -77,9 +77,27 @@
       </div>
       <div class="row mt-2 p-3 custom-border" style="max-height: 300px;overflow-y: scroll">
         <div class="col-md-12">
-          <app-detail-cmd *ngFor="let ligne of lignesCommande"
-          [ligneCommande]="ligne"
-          ></app-detail-cmd>
+          <div *ngFor="let ligne of lignesCommande" class="card mb-2">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <strong>Article:</strong> {{ ligne.article?.codeArticle }}
+                </div>
+                <div class="col-md-3">
+                  <strong>Désignation:</strong> {{ ligne.article?.designation }}
+                </div>
+                <div class="col-md-2">
+                  <strong>Quantité:</strong> {{ ligne.quantite }}
+                </div>
+                <div class="col-md-2">
+                  <strong>Prix:</strong> {{ ligne.prixUnitaire }}
+                </div>
+                <div class="col-md-2">
+                  <strong>Total:</strong> {{ ligne.prixUnitaire * ligne.quantite }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row mt-2 p-3 custom-border ">
@@ -95,7 +113,7 @@
       </button>
       <button class="btn btn-primary" (click)="enregistrerCommande()">
         <i class="fas fa-save"></i>&nbsp;
-        Enregitrer
+        Enregistrer
       </button>
     </div>
   

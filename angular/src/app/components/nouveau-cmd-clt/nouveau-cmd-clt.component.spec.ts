@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NouvelleCmdCltFrsComponent } from './nouvelle-cmd-clt-frs.component';
+import { NouveauCmdCltComponent } from './nouveau-cmd-clt.component';
 
-describe('NouvelleCmdCltFrsComponent', () => {
-  let component: NouvelleCmdCltFrsComponent;
-  let fixture: ComponentFixture<NouvelleCmdCltFrsComponent>;
+describe('NouveauCmdCltComponent', () => {
+  let component: NouveauCmdCltComponent;
+  let fixture: ComponentFixture<NouveauCmdCltComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NouvelleCmdCltFrsComponent ]
+      declarations: [ NouveauCmdCltComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NouvelleCmdCltFrsComponent);
+    fixture = TestBed.createComponent(NouveauCmdCltComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

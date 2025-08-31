@@ -38,11 +38,12 @@ app.use(
 );
 
 /**
- * Handle all other requests by rendering the Angular application.
+ * Handle all other requests by rendering the Angular application dynamically.
  */
 app.use('/**', (req, res, next) => {
+  // Désactiver le prérendu et utiliser le rendu dynamique
   angularApp
-    .handle(req)
+    .handle(req, { renderMode: 'dynamic' })
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )

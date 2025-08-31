@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {CltfrsService} from '../../../services/cltfrs/cltfrs.service';
-import {ClientDto} from '../../../../gs-api/src/models/client-dto';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { DetailCltComponent } from '../../components/detail-clt/detail-clt.component';
 
 @Component({
-  selector: 'app-page-client',
-  templateUrl: './page-client.component.html',
-  styleUrls: ['./page-client.component.scss']
+  selector: 'app-page-clients',
+  templateUrl: './page-clients.component.html',
+  styleUrls: ['./page-clients.component.scss'],
+  standalone: true,
+  imports: [CommonModule, DetailCltComponent]
 })
-export class PageClientComponent implements OnInit {
+export class PageClientsComponent implements OnInit {
 
-  listClient: Array<ClientDto> = [];
-  errorMsg = '';
+  listClient: Array<any> = [];
 
   constructor(
     private router: Router,
@@ -24,20 +26,24 @@ export class PageClientComponent implements OnInit {
 
   findAllClients(): void {
     this.cltFrsService.findAllClients()
-    .subscribe(clients => {
-      this.listClient = clients;
-    });
+      .subscribe(clients => {
+        this.listClient = clients;
+      });
   }
 
   nouveauClient(): void {
-    this.router.navigate(['nouveauclient']);
+    this.router.navigate(['dashboard', 'nouveauclient']);
   }
 
-  handleSuppression(event: any): void {
-    if (event === 'success') {
+  modifierClient(id?: number): void {
+    if (id) {
+      this.router.navigate(['dashboard', 'nouveauclient', id]);
+    }
+  }
+
+  handleSuppression(result: string): void {
+    if (result === 'success') {
       this.findAllClients();
-    } else {
-      this.errorMsg = event;
     }
   }
 }

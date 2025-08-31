@@ -165,6 +165,11 @@ export class CltfrsService {
     });
   }
 
+  // Alias pour la compatibilité
+  enregistrerClient(client: ClientDto): Observable<ClientDto> {
+    return this.saveClient(client);
+  }
+
   saveClient(client: ClientDto): Observable<ClientDto> {
     // Simulation de sauvegarde avec validation
     if (!client.nom || !client.prenom || !client.email) {
@@ -352,6 +357,11 @@ export class CltfrsService {
         pays: 'Pays inconnu'
       }
     });
+  }
+
+  // Alias pour la compatibilité
+  enregistrerFournisseur(fournisseur: FournisseurDto): Observable<FournisseurDto> {
+    return this.saveFournisseur(fournisseur);
   }
 
   saveFournisseur(fournisseur: FournisseurDto): Observable<FournisseurDto> {

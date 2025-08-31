@@ -1,23 +1,43 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CltfrsService} from '../../services/cltfrs/cltfrs.service';
-import {ArticleDto} from '../../../gs-api/src/models/article-dto';
-import {ArticleService} from '../../services/article/article.service';
-import {LigneCommandeClientDto} from '../../../gs-api/src/models/ligne-commande-client-dto';
-import {CommandeClientDto} from '../../../gs-api/src/models/commande-client-dto';
-import {CmdcltfrsService} from '../../services/cmdcltfrs/cmdcltfrs.service';
-import {CommandeFournisseurDto} from '../../../gs-api/src/models/commande-fournisseur-dto';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
+
+// Interfaces simplifiées pour le développement
+interface ArticleDto {
+  id?: number;
+  codeArticle?: string;
+  designation?: string;
+  prixUnitaireTtc?: number;
+}
+
+interface LigneCommandeClientDto {
+  article?: ArticleDto;
+  prixUnitaire?: number;
+  quantite?: number;
+}
+
+interface CommandeClientDto {
+  client?: any;
+  code?: string;
+  dateCommande?: number;
+  etatCommande?: string;
+  ligneCommandeClients?: LigneCommandeClientDto[];
+}
 
 @Component({
-  selector: 'app-nouvelle-cmd-clt-frs',
-  templateUrl: './nouvelle-cmd-clt-frs.component.html',
-  styleUrls: ['./nouvelle-cmd-clt-frs.component.scss']
+  selector: 'app-nouveau-cmd-clt',
+  templateUrl: './nouveau-cmd-clt.component.html',
+  styleUrls: ['./nouveau-cmd-clt.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
-export class NouvelleCmdCltFrsComponent implements OnInit {
+export class NouveauCmdCltComponent implements OnInit {
 
-  origin = '';
-  selectedClientFournisseur: any = {};
-  listClientsFournisseurs: Array<any> = [];
+  selectedClient: any = {};
+  listClients: Array<any> = [];
   searchedArticle: ArticleDto = {};
   listArticle: Array<ArticleDto> = [];
   codeArticle = '';
@@ -33,37 +53,28 @@ export class NouvelleCmdCltFrsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cltFrsService: CltfrsService,
-    private articleService: ArticleService,
     private cmdCltFrsService: CmdcltfrsService
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.origin = data.origin;
-    });
-    this.findAllClientsFournisseurs();
+    this.findAllClients();
     this.findAllArticles();
   }
 
-  findAllClientsFournisseurs(): void {
-    if (this.origin === 'client') {
-      this.cltFrsService.findAllClients()
-      .subscribe(clients => {
-        this.listClientsFournisseurs = clients;
+  findAllClients(): void {
+    this.cltFrsService.findAllClients()
+      .subscribe((clients: any[]) => {
+        this.listClients = clients;
       });
-    } else if (this.origin === 'fournisseur' ) {
-      this.cltFrsService.findAllFournisseurs()
-      .subscribe(fournisseurs => {
-        this.listClientsFournisseurs = fournisseurs;
-      });
-    }
   }
 
   findAllArticles(): void {
-    this.articleService.findAllArticles()
-    .subscribe(articles => {
-      this.listArticle = articles;
-    });
+    // Simulation de données pour le développement
+    this.listArticle = [
+      { id: 1, codeArticle: 'ART001', designation: 'Article 1', prixUnitaireTtc: 10.00 },
+      { id: 2, codeArticle: 'ART002', designation: 'Article 2', prixUnitaireTtc: 15.00 },
+      { id: 3, codeArticle: 'ART003', designation: 'Article 3', prixUnitaireTtc: 20.00 }
+    ];
   }
 
   filtrerArticle(): void {
@@ -71,7 +82,7 @@ export class NouvelleCmdCltFrsComponent implements OnInit {
       this.findAllArticles();
     }
     this.listArticle = this.listArticle
-    .filter(art => art.codeArticle?.includes(this.codeArticle) || art.designation?.includes(this.codeArticle));
+      .filter(art => art.codeArticle?.includes(this.codeArticle) || art.designation?.includes(this.codeArticle));
   }
 
   ajouterLigneCommande(): void {
@@ -121,40 +132,18 @@ export class NouvelleCmdCltFrsComponent implements OnInit {
 
   enregistrerCommande(): void {
     const commande = this.preparerCommande();
-    if (this.origin === 'client') {
-      this.cmdCltFrsService.enregistrerCommandeClient(commande as CommandeClientDto)
-      .subscribe(cmd => {
-        this.router.navigate(['commandesclient']);
-      }, error => {
-        this.errorMsg = error.error.errors;
-      });
-    } else if (this.origin === 'fournisseur') {
-      this.cmdCltFrsService.enregistrerCommandeFournisseur(commande as CommandeFournisseurDto)
-      .subscribe(cmd => {
-        this.router.navigate(['commandesfournisseur']);
-      }, error => {
-        this.errorMsg = error.error.errors;
-      });
-    }
+    // Simulation de sauvegarde pour le développement
+    console.log('Commande client à sauvegarder:', commande);
+    this.router.navigate(['commandesclient']);
   }
 
-  private preparerCommande(): any {
-    if (this.origin === 'client') {
-      return  {
-        client: this.selectedClientFournisseur,
-        code: this.codeCommande,
-        dateCommande: new Date().getTime(),
-        etatCommande: 'EN_PREPARATION',
-        ligneCommandeClients: this.lignesCommande
-      };
-    } else if (this.origin === 'fournisseur') {
-      return  {
-        fournisseur: this.selectedClientFournisseur,
-        code: this.codeCommande,
-        dateCommande: new Date().getTime(),
-        etatCommande: 'EN_PREPARATION',
-        ligneCommandeFournisseurs: this.lignesCommande
-      };
-    }
+  private preparerCommande(): CommandeClientDto {
+    return {
+      client: this.selectedClient,
+      code: this.codeCommande,
+      dateCommande: new Date().getTime(),
+      etatCommande: 'EN_PREPARATION',
+      ligneCommandeClients: this.lignesCommande
+    };
   }
 }

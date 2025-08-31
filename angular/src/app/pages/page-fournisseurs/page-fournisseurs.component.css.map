@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","file":"page-fournisseurs.component.css"}
+{"version":3,"sources":["page-fournisseurs.component.scss","page-fournisseurs.component.css"],"names":[],"mappings":"AAAA;EACE,mEAAA;ACCF;ADCE;EACE,2BAAA;EACA,wCAAA;ACCJ;;ADIE;EACE,qBAAA;ACDJ;ADGI;EACE,eAAA;ACDN;;ADMA;EACE,cAAA;EACA,gBAAA;ACHF;;ADMA;EACE,cAAA;EACA,iBAAA;ACHF;ADKE;EACE,cAAA;ACHJ","file":"page-fournisseurs.component.css"}

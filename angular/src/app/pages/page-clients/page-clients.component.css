@@ -1,0 +1,27 @@
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-group .btn {
+  margin-right: 0.25rem;
+}
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+.card-title {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.card-text {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+.card-text strong {
+  color: #495057;
+}/*# sourceMappingURL=page-clients.component.css.map */

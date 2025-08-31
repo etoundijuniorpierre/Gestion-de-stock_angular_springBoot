@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {CltfrsService} from '../../../services/cltfrs/cltfrs.service';
-import {ClientDto} from '../../../../gs-api/src/models/client-dto';
-import {FournisseurDto} from '../../../../gs-api/src/models/fournisseur-dto';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { DetailFrsComponent } from '../../components/detail-frs/detail-frs.component';
 
 @Component({
-  selector: 'app-page-fournisseur',
-  templateUrl: './page-fournisseur.component.html',
-  styleUrls: ['./page-fournisseur.component.scss']
+  selector: 'app-page-fournisseurs',
+  templateUrl: './page-fournisseurs.component.html',
+  styleUrls: ['./page-fournisseurs.component.scss'],
+  standalone: true,
+  imports: [CommonModule, DetailFrsComponent]
 })
-export class PageFournisseurComponent implements OnInit {
+export class PageFournisseursComponent implements OnInit {
 
-  listFournisseur: Array<FournisseurDto> = [];
-  errorMsg = '';
+  listFournisseurs: Array<any> = [];
 
   constructor(
     private router: Router,
@@ -25,20 +26,24 @@ export class PageFournisseurComponent implements OnInit {
 
   findAllFournisseurs(): void {
     this.cltFrsService.findAllFournisseurs()
-    .subscribe(fournisseurs => {
-      this.listFournisseur = fournisseurs;
-    });
+      .subscribe(fournisseurs => {
+        this.listFournisseurs = fournisseurs;
+      });
   }
 
   nouveauFournisseur(): void {
-    this.router.navigate(['nouveaufournisseur']);
+    this.router.navigate(['dashboard', 'nouveaufournisseur']);
   }
 
-  handleSuppression(event: any): void {
-    if (event === 'success') {
+  modifierFournisseur(id?: number): void {
+    if (id) {
+      this.router.navigate(['dashboard', 'nouveaufournisseur', id]);
+    }
+  }
+
+  handleSuppression(result: string): void {
+    if (result === 'success') {
       this.findAllFournisseurs();
-    } else {
-      this.errorMsg = event;
     }
   }
 }

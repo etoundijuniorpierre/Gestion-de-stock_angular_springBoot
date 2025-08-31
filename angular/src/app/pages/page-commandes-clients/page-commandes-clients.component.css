@@ -1,0 +1,37 @@
+.accordion .card {
+  margin-bottom: 1rem;
+}
+.accordion .card .card-body {
+  padding: 1rem;
+}
+.accordion .card .card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+.accordion .card .card-footer h5 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.btn-block {
+  text-align: left;
+  width: 100%;
+}
+
+.collapse {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}/*# sourceMappingURL=page-commandes-clients.component.css.map */

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pagination',
-  imports: [],
   templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.scss',
-  standalone: true
+  styleUrls: ['./pagination.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class PaginationComponent {
 

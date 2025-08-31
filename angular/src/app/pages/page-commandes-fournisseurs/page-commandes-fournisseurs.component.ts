@@ -1,17 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CmdcltfrsService} from '../../services/cmdcltfrs/cmdcltfrs.service';
-import {CommandeClientDto} from '../../../gs-api/src/models/commande-client-dto';
-import {LigneCommandeClientDto} from '../../../gs-api/src/models/ligne-commande-client-dto';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
+import { ButtonActionComponent } from '../../components/button-action/button-action.component';
+import { DetailCmdFrsComponent } from '../../components/detail-cmd-frs/detail-cmd-frs.component';
+import { DetailCmdComponent } from '../../components/detail-cmd/detail-cmd.component';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
+
+// Interfaces simplifiées pour le développement
+interface LigneCommandeFournisseurDto {
+  prixUnitaire?: number;
+  quantite?: number;
+}
 
 @Component({
-  selector: 'app-page-cmd-clt-frs',
-  templateUrl: './page-cmd-clt-frs.component.html',
-  styleUrls: ['./page-cmd-clt-frs.component.scss']
+  selector: 'app-page-commandes-fournisseurs',
+  templateUrl: './page-commandes-fournisseurs.component.html',
+  styleUrls: ['./page-commandes-fournisseurs.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ButtonActionComponent,
+    DetailCmdFrsComponent,
+    DetailCmdComponent,
+    PaginationComponent
+  ]
 })
-export class PageCmdCltFrsComponent implements OnInit {
+export class PageCommandesFournisseursComponent implements OnInit {
 
-  origin = '';
   listeCommandes: Array<any> = [];
   mapLignesCommande = new Map();
   mapPrixTotalCommande = new Map();
@@ -23,59 +39,36 @@ export class PageCmdCltFrsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.origin = data.origin;
-    });
     this.findAllCommandes();
   }
 
   findAllCommandes(): void {
-    if (this.origin === 'client') {
-      this.cmdCltFrsService.findAllCommandesClient()
-      .subscribe(cmd => {
+    this.cmdCltFrsService.findAllCommandesFournisseur()
+      .subscribe((cmd: any[]) => {
         this.listeCommandes = cmd;
         this.findAllLignesCommande();
       });
-    } else if (this.origin === 'fournisseur') {
-      this.cmdCltFrsService.findAllCommandesFournisseur()
-      .subscribe(cmd => {
-        this.listeCommandes = cmd;
-        this.findAllLignesCommande();
-      });
-    }
   }
 
   findAllLignesCommande(): void {
     this.listeCommandes.forEach(cmd => {
-     this.findLignesCommande(cmd.id);
+      this.findLignesCommande(cmd.id);
     });
   }
 
   nouvelleCommande(): void {
-    if (this.origin === 'client') {
-      this.router.navigate(['nouvellecommandeclt']);
-    } else if (this.origin === 'fournisseur') {
-      this.router.navigate(['nouvellecommandefrs']);
-    }
+    this.router.navigate(['dashboard', 'nouvellecommandefrs']);
   }
 
   findLignesCommande(idCommande?: number): void {
-    if (this.origin === 'client') {
-      this.cmdCltFrsService.findAllLigneCommandesClient(idCommande)
-      .subscribe(list => {
+    this.cmdCltFrsService.findAllLigneCommandesFournisseur(idCommande)
+      .subscribe((list: any[]) => {
         this.mapLignesCommande.set(idCommande, list);
         this.mapPrixTotalCommande.set(idCommande, this.calculerTatalCmd(list));
       });
-    } else if (this.origin === 'fournisseur') {
-      this.cmdCltFrsService.findAllLigneCommandesFournisseur(idCommande)
-      .subscribe(list => {
-        this.mapLignesCommande.set(idCommande, list);
-        this.mapPrixTotalCommande.set(idCommande, this.calculerTatalCmd(list));
-      });
-    }
   }
 
-  calculerTatalCmd(list: Array<LigneCommandeClientDto>): number {
+  calculerTatalCmd(list: Array<LigneCommandeFournisseurDto>): number {
     let total = 0;
     list.forEach(ligne => {
       if (ligne.prixUnitaire && ligne.quantite) {

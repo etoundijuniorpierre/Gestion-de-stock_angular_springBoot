@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageCmdCltFrsComponent } from './page-cmd-clt-frs.component';
+import { PageCommandesClientsComponent } from './page-commandes-clients.component';
 
-describe('PageCmdCltFrsComponent', () => {
-  let component: PageCmdCltFrsComponent;
-  let fixture: ComponentFixture<PageCmdCltFrsComponent>;
+describe('PageCommandesClientsComponent', () => {
+  let component: PageCommandesClientsComponent;
+  let fixture: ComponentFixture<PageCommandesClientsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageCmdCltFrsComponent ]
+      declarations: [ PageCommandesClientsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageCmdCltFrsComponent);
+    fixture = TestBed.createComponent(PageCommandesClientsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

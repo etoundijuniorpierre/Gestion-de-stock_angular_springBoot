@@ -1,26 +1,26 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ClientDto} from '../../../gs-api/src/models/client-dto';
-import {AdresseDto} from '../../../gs-api/src/models/adresse-dto';
-import {CltfrsService} from '../../services/cltfrs/cltfrs.service';
-import {FournisseurDto} from '../../../gs-api/src/models/fournisseur-dto';
-import {PhotosService} from '../../../gs-api/src/services/photos.service';
-import SavePhotoParams = PhotosService.SavePhotoParams;
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FournisseurDto, AdresseDto } from '../../api/interfaces/client.interface';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { PhotosService } from '../../services/photos.service';
 
 @Component({
-  selector: 'app-nouveau-clt-frs',
-  templateUrl: './nouveau-clt-frs.component.html',
-  styleUrls: ['./nouveau-clt-frs.component.scss']
+  selector: 'app-nouveau-fournisseur',
+  templateUrl: './nouveau-fournisseur.component.html',
+  styleUrls: ['./nouveau-fournisseur.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
-export class NouveauCltFrsComponent implements OnInit {
+export class NouveauFournisseurComponent implements OnInit {
 
-  origin = '';
-
-  clientFournisseur: any = {};
+  fournisseur: FournisseurDto = {};
   adresseDto: AdresseDto = {};
   errorMsg: Array<string> = [];
   file: File | null = null;
   imgUrl: string | ArrayBuffer = 'assets/product.png';
+  isEditMode = false;
 
   constructor(
     private router: Router,
@@ -30,67 +30,52 @@ export class NouveauCltFrsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(data => {
-      this.origin = data.origin;
-    });
     this.findObject();
   }
 
   findObject(): void {
-    const id = this.activatedRoute.snapshot.params.id;
+    const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
-      if (this.origin === 'client') {
-        this.cltFrsService.findClientById(id)
-        .subscribe(client => {
-          this.clientFournisseur = client;
-          this.adresseDto = this.clientFournisseur.adresse;
+      this.isEditMode = true;
+      this.cltFrsService.findFournisseurById(id)
+        .subscribe((fournisseur: FournisseurDto) => {
+          this.fournisseur = fournisseur;
+          this.adresseDto = fournisseur['adresse'] || {};
         });
-      } else if (this.origin === 'fournisseur') {
-        this.cltFrsService.findFournisseurById(id)
-        .subscribe(fournisseur => {
-          this.clientFournisseur = fournisseur;
-          this.adresseDto = this.clientFournisseur.adresse;
-        });
-      }
     }
   }
 
   enregistrer(): void {
-    if (this.origin === 'client') {
-      this.cltFrsService.enregistrerClient(this.mapToClient())
-      .subscribe(client => {
-        this.savePhoto(client.id, client.nom);
-      }, error => {
-        this.errorMsg = error.error.errors;
-      });
-    } else if (this.origin === 'fournisseur') {
-      this.cltFrsService.enregistrerFournisseur(this.mapToFournisseur())
-      .subscribe(fournisseur => {
-        this.savePhoto(fournisseur.id, fournisseur.nom);
-      }, error => {
-        this.errorMsg = error.error.errors;
-      });
+    // Validation des champs obligatoires
+    if (!this.fournisseur.nom || !this.fournisseur.prenom || !this.fournisseur.email) {
+      this.errorMsg = ['Les champs nom, prénom et email sont obligatoires'];
+      return;
+    }
+
+    // Mapper l'adresse
+    this.fournisseur.adresse = this.adresseDto;
+
+    if (this.isEditMode) {
+      // Mode édition
+      this.cltFrsService.updateFournisseur(this.fournisseur['id']!, this.fournisseur)
+        .subscribe((fournisseur: FournisseurDto) => {
+          this.savePhoto(fournisseur['id'], fournisseur['nom']);
+        }, (error: any) => {
+          this.errorMsg = error.error?.errors || ['Erreur lors de la mise à jour'];
+        });
+    } else {
+      // Mode création
+      this.cltFrsService.saveFournisseur(this.fournisseur)
+        .subscribe((fournisseur: FournisseurDto) => {
+          this.savePhoto(fournisseur['id'], fournisseur['nom']);
+        }, (error: any) => {
+          this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde'];
+        });
     }
   }
 
   cancelClick(): void {
-    if (this.origin === 'client') {
-      this.router.navigate(['clients']);
-    } else if (this.origin === 'fournisseur') {
-      this.router.navigate(['fournisseurs']);
-    }
-  }
-
-  mapToClient(): ClientDto {
-    const clientDto: ClientDto = this.clientFournisseur;
-    clientDto.adresse = this.adresseDto;
-    return clientDto;
-  }
-
-  mapToFournisseur(): FournisseurDto {
-    const fournisseurDto: FournisseurDto = this.clientFournisseur;
-    fournisseurDto.adresse = this.adresseDto;
-    return fournisseurDto;
+    this.router.navigate(['fournisseurs']);
   }
 
   onFileInput(files: FileList | null): void {
@@ -110,19 +95,18 @@ export class NouveauCltFrsComponent implements OnInit {
 
   savePhoto(idObject?: number, titre?: string): void {
     if (idObject && titre && this.file) {
-      const params: SavePhotoParams = {
+      const params: PhotosService.SavePhotoParams = {
         id: idObject,
         file: this.file,
         title: titre,
-        context: this.origin
+        context: 'fournisseur'
       };
       this.photoService.savePhoto(params)
-      .subscribe(res => {
-        this.cancelClick();
-      });
+        .subscribe((res: any) => {
+          this.cancelClick();
+        });
     } else {
       this.cancelClick();
     }
   }
-
 }

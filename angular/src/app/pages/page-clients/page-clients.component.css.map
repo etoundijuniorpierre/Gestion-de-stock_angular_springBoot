@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","file":"page-clients.component.css"}
+{"version":3,"sources":["page-clients.component.scss","page-clients.component.css"],"names":[],"mappings":"AAAA;EACE,mEAAA;ACCF;ADCE;EACE,2BAAA;EACA,wCAAA;ACCJ;;ADIE;EACE,qBAAA;ACDJ;ADGI;EACE,eAAA;ACDN;;ADMA;EACE,cAAA;EACA,gBAAA;ACHF;;ADMA;EACE,cAAA;EACA,iBAAA;ACHF;ADKE;EACE,cAAA;ACHJ","file":"page-clients.component.css"}

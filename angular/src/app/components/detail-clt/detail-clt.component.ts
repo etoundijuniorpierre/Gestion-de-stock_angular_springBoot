@@ -1,53 +1,34 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ClientDto} from '../../../gs-api/src/models/client-dto';
-import {Router} from '@angular/router';
-import {CltfrsService} from '../../services/cltfrs/cltfrs.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
+import { ClientDto } from '../../api/interfaces/client.interface';
 
 @Component({
-  selector: 'app-detail-clt-frs',
-  templateUrl: './detail-clt-frs.component.html',
-  styleUrls: ['./detail-clt-frs.component.scss']
+  selector: 'app-detail-clt',
+  templateUrl: './detail-clt.component.html',
+  styleUrls: ['./detail-clt.component.scss'],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class DetailCltFrsComponent implements OnInit {
+export class DetailCltComponent implements OnInit {
+  @Input() client: ClientDto = {};
+  @Output() suppressionResult = new EventEmitter<string>();
 
-  @Input()
-  origin = '';
-  @Input()
-  clientFournisseur: any = {};
-  @Output()
-  suppressionResult = new EventEmitter();
+  constructor(private router: Router, private cltFrsService: CltfrsService) { }
+  ngOnInit(): void { }
 
-  constructor(
-    private router: Router,
-    private cltFrsService: CltfrsService
-  ) { }
-
-  ngOnInit(): void {
-  }
-
-  modifierClientFournisseur(): void {
-    if (this.origin === 'client') {
-      this.router.navigate(['nouveauclient', this.clientFournisseur.id]);
-    } else if (this.origin === 'fournisseur') {
-      this.router.navigate(['nouveaufournisseur', this.clientFournisseur.id]);
+  modifierClient(): void {
+    if (this.client.id) {
+      this.router.navigate(['dashboard', 'nouveauclient', this.client.id]);
     }
   }
 
   confirmerEtSupprimer(): void {
-    if (this.origin === 'client') {
-      this.cltFrsService.deleteClient(this.clientFournisseur.id)
-      .subscribe(res => {
-        this.suppressionResult.emit('success');
-      }, error => {
-        this.suppressionResult.emit(error.error.error);
-      });
-    } else if (this.origin === 'fournisseur') {
-      this.cltFrsService.deleteFournisseur(this.clientFournisseur.id)
-      .subscribe(res => {
-        this.suppressionResult.emit('success');
-      }, error => {
-        this.suppressionResult.emit(error.error.error);
-      });
+    if (this.client.id) {
+      this.cltFrsService.deleteClient(this.client.id)
+        .subscribe(res => { this.suppressionResult.emit('success'); },
+                   error => { this.suppressionResult.emit(error.error?.error || 'Erreur lors de la suppression'); });
     }
   }
 }

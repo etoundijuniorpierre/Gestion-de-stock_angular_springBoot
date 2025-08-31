@@ -1,29 +1,26 @@
-<div class="col">
-  <div class="row m-3">
-    <div class="col-md-8 p-0">
-      <h1>Liste des clients</h1>
-    </div>
-    <div class="col-md-4 text-right">
-      <app-boutton-action
-      (clickEvent)="nouveauClient()"
-      ></app-boutton-action>
-    </div>
-  </div>
-  <div class="col m-3">
-    <div class="alert alert-danger" *ngIf="errorMsg">
-      {{ errorMsg }}
-    </div>
-    <app-detail-clt-frs
-      *ngFor="let client of listClient"
-      [clientFournisseur]="client"
-      [origin]="'client'"
-      (suppressionResult)="handleSuppression($event)"
-    ></app-detail-clt-frs>
-  </div>
-  <div class="row mb-3" *ngIf="listClient.length">
-    <div class=" col-md-12 text-center">
-      <app-pagination></app-pagination>
-    </div>
-  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Gestion des Clients</h1>
+        <button class="btn btn-primary" (click)="nouveauClient()">
+          <i class="fas fa-plus"></i> Nouveau Client
+        </button>
+      </div>
 
+      <!-- Liste des clients -->
+      <div class="col m-3" *ngIf="listClient.length">
+        <app-detail-clt 
+          *ngFor="let client of listClient"
+          [client]="client"
+          (suppressionResult)="handleSuppression($event)">
+        </app-detail-clt>
+      </div>
+
+      <!-- Message si aucun client -->
+      <div class="alert alert-info" *ngIf="!listClient.length">
+        Aucun client trouvé. Créez votre premier client !
+      </div>
+    </div>
+  </div>
 </div>

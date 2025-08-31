@@ -3,78 +3,99 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   {
     path: '',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'login',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'register',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
+  // Routes dashboard avec tous les composants enfants
   {
     path: 'dashboard',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/statistiques',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/articles',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/nouvel-article',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/categories',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/mouvementsStock',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/clients',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/nouveauclient',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/nouveauclient/:id',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/commandesClient',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/commandesclient',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/nouvellecommandeclt',
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/fournisseurs',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/nouveaufournisseur',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/nouveaufournisseur/:id',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/commandesFournisseur',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/commandesfournisseur',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/nouvellecommandefrs',
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/utilisateurs',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/nouvelutilisateur',
+    renderMode: RenderMode.Server
   },
   {
     path: 'dashboard/vueDensemble',
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   }
 ];

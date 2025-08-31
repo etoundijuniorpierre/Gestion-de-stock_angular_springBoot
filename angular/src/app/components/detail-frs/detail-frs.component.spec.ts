@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DetailCltFrsComponent } from './detail-clt-frs.component';
+import { DetailFrsComponent } from './detail-frs.component';
 
-describe('DetailCltFrsComponent', () => {
-  let component: DetailCltFrsComponent;
-  let fixture: ComponentFixture<DetailCltFrsComponent>;
+describe('DetailFrsComponent', () => {
+  let component: DetailFrsComponent;
+  let fixture: ComponentFixture<DetailFrsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DetailCltFrsComponent ]
+      declarations: [ DetailFrsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DetailCltFrsComponent);
+    fixture = TestBed.createComponent(DetailFrsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
