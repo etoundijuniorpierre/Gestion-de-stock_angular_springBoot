@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -34,8 +34,8 @@ export class PageLoginComponent {
     this.loginError = '';
 
     this.authService.login(this.email, this.password).subscribe({
-      next: (success: boolean) => {
-        if (success) {
+      next: (response) => {
+        if (response.accessToken) {
           this.router.navigate(['/dashboard', 'statistiques']);
         } else {
           this.loginError = 'Email ou mot de passe incorrect';

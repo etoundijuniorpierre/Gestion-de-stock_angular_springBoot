@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { EntrepriseDto, AdresseDto, AuthenticationRequest } from '../../../gs-api/src/model/models';
 import { EntrepriseService } from '../../services/entreprise/entreprise.service';
 import { UserService } from '../../services/user/user.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-page-register',
@@ -127,8 +127,8 @@ export class PageRegisterComponent implements OnInit {
 
     // Utiliser le service d'authentification
     this.authService.login(this.entrepriseDto.email, 'som3R@nd0mP@$$word').subscribe({
-      next: (success: boolean) => {
-        if (success) {
+      next: (response) => {
+        if (response.accessToken) {
           console.log('🔐 Connexion automatique réussie');
           
           // Stocker l'origine pour la redirection

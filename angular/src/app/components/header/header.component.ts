@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ export class HeaderComponent {
   userEmail: string | null = null;
 
   constructor(private authService: AuthService) {
-    this.userEmail = this.authService.getUserEmail();
+    this.userEmail = this.authService.getCurrentUser()?.login || null;
   }
 
   logout(): void {

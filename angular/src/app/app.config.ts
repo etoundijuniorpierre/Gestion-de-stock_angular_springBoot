@@ -9,6 +9,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(withInterceptors([apiInterceptor])),
-    provideApi({ basePath: '/api' }) // Utiliser /api pour que le proxy redirige vers localhost:8080
+    provideApi({ basePath: '' }) // Utiliser une chaîne vide pour que le proxy fonctionne correctement
   ]
 };

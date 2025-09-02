@@ -14,9 +14,23 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
   };
 
   if (isPlatformBrowser(platformId)) {
-    const authToken = localStorage.getItem('authToken');
-    if (authToken) {
-      headers['Authorization'] = `Bearer ${authToken}`;
+    // Récupérer le token depuis currentUser (cohérent avec AuthService)
+    const currentUserStr = localStorage.getItem('currentUser');
+    console.log('🔍 [INTERCEPTOR] Token trouvé:', currentUserStr ? 'OUI' : 'NON');
+    
+    if (currentUserStr) {
+      try {
+        const currentUser = JSON.parse(currentUserStr);
+        if (currentUser.accessToken) {
+          headers['Authorization'] = `Bearer ${currentUser.accessToken}`;
+          console.log('🔑 [INTERCEPTOR] Token ajouté aux headers');
+        } else {
+          console.warn('⚠️ [INTERCEPTOR] Token manquant dans currentUser');
+        }
+      } catch (error) {
+        console.error('❌ [INTERCEPTOR] Erreur lors du parsing du token:', error);
+        localStorage.removeItem('currentUser');
+      }
     }
   }
 
@@ -53,8 +67,9 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         if (isPlatformBrowser(platformId)) {
           console.warn('🔐 [API] Token expiré ou invalide, redirection vers login');
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('userEmail');
+          console.log('🔍 [INTERCEPTOR] Suppression du token et redirection...');
+          localStorage.removeItem('currentUser');
+          // Ne pas rediriger automatiquement, laisser le composant gérer cela
         }
       }
       

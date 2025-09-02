@@ -16,9 +16,17 @@ export class ArticleService {
 
   enregistrerArticle(articleDto: ArticleDto): Observable<ArticleDto> {
     // Note: idEntreprise sera géré par le backend
+    console.log('Tentative de sauvegarde de l\'article:', articleDto);
+    console.log('Service utilisé:', this.gestionDesArticlesService);
     return this.gestionDesArticlesService.save8(articleDto).pipe(
       catchError((error) => {
         console.error('Erreur lors de la sauvegarde de l\'article:', error);
+        console.error('Détails de l\'erreur:', {
+          status: error.status,
+          statusText: error.statusText,
+          url: error.url,
+          message: error.message
+        });
         return of(articleDto);
       })
     );
