@@ -1,0 +1,44 @@
+<div class="col">
+  <div class="row m-3">
+    <div class="col-md-8 p-0">
+      <h1>{{ isEditMode ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}</h1>
+    </div>
+  </div>
+
+  <div class="col m-3">
+    <div class="row col-md-12 alert alert-danger" *ngIf="errorMsg">
+      {{ errorMsg }}
+    </div>
+
+    <form>
+      <div class="form-group row">
+        <label for="code" class="col-sm-2 col-form-label">Code *</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="code" 
+                 [(ngModel)]="category.code" name="code" 
+                 placeholder="Entrez le code de la catégorie" required>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="designation" class="col-sm-2 col-form-label">Désignation *</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="designation" 
+                 [(ngModel)]="category.designation" name="designation" 
+                 placeholder="Entrez la désignation de la catégorie" required>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+          <button type="button" class="btn btn-primary mr-2" (click)="save()">
+            <i class="fas fa-save"></i>&nbsp;{{ isEditMode ? 'Modifier' : 'Enregistrer' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            <i class="fas fa-times"></i>&nbsp;Annuler
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

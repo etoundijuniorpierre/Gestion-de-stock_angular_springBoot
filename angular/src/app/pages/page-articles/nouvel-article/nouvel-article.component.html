@@ -11,56 +11,71 @@
       <h2><i class="fas fa-info-circle blue-color"></i>&nbsp;Information de l'article</h2>
     </div>
     <div class="col-md-12">
+      <!-- Messages d'erreur et de succès -->
       <div class="alert alert-danger" *ngIf="errorMsg">
-        <div >
-          <span >{{ errorMsg }}</span>
+        <div>
+          <span>{{ errorMsg }}</span>
         </div>
       </div>
+      
+      <div class="alert alert-success" *ngIf="successMsg">
+        <div>
+          <span>{{ successMsg }}</span>
+        </div>
+      </div>
+
       <form>
         <div class="row mb-3">
           <div class="col">
-            <input type="text" class="form-control" name="codearticle" placeholder="Code article">
+            <input type="text" class="form-control" name="codearticle" placeholder="Code article" 
+                                       [(ngModel)]="article.codeArticle" required>
           </div>
           <div class="col">
-            <input type="text" class="form-control" name="designation" placeholder="Designation">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" name="prixunitht" placeholder="Prix unitaire HT">
-          </div>
-          <div class="col">
-            <input type="text" class="form-control" name="tauxtva" placeholder="Taux TVA">
+            <input type="text" class="form-control" name="designation" placeholder="Designation" 
+                   [(ngModel)]="article.designation" required>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col">
-            <input type="text" class="form-control" name="prixunitttc" placeholder="Prix unitaire TTC">
+            <input type="number" class="form-control" name="prixunitht" placeholder="Prix unitaire HT" 
+                   [(ngModel)]="article.prixUnitaireHt" required>
           </div>
           <div class="col">
-            <select class="form-control" name="cat">
-              <option [value]="null">Selectionner une categorie</option>*
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+            <input type="number" class="form-control" name="tauxtva" placeholder="Taux TVA" 
+                   [(ngModel)]="article.tauxTva">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input type="number" class="form-control" name="prixunitttc" placeholder="Prix unitaire TTC" 
+                   [(ngModel)]="article.prixUnitaireTtc">
+          </div>
+          <div class="col">
+            <select class="form-control" name="cat" [(ngModel)]="article.categorie">
+              <option [value]="null">Sélectionner une catégorie</option>
+              <option *ngFor="let cat of categories" [value]="cat" [attr.data-id]="cat.id">
+                {{ cat.designation }}
+              </option>
             </select>
           </div>
         </div>
       </form>
     </div>
   </div>
-    <div class="col-md-12 d-flex justify-content-end">
-      <button class="btn btn-danger me-3" (click)="annuler()">
-        <i class="fas fa-ban"></i>
-        &nbsp;
-        Annuler
-      </button>
-      <button class="btn btn-primary" (click)="enregistrer()">
-        <i class="fas fa-save"></i>
-        &nbsp;
-        Enregistrer
-      </button>
-    </div>
-
+  <div class="col-md-12 d-flex justify-content-end">
+    <button class="btn btn-danger me-3" (click)="annuler()" [disabled]="isLoading">
+      <i class="fas fa-ban"></i>
+      &nbsp;
+      Annuler
+    </button>
+    <button class="btn btn-primary" (click)="enregistrer()" [disabled]="isLoading">
+      <i class="fas fa-save"></i>
+      &nbsp;
+      <span *ngIf="!isLoading">Enregistrer</span>
+      <span *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin me-2"></i>
+        Enregistrement...
+      </span>
+    </button>
+  </div>
 </div>

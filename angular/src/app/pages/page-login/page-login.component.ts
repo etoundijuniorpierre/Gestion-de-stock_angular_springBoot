@@ -24,7 +24,7 @@ export class PageLoginComponent {
     private authService: AuthService
   ) { }
 
-  async onSubmit() {
+  onSubmit() {
     if (!this.email || !this.password) {
       this.loginError = 'Veuillez remplir tous les champs';
       return;
@@ -33,19 +33,22 @@ export class PageLoginComponent {
     this.isLoading = true;
     this.loginError = '';
 
-    try {
-      const success = await this.authService.login(this.email, this.password);
-      
-      if (success) {
-        this.router.navigate(['/dashboard', 'statistiques']);
-      } else {
-        this.loginError = 'Email ou mot de passe incorrect';
+    this.authService.login(this.email, this.password).subscribe({
+      next: (success: boolean) => {
+        if (success) {
+          this.router.navigate(['/dashboard', 'statistiques']);
+        } else {
+          this.loginError = 'Email ou mot de passe incorrect';
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors de la connexion:', error);
+        this.loginError = 'Erreur lors de la connexion';
+      },
+      complete: () => {
+        this.isLoading = false;
       }
-    } catch (error) {
-      this.loginError = 'Erreur lors de la connexion';
-    } finally {
-      this.isLoading = false;
-    }
+    });
   }
 
   onRegister() {

@@ -4,28 +4,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
-
-// Interfaces simplifiées pour le développement
-interface ArticleDto {
-  id?: number;
-  codeArticle?: string;
-  designation?: string;
-  prixUnitaireTtc?: number;
-}
-
-interface LigneCommandeFournisseurDto {
-  article?: ArticleDto;
-  prixUnitaire?: number;
-  quantite?: number;
-}
-
-interface CommandeFournisseurDto {
-  fournisseur?: any;
-  code?: string;
-  dateCommande?: number;
-  etatCommande?: string;
-  ligneCommandeFournisseurs?: LigneCommandeFournisseurDto[];
-}
+import { ArticleService } from '../../services/article/article.service';
+import { 
+  CommandeFournisseurDto, 
+  LigneCommandeFournisseurDto,
+  FournisseurDto,
+  ArticleDto,
+  CommandeFournisseurDtoEtatCommandeEnum
+} from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-nouveau-cmd-frs',
@@ -36,24 +22,27 @@ interface CommandeFournisseurDto {
 })
 export class NouveauCmdFrsComponent implements OnInit {
 
-  selectedFournisseur: any = {};
-  listFournisseurs: Array<any> = [];
+  selectedFournisseur: FournisseurDto = {};
+  listFournisseurs: Array<FournisseurDto> = [];
   searchedArticle: ArticleDto = {};
   listArticle: Array<ArticleDto> = [];
   codeArticle = '';
   quantite = '';
   codeCommande = '';
 
-  lignesCommande: Array<any> = [];
+  lignesCommande: Array<LigneCommandeFournisseurDto> = [];
   totalCommande = 0;
   articleNotYetSelected = false;
   errorMsg: Array<string> = [];
+  isLoading = false;
+  successMsg = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private cltFrsService: CltfrsService,
-    private cmdCltFrsService: CmdcltfrsService
+    private cmdCltFrsService: CmdcltfrsService,
+    private articleService: ArticleService
   ) { }
 
   ngOnInit(): void {
@@ -63,87 +52,136 @@ export class NouveauCmdFrsComponent implements OnInit {
 
   findAllFournisseurs(): void {
     this.cltFrsService.findAllFournisseurs()
-      .subscribe((fournisseurs: any[]) => {
-        this.listFournisseurs = fournisseurs;
+      .subscribe({
+        next: (fournisseurs: FournisseurDto[]) => {
+          this.listFournisseurs = fournisseurs;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des fournisseurs:', error);
+          this.errorMsg.push('Erreur lors du chargement des fournisseurs');
+        }
       });
   }
 
   findAllArticles(): void {
-    // Simulation de données pour le développement
-    this.listArticle = [
-      { id: 1, codeArticle: 'ART001', designation: 'Article 1', prixUnitaireTtc: 10.00 },
-      { id: 2, codeArticle: 'ART002', designation: 'Article 2', prixUnitaireTtc: 15.00 },
-      { id: 3, codeArticle: 'ART003', designation: 'Article 3', prixUnitaireTtc: 20.00 }
-    ];
+    this.articleService.findAllArticles()
+      .subscribe({
+        next: (articles: ArticleDto[]) => {
+          this.listArticle = articles;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des articles:', error);
+          this.errorMsg.push('Erreur lors du chargement des articles');
+        }
+      });
   }
 
   filtrerArticle(): void {
     if (this.codeArticle.length === 0) {
       this.findAllArticles();
+    } else {
+      this.listArticle = this.listArticle
+        .filter(art => art.codeArticle?.includes(this.codeArticle) || art.designation?.includes(this.codeArticle));
     }
-    this.listArticle = this.listArticle
-      .filter(art => art.codeArticle?.includes(this.codeArticle) || art.designation?.includes(this.codeArticle));
   }
 
   ajouterLigneCommande(): void {
     this.checkLigneCommande();
-    this.calculerTotalCommande();
+    if (this.errorMsg.length === 0) {
+      this.calculerTotalCommande();
+      this.searchedArticle = {};
+      this.quantite = '';
+      this.codeArticle = '';
+      this.articleNotYetSelected = false;
+      this.findAllArticles();
+    }
+  }
 
-    this.searchedArticle = {};
-    this.quantite = '';
-    this.codeArticle = '';
-    this.articleNotYetSelected = false;
-    this.findAllArticles();
+  checkLigneCommande(): void {
+    this.errorMsg = [];
+    
+    if (!this.searchedArticle.id) {
+      this.errorMsg.push('Veuillez sélectionner un article');
+    }
+    
+    if (!this.quantite || +this.quantite <= 0) {
+      this.errorMsg.push('Veuillez saisir une quantité valide');
+    }
+    
+    if (this.lignesCommande.some(ligne => ligne.article?.id === this.searchedArticle.id)) {
+      this.errorMsg.push('Cet article est déjà dans la commande');
+    }
   }
 
   calculerTotalCommande(): void {
     this.totalCommande = 0;
-    this.lignesCommande.forEach(ligne => {
+    this.lignesCommande.forEach((ligne: LigneCommandeFournisseurDto) => {
       if (ligne.prixUnitaire && ligne.quantite) {
-        this.totalCommande += +ligne.prixUnitaire * +ligne.quantite;
+        this.totalCommande += +ligne.quantite * +ligne.prixUnitaire;
       }
     });
   }
 
-  private checkLigneCommande(): void {
-    const ligneCmdAlreadyExists = this.lignesCommande.find(lig => lig.article?.codeArticle === this.searchedArticle.codeArticle);
-    if (ligneCmdAlreadyExists) {
-      this.lignesCommande.forEach(lig => {
-        if (lig && lig.article?.codeArticle === this.searchedArticle.codeArticle) {
-          // @ts-ignore
-          lig.quantite = lig.quantite + +this.quantite;
-        }
-      });
-    } else {
-      const ligneCmd: LigneCommandeFournisseurDto = {
-        article: this.searchedArticle,
-        prixUnitaire: this.searchedArticle.prixUnitaireTtc,
-        quantite: +this.quantite
+  enregistrerCommande(): void {
+    if (this.validateCommande()) {
+      this.isLoading = true;
+      
+      const commande: CommandeFournisseurDto = {
+        code: this.codeCommande,
+        dateCommande: new Date().toISOString(),
+        fournisseur: this.selectedFournisseur,
+        etatCommande: CommandeFournisseurDtoEtatCommandeEnum.enPreparation,
+        ligneCommandeFournisseurs: this.lignesCommande
       };
-      this.lignesCommande.push(ligneCmd);
+
+      this.cmdCltFrsService.saveCommandeFournisseur(commande)
+        .subscribe({
+          next: (commandeSauvegardee) => {
+            this.successMsg = 'Commande fournisseur enregistrée avec succès !';
+            this.isLoading = false;
+            setTimeout(() => {
+              this.router.navigate(['dashboard', 'commandesfournisseurs']);
+            }, 2000);
+          },
+          error: (error) => {
+            console.error('Erreur lors de l\'enregistrement:', error);
+            this.errorMsg.push('Erreur lors de l\'enregistrement de la commande fournisseur');
+            this.isLoading = false;
+          }
+        });
     }
+  }
+
+  validateCommande(): boolean {
+    this.errorMsg = [];
+    
+    if (!this.selectedFournisseur.id) {
+      this.errorMsg.push('Veuillez sélectionner un fournisseur');
+    }
+    
+    if (!this.codeCommande) {
+      this.errorMsg.push('Veuillez saisir un code de commande');
+    }
+    
+    if (this.lignesCommande.length === 0) {
+      this.errorMsg.push('Veuillez ajouter au moins une ligne de commande');
+    }
+    
+    return this.errorMsg.length === 0;
+  }
+
+  annuler(): void {
+    this.router.navigate(['dashboard', 'commandesfournisseurs']);
+  }
+
+  supprimerLigne(index: number): void {
+    this.lignesCommande.splice(index, 1);
+    this.calculerTotalCommande();
   }
 
   selectArticleClick(article: ArticleDto): void {
     this.searchedArticle = article;
-    this.codeArticle = article.codeArticle ? article.codeArticle : '';
+    this.codeArticle = article.codeArticle || '';
     this.articleNotYetSelected = true;
-  }
-
-  enregistrerCommande(): void {
-    const commande = this.preparerCommande();
-    // Simulation de sauvegarde pour le développement
-    console.log('Commande fournisseur à sauvegarder:', commande);
-    this.router.navigate(['commandesfournisseur']);
-  }
-
-  private preparerCommande(): CommandeFournisseurDto {
-    return {
-      fournisseur: this.selectedFournisseur,
-      code: this.codeCommande,
-      dateCommande: new Date().getTime(),
-      etatCommande: 'EN_PREPARATION',
-      ligneCommandeFournisseurs: this.lignesCommande
-    };
   }
 }

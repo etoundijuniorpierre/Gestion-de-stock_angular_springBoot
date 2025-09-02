@@ -93,7 +93,7 @@
                   <strong>Prix:</strong> {{ ligne.prixUnitaire }}
                 </div>
                 <div class="col-md-2">
-                  <strong>Total:</strong> {{ ligne.prixUnitaire * ligne.quantite }}
+                  <strong>Total:</strong> {{ (ligne.prixUnitaire || 0) * (ligne.quantite || 0) }}
                 </div>
               </div>
             </div>

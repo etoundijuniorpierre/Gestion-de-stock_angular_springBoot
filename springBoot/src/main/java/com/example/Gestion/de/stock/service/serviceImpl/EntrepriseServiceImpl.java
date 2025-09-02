@@ -2,6 +2,7 @@ package com.example.Gestion.de.stock.service.serviceImpl;
 
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +72,7 @@ public class EntrepriseServiceImpl implements EntrepriseService {
         .email(dto.getEmail())
         .motDePasse(generateRandomPassword())
         .entreprise(dto)
-        .dateDeNaissance(Instant.now())
+        .dateDeNaissance(LocalDate.now())
         .photo(dto.getPhoto())
         .build();
   }

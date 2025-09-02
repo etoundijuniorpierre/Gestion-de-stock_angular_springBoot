@@ -5,25 +5,28 @@
     </div>
     <div class="col-md-4 text-right">
       <app-button-action (clickEvent)="nouvelArticle()"></app-button-action>
-
     </div>
-    <!-- <div class="alert alert-danger" *ngIf="errorMsg">
-        {{ errorMsg }}
-      </div> -->
+    <div class="alert alert-danger" *ngIf="errorMsg">
+      {{ errorMsg }}
+    </div>
   </div>
 
-  
-  <div class="col m-3">
-    <app-detail-article></app-detail-article>
-    <app-detail-article></app-detail-article>
-    <app-detail-article></app-detail-article>
-    <app-detail-article></app-detail-article>
-    <app-detail-article></app-detail-article>
+  <div class="col m-3" *ngIf="listArticles.length">
+    <app-detail-article 
+      *ngFor="let article of listArticles"
+      [article]="article">
+    </app-detail-article>
   </div>
-  <div class="row mb-3">
+  
+  <div class="col m-3" *ngIf="!listArticles.length && !errorMsg">
+    <div class="alert alert-info">
+      Aucun article trouvé. Créez votre premier article !
+    </div>
+  </div>
+
+  <div class="row mb-3" *ngIf="listArticles.length">
     <div class=" col-md-12 text-center">
       <app-pagination></app-pagination>
     </div>
   </div>
-
 </div>

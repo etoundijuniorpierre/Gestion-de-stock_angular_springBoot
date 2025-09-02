@@ -20,12 +20,12 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
-                  <strong>État:</strong> {{ cmd.etatCommande }}<br>
-                  <strong>Total:</strong> {{ cmd.totalPrix }}€
+                  <strong>État:</strong> {{ cmd.etatCommande || 'N/A' }}<br>
+                  <strong>Total:</strong> {{ cmd.id ? calculerTotalCommande(cmd.id) : 0 }}€
                 </div>
                 <div class="col-md-6">
                   <strong>Client:</strong><br>
-                  {{ cmd.client?.nom }} {{ cmd.client?.prenom }}
+                  {{ cmd.client?.nom || 'N/A' }} {{ cmd.client?.prenom || 'N/A' }}
                 </div>
               </div>
               

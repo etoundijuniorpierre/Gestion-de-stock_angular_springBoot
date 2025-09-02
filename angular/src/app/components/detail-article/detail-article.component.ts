@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ArticleDto } from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-detail-article',
@@ -9,9 +10,9 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class DetailArticleComponent {
+  @Input() article: ArticleDto = {};
 
   confirmerEtSupprimerArticle() {
     console.log('Article supprimé');
   }
-
 } 

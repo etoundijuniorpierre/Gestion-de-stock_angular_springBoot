@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FournisseurDto, AdresseDto } from '../../api/interfaces/client.interface';
+import { FournisseurDto, AdresseDto } from '../../../gs-api/src/model/models';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { PhotosService } from '../../services/photos.service';
 
@@ -40,14 +40,14 @@ export class NouveauFournisseurComponent implements OnInit {
       this.cltFrsService.findFournisseurById(id)
         .subscribe((fournisseur: FournisseurDto) => {
           this.fournisseur = fournisseur;
-          this.adresseDto = fournisseur['adresse'] || {};
+          this.adresseDto = fournisseur.adresse || {};
         });
     }
   }
 
   enregistrer(): void {
     // Validation des champs obligatoires
-    if (!this.fournisseur.nom || !this.fournisseur.prenom || !this.fournisseur.email) {
+    if (!this.fournisseur.nom || !this.fournisseur.prenom || !this.fournisseur.mail) {
       this.errorMsg = ['Les champs nom, prénom et email sont obligatoires'];
       return;
     }
@@ -56,18 +56,14 @@ export class NouveauFournisseurComponent implements OnInit {
     this.fournisseur.adresse = this.adresseDto;
 
     if (this.isEditMode) {
-      // Mode édition
-      this.cltFrsService.updateFournisseur(this.fournisseur['id']!, this.fournisseur)
-        .subscribe((fournisseur: FournisseurDto) => {
-          this.savePhoto(fournisseur['id'], fournisseur['nom']);
-        }, (error: any) => {
-          this.errorMsg = error.error?.errors || ['Erreur lors de la mise à jour'];
-        });
+      // Mode édition - Méthode non implémentée dans l'API
+      this.errorMsg = ['La fonctionnalité de modification n\'est pas encore disponible. Veuillez créer un nouveau fournisseur.'];
+      return;
     } else {
       // Mode création
       this.cltFrsService.saveFournisseur(this.fournisseur)
         .subscribe((fournisseur: FournisseurDto) => {
-          this.savePhoto(fournisseur['id'], fournisseur['nom']);
+          this.savePhoto(fournisseur.id, fournisseur.nom);
         }, (error: any) => {
           this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde'];
         });
@@ -75,7 +71,7 @@ export class NouveauFournisseurComponent implements OnInit {
   }
 
   cancelClick(): void {
-    this.router.navigate(['fournisseurs']);
+    this.router.navigate(['dashboard', 'fournisseurs']);
   }
 
   onFileInput(files: FileList | null): void {
@@ -101,12 +97,18 @@ export class NouveauFournisseurComponent implements OnInit {
         title: titre,
         context: 'fournisseur'
       };
-      this.photoService.savePhoto(params)
-        .subscribe((res: any) => {
-          this.cancelClick();
-        });
+
+      this.photoService.savePhoto(params).subscribe({
+        next: () => {
+          this.router.navigate(['dashboard', 'fournisseurs']);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la sauvegarde de la photo:', error);
+          this.router.navigate(['dashboard', 'fournisseurs']);
+        }
+      });
     } else {
-      this.cancelClick();
+      this.router.navigate(['dashboard', 'fournisseurs']);
     }
   }
 }

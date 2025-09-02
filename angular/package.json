@@ -4,10 +4,15 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:local": "npm run gs-api && ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Gestion-de-stock": "node dist/gestion-de-stock/server/server.mjs"
+    "serve:ssr:Gestion-de-stock": "node dist/gestion-de-stock/server/server.mjs",
+    "gs-api": "npm run gs-api:create-dist && npm run gs-api:copy-files && npm run gs-api:swagger-gen",
+    "gs-api:create-dist": "if not exist tools\\swagger\\dist mkdir tools\\swagger\\dist && if not exist tools\\swagger\\src mkdir tools\\swagger\\src",
+    "gs-api:copy-files": "copy import_api\\GestionDeStock-0.0.1-SNAPSHOT.jar tools\\swagger\\dist\\ && copy import_api\\swagger.json tools\\swagger\\src\\",
+    "gs-api:swagger-gen": "npx @openapitools/openapi-generator-cli generate -i ./tools/swagger/src/swagger.json -g typescript-angular -o src/gs-api/src --skip-validate-spec --additional-properties=ngVersion=19.2.0,serviceSuffix=Service,modelPropertyNaming=camelCase,stringEnums=true,enumPropertyNaming=camelCase"
   },
   "private": true,
   "dependencies": {
@@ -41,7 +46,8 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "typescript": "~5.7.2"
   }
 }

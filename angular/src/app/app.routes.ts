@@ -5,6 +5,7 @@ import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.co
 import { ArticleComponent } from './pages/page-articles/article/article.component';
 import { NouvelArticleComponent } from './pages/page-articles/nouvel-article/nouvel-article.component';
 import { PageCategoriesComponent } from './pages/categories/page-categories/page-categories.component';
+import { NouvelleCategorieComponent } from './pages/categories/nouvelle-categorie/nouvelle-categorie.component';
 import { PageStatistiquesComponent } from './pages/page-statistiques/page-statistiques.component';
 import { PageClientsComponent } from './pages/page-clients/page-clients.component';
 import { PageFournisseursComponent } from './pages/page-fournisseurs/page-fournisseurs.component';
@@ -17,6 +18,7 @@ import { NouveauCmdFrsComponent } from './components/nouveau-cmd-frs/nouveau-cmd
 import { MouvementsStocksComponent } from './pages/mouvements-stocks/mouvements-stocks.component';
 import { PageVueEnsembleComponent } from './pages/page-vue-ensemble/page-vue-ensemble.component';
 import { PageUtilisateurComponent } from './pages/utilisateur/page-utilisateur/page-utilisateur.component';
+import { NouvelUtilisateurComponent } from './pages/utilisateur/nouvel-utilisateur/nouvel-utilisateur.component';
 import { ApplicationGuardService } from './services/guard/application-guard.service';
 
 export const routes: Routes = [
@@ -35,6 +37,8 @@ export const routes: Routes = [
       { path: 'articles', component: ArticleComponent, title: 'Articles' },
       { path: 'nouvel-article', component: NouvelArticleComponent, title: 'Nouvel Article' },
       { path: 'categories', component: PageCategoriesComponent, title: 'Catégories' },
+      { path: 'nouvellecategorie', component: NouvelleCategorieComponent, title: 'Nouvelle Catégorie' },
+      { path: 'nouvellecategorie/:id', component: NouvelleCategorieComponent, title: 'Modifier Catégorie' },
       { path: 'mouvementsStock', component: MouvementsStocksComponent, title: 'MouvementsStock' },
       { path: 'clients', component: PageClientsComponent, title: 'Clients' },
       { path: 'nouveauclient', component: NouveauClientComponent, title: 'Nouveau Client' },
@@ -49,7 +53,7 @@ export const routes: Routes = [
       { path: 'commandesfournisseur', component: PageCommandesFournisseursComponent, title: 'CommandesFournisseur' },
       { path: 'nouvellecommandefrs', component: NouveauCmdFrsComponent, title: 'Nouvelle Commande Fournisseur' },
       { path: 'utilisateurs', component: PageUtilisateurComponent, title: 'Utilisateurs' },
-      { path: 'nouvelutilisateur', component: PageUtilisateurComponent, title: 'Nouvel Utilisateur' },
+      { path: 'nouvelutilisateur', component: NouvelUtilisateurComponent, title: 'Nouvel Utilisateur' },
       { path: 'vueDensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' }
     ]
   }

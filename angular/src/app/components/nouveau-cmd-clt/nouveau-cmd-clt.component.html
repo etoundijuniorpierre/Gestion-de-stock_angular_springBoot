@@ -8,6 +8,9 @@
           <span> {{ msg }}</span>
         </div>
       </div>
+      <div class="alert alert-success" *ngIf="successMsg">
+        <span>{{ successMsg }}</span>
+      </div>
       <div class="row p-3 custom-border">
         <div class="col-md-5 custom-border-right">
           <form>
@@ -93,7 +96,7 @@
                   <strong>Prix:</strong> {{ ligne.prixUnitaire }}
                 </div>
                 <div class="col-md-2">
-                  <strong>Total:</strong> {{ ligne.prixUnitaire * ligne.quantite }}
+                  <strong>Total:</strong> {{ (ligne.prixUnitaire || 0) * (ligne.quantite || 0) }}
                 </div>
               </div>
             </div>
@@ -107,13 +110,14 @@
       </div>
     </div>
     <div class="col-md-12 text-right mt-2">
-      <button class="btn btn-danger mr-3">
+      <button class="btn btn-danger mr-3" (click)="annuler()" [disabled]="isLoading">
         <i class="fas fa-ban"></i>&nbsp;
         Annuler
       </button>
-      <button class="btn btn-primary" (click)="enregistrerCommande()">
+      <button class="btn btn-primary" (click)="enregistrerCommande()" [disabled]="isLoading">
         <i class="fas fa-save"></i>&nbsp;
-        Enregistrer
+        <span *ngIf="!isLoading">Enregistrer</span>
+        <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin me-2"></i>Enregistrement...</span>
       </button>
     </div>
   

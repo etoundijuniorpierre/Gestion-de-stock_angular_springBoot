@@ -45,10 +45,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
       throw new InvalidEntityException("L'utilisateur n'est pas valide", ErrorCodes.UTILISATEUR_NOT_VALID, errors);
     }
 
-    if(userAlreadyExists(dto.getEmail())) {
-      throw new InvalidEntityException("Un autre utilisateur avec le meme email existe deja", ErrorCodes.UTILISATEUR_ALREADY_EXISTS,
-          Collections.singletonList("Un autre utilisateur avec le meme email existe deja dans la BDD"));
-    }
+//    if(userAlreadyExists(dto.getEmail())) {
+//      throw new InvalidEntityException("Un autre utilisateur avec le meme email existe deja", ErrorCodes.UTILISATEUR_ALREADY_EXISTS,
+//          Collections.singletonList("Un autre utilisateur avec le meme email existe deja dans la BDD"));
+//    }
 
 
     dto.setMotDePasse(passwordEncoder.encode(dto.getMotDePasse()));
@@ -60,10 +60,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     );
   }
 
-  private boolean userAlreadyExists(String email) {
-    Optional<Utilisateur> user = utilisateurRepository.findByEmail(email);
-    return user.isPresent();
-  }
+//  private boolean userAlreadyExists(String email) {
+//    Optional<Utilisateur> user = utilisateurRepository.findByEmail(email);
+//    return user.isPresent();
+//  }
 
   @Override
   public UtilisateurDto findById(Integer id) {

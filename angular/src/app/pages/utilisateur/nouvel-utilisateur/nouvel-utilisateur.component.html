@@ -1,66 +1,75 @@
 <div class="col mb-3">
     <div class="col-md-12 mb-3">
-      <img src="assets/product.png" class="rounded-circle" width="200px" height="200px" />
+      <h2><i class="fas fa-user-plus blue-color"></i>&nbsp;{{ isEditMode ? 'Modifier' : 'Nouvel' }} Utilisateur</h2>
     </div>
+    
+    <!-- Messages d'erreur et de succès -->
+    <div class="alert alert-danger" *ngIf="errorMsg">
+      <span>{{ errorMsg }}</span>
+    </div>
+    <div class="alert alert-success" *ngIf="successMsg">
+      <span>{{ successMsg }}</span>
+    </div>
+    
     <hr>
     <div class="col-md-12">
       <div class="col-md-12 mb-3">
-        <h2><i class="fas fa-info-circle blue-color"></i>&nbsp;Information de l'utilisateur</h2>
+        <h3><i class="fas fa-info-circle blue-color"></i>&nbsp;Informations de l'utilisateur</h3>
       </div>
       <div class="col-md-12">
-        <form>
+        <form (ngSubmit)="save()">
           <div class="row mb-3">
             <div class="col">
-              <input type="text" class="form-control" placeholder="Nom">
+              <label for="nom" class="form-label">Nom *</label>
+              <input type="text" class="form-control" id="nom" placeholder="Nom" 
+                     [(ngModel)]="utilisateur.nom" name="nom" required>
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Adresse 1">
+              <label for="prenom" class="form-label">Prénom *</label>
+              <input type="text" class="form-control" id="prenom" placeholder="Prénom" 
+                     [(ngModel)]="utilisateur.prenom" name="prenom" required>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <input type="text" class="form-control" placeholder="Prenom">
+              <label for="email" class="form-label">E-mail *</label>
+              <input type="email" class="form-control" id="email" placeholder="E-mail" 
+                     [(ngModel)]="utilisateur.email" name="email" required>
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Adresse 2">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col">
-              <input type="text" class="form-control" placeholder="E-mail">
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" placeholder="Ville">
+              <label for="telephone" class="form-label">Téléphone</label>
+              <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" 
+                     [(ngModel)]="telephone" name="telephone">
             </div>
           </div>
           <div class="row mb-3">
             <div class="col">
-              <input type="text" class="form-control" placeholder="Telephone">
+              <label for="dateNaissance" class="form-label">Date de naissance</label>
+              <input type="date" class="form-control" id="dateNaissance" 
+                     [(ngModel)]="utilisateur.dateDeNaissance" name="dateNaissance">
             </div>
             <div class="col">
-              <input type="text" class="form-control" placeholder="Code postal">
+              <label for="photo" class="form-label">Photo</label>
+              <input type="text" class="form-control" id="photo" placeholder="URL de la photo" 
+                     [(ngModel)]="utilisateur.photo" name="photo">
             </div>
           </div>
+          
+          <!-- Boutons d'action -->
           <div class="row mb-3">
-            <div class="col">
-              &nbsp;
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" placeholder="Pays">
+            <div class="col-md-12 text-right">
+              <button type="button" class="btn btn-danger mr-3" (click)="cancel()" [disabled]="isLoading">
+                <i class="fas fa-ban"></i>&nbsp;
+                Annuler
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                <i class="fas fa-save"></i>&nbsp;
+                <span *ngIf="!isLoading">{{ isEditMode ? 'Modifier' : 'Enregistrer' }}</span>
+                <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin me-2"></i>{{ isEditMode ? 'Modification...' : 'Enregistrement...' }}</span>
+              </button>
             </div>
           </div>
         </form>
       </div>
     </div>
-    <div class="col-md-12 text-right">
-      <button class="btn btn-danger mr-3" (click)="cancel()">
-        <i class="fas fa-ban"></i>&nbsp;
-        Annuler
-      </button>
-      <button class="btn btn-primary" >
-        <i class="fas fa-save"></i>&nbsp;
-        Enregitrer
-      </button>
-    </div>
-  
   </div>

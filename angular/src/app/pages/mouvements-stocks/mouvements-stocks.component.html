@@ -10,6 +10,29 @@
       ></app-button-action>
     </div>
   </div>
+  <!-- Sélection d'article -->
+  <div class="row m-3">
+    <div class="col-md-6">
+      <label for="articleSelect" class="form-label">Sélectionner un article</label>
+      <select class="form-control" id="articleSelect" (change)="onArticleSelect($any($event.target).selectedOptions[0]._value)">
+        <option value="">-- Choisir un article --</option>
+        <option *ngFor="let article of articles" [value]="article">
+          {{ article.codeArticle }} - {{ article.designation }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-6" *ngIf="selectedArticle">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Stock actuel</h6>
+          <p class="card-text">
+            <strong>Article:</strong> {{ selectedArticle.designation }}<br>
+            <strong>Stock réel:</strong> <span class="badge bg-primary">{{ stockReel }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col">
     <div class="accordion" id="mvtStkDetails">
       <div class="card">
@@ -18,49 +41,31 @@
                   (click)="toggleCollapseOne()" 
                   [attr.aria-expanded]="getAriaExpandedOne()" 
                   aria-controls="collapseOne">
-            <app-detail-mvt-stk-article></app-detail-mvt-stk-article>
+            <app-detail-mvt-stk-article 
+              *ngIf="selectedArticle"
+              [article]="selectedArticle" 
+              [stockActuel]="stockReel">
+            </app-detail-mvt-stk-article>
           </button>
         </div>
         <div [id]="'collapseOne'" 
              [class]="getCollapseOneClass()" 
              aria-labelledby="headingOne" 
              data-parent="#mvtStkDetails" 
-             style="max-height: 300px; overflow-y: scroll;
-            ">
-          <div class="card-body">
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-          </div>
-        </div>
-      </div>
-      <!-- +++++++++++++ -->
-      <div class="card">
-        <div class="card-body" id="headingTwo">
-          <button class="btn btn-block text-left" type="button" 
-                  (click)="toggleCollapseTwo()" 
-                  [attr.aria-expanded]="getAriaExpandedTwo()" 
-                  aria-controls="collapseTwo">
-            <app-detail-mvt-stk-article></app-detail-mvt-stk-article>
-          </button>
-        </div>
-        <div [id]="'collapseTwo'" 
-             [class]="getCollapseTwoClass()" 
-             aria-labelledby="headingTwo" 
-             data-parent="#mvtStkDetails" 
              style="max-height: 300px; overflow-y: scroll;">
           <div class="card-body">
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
-            <app-detail-mvt-stk></app-detail-mvt-stk>
+            <div *ngIf="isLoading" class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Chargement...</span>
+              </div>
+            </div>
+            <div *ngIf="!isLoading && mouvementsStock.length === 0" class="text-center">
+              <p>Aucun mouvement de stock trouvé pour cet article.</p>
+            </div>
+            <app-detail-mvt-stk 
+              *ngFor="let mouvement of mouvementsStock" 
+              [mouvement]="mouvement">
+            </app-detail-mvt-stk>
           </div>
         </div>
       </div>
@@ -71,5 +76,4 @@
       <app-pagination></app-pagination>
     </div>
   </div>
-
 </div>

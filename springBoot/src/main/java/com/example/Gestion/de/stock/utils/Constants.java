@@ -2,7 +2,7 @@ package com.example.Gestion.de.stock.utils;
 
 public interface Constants {
 
-    public static String APP_ROOT = "gestionDeStock";
+    public static String APP_ROOT = "api/gestionDeStock";
 
     String COMMANDE_FOURNISSEUR_ENDPOINT = APP_ROOT + "/commandesfournisseurs";
     String CREATE_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/create";

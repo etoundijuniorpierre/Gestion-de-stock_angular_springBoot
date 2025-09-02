@@ -6,12 +6,10 @@ import { ButtonActionComponent } from '../../components/button-action/button-act
 import { DetailCmdFrsComponent } from '../../components/detail-cmd-frs/detail-cmd-frs.component';
 import { DetailCmdComponent } from '../../components/detail-cmd/detail-cmd.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
-
-// Interfaces simplifiées pour le développement
-interface LigneCommandeFournisseurDto {
-  prixUnitaire?: number;
-  quantite?: number;
-}
+import { 
+  CommandeFournisseurDto, 
+  LigneCommandeFournisseurDto
+} from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-page-commandes-fournisseurs',
@@ -28,9 +26,11 @@ interface LigneCommandeFournisseurDto {
 })
 export class PageCommandesFournisseursComponent implements OnInit {
 
-  listeCommandes: Array<any> = [];
-  mapLignesCommande = new Map();
-  mapPrixTotalCommande = new Map();
+  listeCommandes: Array<CommandeFournisseurDto> = [];
+  mapLignesCommande = new Map<number, LigneCommandeFournisseurDto[]>();
+  mapPrixTotalCommande = new Map<number, number>();
+  isLoading = false;
+  errorMsg = '';
 
   constructor(
     private router: Router,
@@ -43,16 +43,27 @@ export class PageCommandesFournisseursComponent implements OnInit {
   }
 
   findAllCommandes(): void {
+    this.isLoading = true;
     this.cmdCltFrsService.findAllCommandesFournisseur()
-      .subscribe((cmd: any[]) => {
-        this.listeCommandes = cmd;
-        this.findAllLignesCommande();
+      .subscribe({
+        next: (cmd: CommandeFournisseurDto[]) => {
+          this.listeCommandes = cmd;
+          this.findAllLignesCommande();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des commandes fournisseurs:', error);
+          this.errorMsg = 'Erreur lors de la récupération des commandes fournisseurs';
+          this.isLoading = false;
+        }
       });
   }
 
   findAllLignesCommande(): void {
-    this.listeCommandes.forEach(cmd => {
-      this.findLignesCommande(cmd.id);
+    this.listeCommandes.forEach((cmd: CommandeFournisseurDto) => {
+      if (cmd.id) {
+        this.findLignesCommande(cmd.id);
+      }
     });
   }
 
@@ -61,16 +72,28 @@ export class PageCommandesFournisseursComponent implements OnInit {
   }
 
   findLignesCommande(idCommande?: number): void {
+    if (!idCommande) return;
+    
     this.cmdCltFrsService.findAllLigneCommandesFournisseur(idCommande)
-      .subscribe((list: any[]) => {
-        this.mapLignesCommande.set(idCommande, list);
-        this.mapPrixTotalCommande.set(idCommande, this.calculerTatalCmd(list));
+      .subscribe({
+        next: (list: LigneCommandeFournisseurDto[]) => {
+          console.log(`🔍 Lignes de commande fournisseur ${idCommande} reçues de l'API:`, list);
+          this.mapLignesCommande.set(idCommande, list);
+          const total = this.calculerTotalCmd(list);
+          console.log(`🔍 Total calculé pour la commande ${idCommande}:`, total);
+          this.mapPrixTotalCommande.set(idCommande, total);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des lignes de commande fournisseur:', error);
+          this.mapLignesCommande.set(idCommande, []);
+          this.mapPrixTotalCommande.set(idCommande, 0);
+        }
       });
   }
 
-  calculerTatalCmd(list: Array<LigneCommandeFournisseurDto>): number {
+  calculerTotalCmd(list: Array<LigneCommandeFournisseurDto>): number {
     let total = 0;
-    list.forEach(ligne => {
+    list.forEach((ligne: LigneCommandeFournisseurDto) => {
       if (ligne.prixUnitaire && ligne.quantite) {
         total += +ligne.quantite * +ligne.prixUnitaire;
       }
@@ -79,6 +102,10 @@ export class PageCommandesFournisseursComponent implements OnInit {
   }
 
   calculerTotalCommande(id?: number): number {
-    return this.mapPrixTotalCommande.get(id);
+    return this.mapPrixTotalCommande.get(id!) || 0;
+  }
+
+  getLignesCommande(id?: number): LigneCommandeFournisseurDto[] {
+    return this.mapLignesCommande.get(id!) || [];
   }
 }

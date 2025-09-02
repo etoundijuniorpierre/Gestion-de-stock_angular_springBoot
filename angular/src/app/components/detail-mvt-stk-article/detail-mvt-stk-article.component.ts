@@ -1,6 +1,8 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, Input, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ArticleDto } from '../../../gs-api/src/model/models';
+import { MouvementStockService } from '../../services/mouvement-stock/mouvement-stock.service';
 
 @Component({
   selector: 'app-detail-mvt-stk-article',
@@ -10,6 +12,9 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class DetailMvtStkArticleComponent {
+  @Input() article: ArticleDto = {};
+  @Input() stockActuel: number = 0;
+
   // Form data for stock correction
   correctionData = {
     quantity: '',
@@ -18,6 +23,8 @@ export class DetailMvtStkArticleComponent {
 
   // Modal state
   isModalOpen = false;
+
+  constructor(private mouvementStockService: MouvementStockService) {}
 
   // Prevent body scroll when modal is open
   @HostListener('document:keydown.escape', ['$event'])

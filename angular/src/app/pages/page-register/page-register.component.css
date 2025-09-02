@@ -1,153 +1,154 @@
+/* Styles modernes pour le composant d'inscription */
+
+/* Animation d'entrée pour la carte */
 .card {
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideInUp 0.6s ease-out;
+  transition: all 0.3s ease;
 }
 
-.card-body {
-  border-radius: 15px;
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
 }
 
-.form-outline {
-  position: relative;
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+/* Style des champs de formulaire */
 .form-control {
-  border-radius: 8px;
-  border: 2px solid #e0e0e0;
   transition: all 0.3s ease;
+  border-radius: 12px !important;
+  padding: 12px 16px;
+  font-size: 14px;
 }
+
 .form-control:focus {
-  border-color: #3b71ca;
-  box-shadow: 0 0 0 0.2rem rgba(59, 113, 202, 0.25);
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+  border-color: #0d6efd;
+  transform: translateY(-1px);
 }
 
+.form-control::placeholder {
+  color: #adb5bd;
+  font-size: 13px;
+}
+
+/* Style des labels */
 .form-label {
-  color: #6c757d;
-  font-weight: 500;
-  margin-bottom: -10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
 }
 
-.d-flex.justify-content-between.gap-3 {
-  align-items: stretch;
-}
-.d-flex.justify-content-between.gap-3 .btn {
-  flex: 1;
-  margin: 0;
-  height: auto;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
-
+/* Style du bouton principal */
 .btn-primary {
-  background: linear-gradient(45deg, #3b71ca, #4e73df);
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
   border: none;
-  border-radius: 8px;
+  padding: 14px 24px;
   font-weight: 600;
-  padding: 12px 16px;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
 }
+
 .btn-primary:hover {
+  background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 113, 202, 0.4);
+  box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3);
 }
 
-.btn-outline-secondary {
-  border: 2px solid #6c757d;
-  color: #6c757d;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px 16px;
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Style de l'alerte d'erreur */
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  border: none;
+  border-radius: 12px;
+}
+
+/* Style du header de la carte */
+.card-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%) !important;
+  border: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .col-lg-4 {
+    width: 100%;
+  }
+  
+  .card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .form-control {
+    font-size: 16px; /* Évite le zoom sur iOS */
+  }
+}
+
+/* Animation pour les messages d'erreur */
+.alert {
+  animation: fadeInDown 0.4s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Style pour les icônes */
+.fas {
   transition: all 0.3s ease;
 }
-.btn-outline-secondary:hover {
-  background: linear-gradient(45deg, #6c757d, #5a6268);
-  border-color: #6c757d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
-  color: white;
-}
 
-.form-check-input:checked {
-  background-color: #3b71ca;
-  border-color: #3b71ca;
-}
-
-.form-outline .form-control:not(:-moz-placeholder-shown) ~ .form-label {
-  transform: translateY(-1.5rem) scale(0.85);
-  color: #3b71ca;
-}
-
-.form-outline .form-control:focus ~ .form-label,
-.form-outline .form-control:not(:placeholder-shown) ~ .form-label {
-  transform: translateY(-1.5rem) scale(0.85);
-  color: #3b71ca;
-}
-
-.input-group-text {
-  background-color: #f8f9fa;
-  border: 2px solid #e0e0e0;
-  border-right: none;
-  color: #6c757d;
-  transition: all 0.3s ease;
-}
-
-.input-group .form-control {
-  border-left: none;
-}
-.input-group .form-control:focus + .input-group-text, .input-group .form-control:focus ~ .input-group-text {
-  border-color: #3b71ca;
-  color: #3b71ca;
-}
-
-a {
-  color: #3b71ca;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: #2c5aa0;
-}
-
-.fa-user-plus {
-  transition: transform 0.3s ease;
-}
-
-.btn:hover .fa-user-plus {
+.btn:hover .fas {
   transform: scale(1.1);
 }
 
-.fa-arrow-left {
-  transition: transform 0.3s ease;
+/* Effet de focus amélioré pour l'accessibilité */
+.form-control:focus-visible {
+  outline: none;
 }
 
-.btn:hover .fa-arrow-left {
+/* Style pour le lien de connexion */
+a[routerLink] {
+  transition: all 0.3s ease;
+}
+
+a[routerLink]:hover {
+  color: #0d6efd !important;
   transform: translateX(-3px);
 }
 
-@media (max-width: 768px) {
-  .col-md-6, .col-md-4 {
-    margin-bottom: 1rem;
-  }
-  .d-flex.justify-content-between.gap-3 {
-    flex-direction: column;
-    gap: 1rem !important;
-  }
-  .d-flex.justify-content-between.gap-3 .btn {
-    width: 100%;
-  }
-}
-.text-muted {
-  font-size: 0.9rem;
-  margin-bottom: 2rem;
+/* Animation pour le bouton de soumission */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.form-check {
-  margin-bottom: 2rem;
+/* Style pour les champs optionnels */
+.form-control[placeholder*="optionnel"] {
+  opacity: 0.8;
 }
-.form-check .form-check-label {
-  font-size: 0.9rem;
-  color: #6c757d;
-}/*# sourceMappingURL=page-register.component.css.map */
+
+.form-control[placeholder*="optionnel"]:focus {
+  opacity: 1;
+}

@@ -1,1 +1,42 @@
-<p>detail-cmd works!</p>
+<div class="row mb-1 mr-0 custom-border detail-cmd">
+  <div class="col-md-1 custom-border-right p-1 text-center mb-1 mt-1">
+    <img [src]="ligneCommande.article?.photo || '../../../assets/product.png'" width="50px" height="50px" [alt]="ligneCommande.article?.designation">
+  </div>
+
+  <!--  Details article -->
+  <div class="col-md-5 custom-border-right mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
+        <div class="col-md-11">{{ ligneCommande.article?.codeArticle || 'N/A' }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
+        <div class="col-md-11">{{ ligneCommande.article?.designation || 'N/A' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!--  details quantite et prix -->
+  <div class="col-md-3 custom-border-right mb-1 mt-1">
+    <div class="col">
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-calculator blue-color"></i></div>
+        <div class="col-md-11">Qté: {{ ligneCommande.quantite || 0 }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"><i class="fas fa-dollar-sign blue-color"></i></div>
+        <div class="col-md-11">Prix: {{ ligneCommande.prixUnitaire || 0 }}€</div>
+      </div>
+    </div>
+  </div>
+
+  <!--  total -->
+  <div class="col-md-3 mb-1 mt-1">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h5>Total: {{ calculerTotal() | number:'1.2-2' }}€</h5>
+      </div>
+    </div>
+  </div>
+</div>

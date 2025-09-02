@@ -1,14 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Interface simplifiée pour le développement
-interface LigneCommandeDto {
-  article?: {
-    designation?: string;
-  };
-  quantite?: number;
-  prixUnitaire?: number;
-}
+import { LigneCommandeFournisseurDto } from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-detail-cmd',
@@ -18,7 +10,7 @@ interface LigneCommandeDto {
   imports: [CommonModule]
 })
 export class DetailCmdComponent {
-  @Input() ligneCommande: LigneCommandeDto = {};
+  @Input() ligneCommande: LigneCommandeFournisseurDto = {};
 
   calculerTotal(): number {
     if (this.ligneCommande.quantite && this.ligneCommande.prixUnitaire) {

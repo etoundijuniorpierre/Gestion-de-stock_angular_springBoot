@@ -5,7 +5,7 @@ import { CmdcltfrsService } from '../../services/cmdcltfrs.service';
 import { 
   CommandeClientDto, 
   LigneCommandeClientDto
-} from '../../api/interfaces/client.interface';
+} from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-page-commandes-clients',
@@ -19,6 +19,8 @@ export class PageCommandesClientsComponent implements OnInit {
   listeCommandes: Array<CommandeClientDto> = [];
   mapLignesCommande = new Map<number, LigneCommandeClientDto[]>();
   mapPrixTotalCommande = new Map<number, number>();
+  isLoading = false;
+  errorMsg = '';
 
   constructor(
     private router: Router,
@@ -31,16 +33,27 @@ export class PageCommandesClientsComponent implements OnInit {
   }
 
   findAllCommandes(): void {
+    this.isLoading = true;
     this.cmdCltFrsService.findAllCommandesClient()
-      .subscribe((cmd: CommandeClientDto[]) => {
-        this.listeCommandes = cmd;
-        this.findAllLignesCommande();
+      .subscribe({
+        next: (cmd: CommandeClientDto[]) => {
+          this.listeCommandes = cmd;
+          this.findAllLignesCommande();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des commandes:', error);
+          this.errorMsg = 'Erreur lors de la récupération des commandes';
+          this.isLoading = false;
+        }
       });
   }
 
   findAllLignesCommande(): void {
     this.listeCommandes.forEach((cmd: CommandeClientDto) => {
-      this.findLignesCommande(cmd.id);
+      if (cmd.id) {
+        this.findLignesCommande(cmd.id);
+      }
     });
   }
 
@@ -49,14 +62,26 @@ export class PageCommandesClientsComponent implements OnInit {
   }
 
   findLignesCommande(idCommande?: number): void {
+    if (!idCommande) return;
+    
     this.cmdCltFrsService.findAllLigneCommandesClient(idCommande)
-      .subscribe((list: LigneCommandeClientDto[]) => {
-        this.mapLignesCommande.set(idCommande!, list);
-        this.mapPrixTotalCommande.set(idCommande!, this.calculerTatalCmd(list));
+      .subscribe({
+        next: (list: LigneCommandeClientDto[]) => {
+          console.log(`🔍 Lignes de commande client ${idCommande} reçues de l'API:`, list);
+          this.mapLignesCommande.set(idCommande, list);
+          const total = this.calculerTotalCmd(list);
+          console.log(`🔍 Total calculé pour la commande client ${idCommande}:`, total);
+          this.mapPrixTotalCommande.set(idCommande, total);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des lignes de commande:', error);
+          this.mapLignesCommande.set(idCommande, []);
+          this.mapPrixTotalCommande.set(idCommande, 0);
+        }
       });
   }
 
-  calculerTatalCmd(list: Array<LigneCommandeClientDto>): number {
+  calculerTotalCmd(list: Array<LigneCommandeClientDto>): number {
     let total = 0;
     list.forEach((ligne: LigneCommandeClientDto) => {
       if (ligne.prixUnitaire && ligne.quantite) {
@@ -68,5 +93,9 @@ export class PageCommandesClientsComponent implements OnInit {
 
   calculerTotalCommande(id?: number): number {
     return this.mapPrixTotalCommande.get(id!) || 0;
+  }
+
+  getLignesCommande(id?: number): LigneCommandeClientDto[] {
+    return this.mapLignesCommande.get(id!) || [];
   }
 }

@@ -1,27 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Interface simplifiée pour le développement
-interface CommandeFournisseurDto {
-  id?: number;
-  code?: string;
-  dateCommande?: number;
-  etatCommande?: string;
-  fournisseur?: {
-    nom?: string;
-    prenom?: string;
-    photo?: string;
-    numTel?: string;
-    email?: string;
-    adresse?: {
-      adresse1?: string;
-      adresse2?: string;
-      codePostale?: string;
-      ville?: string;
-      pays?: string;
-    };
-  };
-}
+import { CommandeFournisseurDto } from '../../../gs-api/src/model/models';
 
 @Component({
   selector: 'app-detail-cmd-frs',

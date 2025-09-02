@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ClientDto, AdresseDto } from '../../api/interfaces/client.interface';
+import { ClientDto, AdresseDto } from '../../../gs-api/src/model/models';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { PhotosService } from '../../services/photos.service';
 
@@ -40,14 +40,14 @@ export class NouveauClientComponent implements OnInit {
       this.cltFrsService.findClientById(id)
         .subscribe((client: ClientDto) => {
           this.client = client;
-          this.adresseDto = client['adresse'] || {};
+          this.adresseDto = client.adresse || {};
         });
     }
   }
 
   enregistrer(): void {
     // Validation des champs obligatoires
-    if (!this.client.nom || !this.client.prenom || !this.client.email) {
+    if (!this.client.nom || !this.client.prenom || !this.client.mail) {
       this.errorMsg = ['Les champs nom, prénom et email sont obligatoires'];
       return;
     }
@@ -56,18 +56,14 @@ export class NouveauClientComponent implements OnInit {
     this.client.adresse = this.adresseDto;
 
     if (this.isEditMode) {
-      // Mode édition
-      this.cltFrsService.updateClient(this.client['id']!, this.client)
-        .subscribe((client: ClientDto) => {
-          this.savePhoto(client['id'], client['nom']);
-        }, (error: any) => {
-          this.errorMsg = error.error?.errors || ['Erreur lors de la mise à jour'];
-        });
+      // Mode édition - Méthode non implémentée dans l'API
+      this.errorMsg = ['La fonctionnalité de modification n\'est pas encore disponible. Veuillez créer un nouveau client.'];
+      return;
     } else {
       // Mode création
       this.cltFrsService.saveClient(this.client)
         .subscribe((client: ClientDto) => {
-          this.savePhoto(client['id'], client['nom']);
+          this.savePhoto(client.id, client.nom);
         }, (error: any) => {
           this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde'];
         });
@@ -75,7 +71,7 @@ export class NouveauClientComponent implements OnInit {
   }
 
   cancelClick(): void {
-    this.router.navigate(['clients']);
+    this.router.navigate(['dashboard', 'clients']);
   }
 
   onFileInput(files: FileList | null): void {
@@ -101,12 +97,18 @@ export class NouveauClientComponent implements OnInit {
         title: titre,
         context: 'client'
       };
-      this.photoService.savePhoto(params)
-        .subscribe((res: any) => {
-          this.cancelClick();
-        });
+
+      this.photoService.savePhoto(params).subscribe({
+        next: () => {
+          this.router.navigate(['dashboard', 'clients']);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la sauvegarde de la photo:', error);
+          this.router.navigate(['dashboard', 'clients']);
+        }
+      });
     } else {
-      this.cancelClick();
+      this.router.navigate(['dashboard', 'clients']);
     }
   }
 }

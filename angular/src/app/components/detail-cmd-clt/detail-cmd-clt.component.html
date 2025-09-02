@@ -1,26 +1,26 @@
 <div class="row mb-1 mr-0 custom-border">
   <div class="col-md-1 custom-border-right p-1 text-center mb-1 mt-1">
-    <img [src]="client.photo ? client.photo : 'assets/product.png'" width="100px" height="100px">
+    <img [src]="commande.client?.photo ? commande.client.photo : 'assets/product.png'" width="100px" height="100px" *ngIf="commande.client">
   </div>
 
-  <!--  Details client -->
+  <!--  Details commande -->
   <div class="col-md-5 custom-border-right mb-1 mt-1">
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-        <div class="col-md-10">{{ client.nom }}</div>
+        <div class="col-md-10">Code: {{ commande.code }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-        <div class="col-md-10">{{ client.prenom }}</div>
+        <div class="col-md-10">Date: {{ commande.dateCommande | date:'dd/MM/yyyy' }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-phone-alt blue-color"></i></div>
-        <div class="col-md-10">{{ client.numTel }}</div>
+        <div class="col-md-10">Client: {{ commande.client?.nom }} {{ commande.client?.prenom }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-envelope blue-color"></i></div>
-        <div class="col-md-10">{{ client.email }}</div>
+        <div class="col-md-10">{{ commande.client?.mail }}</div>
       </div>
     </div>
   </div>
@@ -30,15 +30,15 @@
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fas fa-home blue-color"></i></div>
-        <div class="col-md-10">{{ client.adresse?.adresse1 }}&nbsp;{{ client.adresse?.adresse2 }}</div>
+        <div class="col-md-10">{{ commande.client?.adresse?.adresse1 }}&nbsp;{{ commande.client?.adresse?.adresse2 }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-map-marker-alt blue-color"></i></div>
-        <div class="col-md-10">{{ client.adresse?.codePostale }}&nbsp;{{ client.adresse?.ville }}</div>
+        <div class="col-md-10">{{ commande.client?.adresse?.codePostale }}&nbsp;{{ commande.client?.adresse?.ville }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-globe-europe blue-color"></i></div>
-        <div class="col-md-10">{{ client.adresse?.pays }}</div>
+        <div class="col-md-10">{{ commande.client?.adresse?.pays }}</div>
       </div>
     </div>
   </div>
@@ -47,12 +47,12 @@
   <div class="col-md-3 mb-1 mt-1">
     <div class="row">
       <div class="col-md-4">
-        <button type="button" class="btn btn-link" (click)="modifierClient()">
+        <button type="button" class="btn btn-link" (click)="modifierCommande()">
           <i class="fas fa-pencil-alt"></i>&nbsp;Modifier
         </button>
       </div>
       <div class="col-md-4">
-        <button type="button" class="btn btn-link text-danger" data-toggle="modal" [attr.data-target]="'#modalDelete' + client.id">
+        <button type="button" class="btn btn-link text-danger" data-toggle="modal" [attr.data-target]="'#modalDelete' + commande.id">
           <i class="fas fa-trash-alt"></i>&nbsp;Supprimer
         </button>
       </div>
@@ -65,7 +65,7 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="modalDelete{{ client.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  <div class="modal fade" id="modalDelete{{ commande.id }}" data-backdrop="static" data-keyboard="false" tabindex="-1"
        aria-labelledby="staticBackdropLabel"
        aria-hidden="true">
     <div class="modal-dialog">
@@ -77,7 +77,7 @@
           </button>
         </div>
         <div class="modal-body">
-          Êtes-vous sûr de vouloir supprimer ce client ?
+          Êtes-vous sûr de vouloir supprimer cette commande client ?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">

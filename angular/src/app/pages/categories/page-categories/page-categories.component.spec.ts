@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageCategoriesComponent } from './page-categories.component';
+import { NoouvelleCategoryComponent } from './noouvelle-category.component';
 
-describe('PageCategoriesComponent', () => {
-  let component: PageCategoriesComponent;
-  let fixture: ComponentFixture<PageCategoriesComponent>;
+describe('NoouvelleCategoryComponent', () => {
+  let component: NoouvelleCategoryComponent;
+  let fixture: ComponentFixture<NoouvelleCategoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageCategoriesComponent]
+      declarations: [ NoouvelleCategoryComponent ]
     })
     .compileComponents();
+  });
 
-    fixture = TestBed.createComponent(PageCategoriesComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NoouvelleCategoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

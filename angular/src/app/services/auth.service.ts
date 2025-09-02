@@ -1,17 +1,22 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthenticationRequest, AuthenticationResponse } from '../../gs-api/src/model/models';
+import { AuthentificationService } from '../../gs-api/src/api/authentification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(true); // Changé à true par défaut
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
     private router: Router,
+    private http: HttpClient,
+    private authentificationService: AuthentificationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Check if user is already logged in on app initialization
@@ -21,32 +26,41 @@ export class AuthService {
   private checkAuthStatus(): void {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('authToken');
-      const isLoggedIn = !!token || true; // Considère comme connecté même sans token
+      const isLoggedIn = !!token;
       this.isAuthenticatedSubject.next(isLoggedIn);
     } else {
-      // Server-side rendering - assume authenticated
-      this.isAuthenticatedSubject.next(true);
+      // Server-side rendering - assume not authenticated
+      this.isAuthenticatedSubject.next(false);
     }
   }
 
-  login(email: string, password: string): Promise<boolean> {
-    // Simulate API call - replace with actual authentication logic
-    return new Promise((resolve) => {
-      // For demo purposes, accept any non-empty credentials
-      if (email && password) {
-        if (isPlatformBrowser(this.platformId)) {
-          // Store authentication token
-          const token = 'demo-token-' + Date.now();
-          localStorage.setItem('authToken', token);
-          localStorage.setItem('userEmail', email);
+  login(email: string, password: string): Observable<boolean> {
+    if (!email || !password) {
+      return of(false);
+    }
+
+    const authRequest: AuthenticationRequest = {
+      login: email,
+      password: password
+    };
+
+    // Utiliser l'API générée
+    return this.authentificationService.authenticate(authRequest).pipe(
+      tap((response: AuthenticationResponse) => {
+        if (response.accessToken) {
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem('authToken', response.accessToken);
+            localStorage.setItem('userEmail', email);
+          }
+          this.isAuthenticatedSubject.next(true);
         }
-        
-        this.isAuthenticatedSubject.next(true);
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
+      }),
+      map((response: AuthenticationResponse) => !!response.accessToken),
+      catchError((error) => {
+        console.error('Erreur d\'authentification:', error);
+        return of(false);
+      })
+    );
   }
 
   logout(): void {
@@ -73,8 +87,8 @@ export class AuthService {
 
   getUserEmail(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('userEmail') || 'Utilisateur Demo';
+      return localStorage.getItem('userEmail') || 'Utilisateur';
     }
-    return 'Utilisateur Demo';
+    return 'Utilisateur';
   }
 } 

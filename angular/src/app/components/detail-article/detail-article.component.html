@@ -1,6 +1,6 @@
 <div class="row mb-1 mr-0 custom-border">
   <div class="col-md-1 custom-border-right p-1 text-center mb-1 mt-1 ">
-    <img src="../../../assets/product.png" width="100px" height="100px">
+    <img [src]="article.photo || '../../../assets/product.png'" width="100px" height="100px" [alt]="article.designation">
   </div>
 
 <!--  Details article-->
@@ -8,19 +8,19 @@
     <div class="col">
       <div class="row">
         <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-        <div class="col-md-11">"codeArticle" </div>
+        <div class="col-md-11">{{ article.codeArticle || 'N/A' }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-info-circle blue-color"></i></div>
-        <div class="col-md-11">"designation"</div>
+        <div class="col-md-11">{{ article.designation || 'N/A' }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">"prixUnitaireHt"</div>
+        <div class="col-md-11">{{ article.prixUnitaireHt || 'N/A' }}</div>
       </div>
       <div class="row">
         <div class="col-md-1"><i class="fas fa-dollar-sign blue-color"></i></div>
-        <div class="col-md-11">"prixUnitaireTtc"</div>
+        <div class="col-md-11">{{ article.prixUnitaireTtc || 'N/A' }}</div>
       </div>
     </div>
   </div>
@@ -33,8 +33,8 @@
       </div>
       <div class="col-md-10">
         <div class="row">
-          <div class="col-md-12">"category?.code"</div>
-          <div class="col-md-12">"category?.designation"</div>
+          <div class="col-md-12">{{ article.categorie?.code || 'N/A' }}</div>
+          <div class="col-md-12">{{ article.categorie?.designation || 'N/A' }}</div>
         </div>
       </div>
     </div>

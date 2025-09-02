@@ -1,126 +1,197 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, of, map } from 'rxjs';
 import { 
   CommandeClientDto, 
   CommandeFournisseurDto, 
   LigneCommandeClientDto, 
   LigneCommandeFournisseurDto 
-} from '../api/interfaces/client.interface';
+} from '../../gs-api/src/model/models';
+import { CommandesClientsService } from '../../gs-api/src/api/commandesClients.service';
+import { GestionDeStockCommandefournisseurService } from '../../gs-api/src/api/gestionDeStockCommandefournisseur.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CmdcltfrsService {
 
-  constructor() { }
+  constructor(
+    private commandesClientsService: CommandesClientsService,
+    private commandesFournisseursService: GestionDeStockCommandefournisseurService
+  ) { }
 
-  // Méthodes pour les commandes clients
+  // ===== COMMANDES CLIENTS =====
+
+  // Récupérer toutes les commandes clients
   findAllCommandesClient(): Observable<CommandeClientDto[]> {
-    // Simulation de données pour le développement
-    const mockCommandes: CommandeClientDto[] = [
-      {
-        id: 1,
-        code: 'CMD-CLT-001',
-        dateCommande: new Date('2024-01-15'),
-        etatCommande: 'EN_COURS',
-        totalPrix: 150.00,
-        client: {
-          id: 1,
-          nom: 'Dupont',
-          prenom: 'Jean',
-          email: 'jean.dupont@email.com'
+    return this.commandesClientsService.findAll5().pipe(
+      map((response: any) => {
+        // Si la réponse est un tableau, on le retourne tel quel
+        if (Array.isArray(response)) {
+          return response;
         }
-      },
-      {
-        id: 2,
-        code: 'CMD-CLT-002',
-        dateCommande: new Date('2024-01-16'),
-        etatCommande: 'LIVREE',
-        totalPrix: 89.50,
-        client: {
-          id: 2,
-          nom: 'Martin',
-          prenom: 'Marie',
-          email: 'marie.martin@email.com'
-        }
-      }
-    ];
-    return of(mockCommandes);
+        // Sinon, on essaie d'extraire le tableau de la réponse
+        return response?.content || response?.data || [response] || [];
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des commandes clients:', error);
+        return of([]);
+      })
+    );
   }
 
+  // Récupérer une commande client par ID
+  findByIdCommandeClient(id: number): Observable<CommandeClientDto> {
+    // Note: findById5 n'existe pas dans l'API, on filtre depuis findAll5
+    return this.commandesClientsService.findAll5().pipe(
+      map((response: any) => {
+        const commandes = Array.isArray(response) ? response : response?.content || response?.data || [response] || [];
+        return commandes.find((cmd: CommandeClientDto) => cmd.id === id) || {};
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération de la commande client:', error);
+        return of({});
+      })
+    );
+  }
+
+  // Sauvegarder une commande client
+  saveCommandeClient(commande: CommandeClientDto): Observable<CommandeClientDto> {
+    return this.commandesClientsService.save5(commande).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la sauvegarde de la commande client:', error);
+        return of(commande);
+      })
+    );
+  }
+
+  // Mettre à jour une commande client
+  updateCommandeClient(id: number, commande: CommandeClientDto): Observable<CommandeClientDto> {
+    // Note: update5 n'existe pas dans l'API, on lance une erreur
+    const error = new Error('Méthode updateCommandeClient non implémentée dans l\'API. Implémentation backend requise.');
+    console.error(error.message);
+    throw error;
+  }
+
+  // Supprimer une commande client
+  deleteCommandeClient(id: number): Observable<any> {
+    return this.commandesClientsService.delete5(id).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la suppression de la commande client:', error);
+        return of({ success: false, error });
+      })
+    );
+  }
+
+  // Récupérer les lignes de commande d'une commande client
   findAllLigneCommandesClient(idCommande?: number): Observable<LigneCommandeClientDto[]> {
-    // Simulation de données pour le développement
-    const mockLignes: LigneCommandeClientDto[] = [
-      {
-        id: 1,
-        quantite: 2,
-        prixUnitaire: 75.00,
-        total: 150.00,
-        article: { id: 1, nom: 'Produit A' }
-      },
-      {
-        id: 2,
-        quantite: 1,
-        prixUnitaire: 89.50,
-        total: 89.50,
-        article: { id: 2, nom: 'Produit B' }
-      }
-    ];
-    return of(mockLignes);
+    if (!idCommande) {
+      return of([]);
+    }
+    return this.commandesClientsService.findAllLignesCommandesClientByCommandeClientId(idCommande).pipe(
+      map((response: any) => {
+        // Si la réponse est un tableau, on le retourne tel quel
+        if (Array.isArray(response)) {
+          return response;
+        }
+        // Sinon, on essaie d'extraire le tableau de la réponse
+        return response?.content || response?.data || [response] || [];
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des lignes de commande:', error);
+        return of([]);
+      })
+    );
   }
 
-  // Méthodes pour les commandes fournisseurs
+  // ===== COMMANDES FOURNISSEURS =====
+
+  // Récupérer toutes les commandes fournisseurs
   findAllCommandesFournisseur(): Observable<CommandeFournisseurDto[]> {
-    // Simulation de données pour le développement
-    const mockCommandes: CommandeFournisseurDto[] = [
-      {
-        id: 1,
-        code: 'CMD-FRS-001',
-        dateCommande: new Date('2024-01-15'),
-        etatCommande: 'EN_COURS',
-        totalPrix: 250.00,
-        fournisseur: {
-          id: 1,
-          nom: 'Fournisseur1',
-          prenom: 'Contact1',
-          email: 'contact1@fournisseur.com'
+    return this.commandesFournisseursService.findAll4().pipe(
+      map((response: any) => {
+        // Si la réponse est un tableau, on le retourne tel quel
+        if (Array.isArray(response)) {
+          return response;
         }
-      },
-      {
-        id: 2,
-        code: 'CMD-FRS-002',
-        dateCommande: new Date('2024-01-16'),
-        etatCommande: 'RECUE',
-        totalPrix: 120.00,
-        fournisseur: {
-          id: 2,
-          nom: 'Fournisseur2',
-          prenom: 'Contact2',
-          email: 'contact2@fournisseur.com'
-        }
-      }
-    ];
-    return of(mockCommandes);
+        // Sinon, on essaie d'extraire le tableau de la réponse
+        return response?.content || response?.data || [response] || [];
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des commandes fournisseurs:', error);
+        return of([]);
+      })
+    );
   }
 
+  // Récupérer une commande fournisseur par ID
+  findByIdCommandeFournisseur(id: number): Observable<CommandeFournisseurDto> {
+    return this.commandesFournisseursService.findById4(id).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la récupération de la commande fournisseur:', error);
+        return of({});
+      })
+    );
+  }
+
+  // Sauvegarder une commande fournisseur
+  saveCommandeFournisseur(commande: CommandeFournisseurDto): Observable<CommandeFournisseurDto> {
+    return this.commandesFournisseursService.save4(commande).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la sauvegarde de la commande fournisseur:', error);
+        return of(commande);
+      })
+    );
+  }
+
+  // Mettre à jour une commande fournisseur
+  updateCommandeFournisseur(id: number, commande: CommandeFournisseurDto): Observable<CommandeFournisseurDto> {
+    // Note: update4 n'existe pas dans l'API, on lance une erreur
+    const error = new Error('Méthode updateCommandeFournisseur non implémentée dans l\'API. Implémentation backend requise.');
+    console.error(error.message);
+    throw error;
+  }
+
+  // Supprimer une commande fournisseur
+  deleteCommandeFournisseur(id: number): Observable<any> {
+    return this.commandesFournisseursService.delete4(id).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la suppression de la commande fournisseur:', error);
+        return of({ success: false, error });
+      })
+    );
+  }
+
+  // Récupérer les lignes de commande d'une commande fournisseur
   findAllLigneCommandesFournisseur(idCommande?: number): Observable<LigneCommandeFournisseurDto[]> {
-    // Simulation de données pour le développement
-    const mockLignes: LigneCommandeFournisseurDto[] = [
-      {
-        id: 1,
-        quantite: 5,
-        prixUnitaire: 50.00,
-        total: 250.00,
-        article: { id: 1, nom: 'Matière première A' }
-      },
-      {
-        id: 2,
-        quantite: 3,
-        prixUnitaire: 40.00,
-        total: 120.00,
-        article: { id: 2, nom: 'Matière première B' }
+    if (!idCommande) {
+      return of([]);
+    }
+    return this.commandesFournisseursService.findAllLignesCommandesFournisseurByCommandeFournisseurId(idCommande).pipe(
+      map((response: any) => {
+        // Si la réponse est un tableau, on le retourne tel quel
+        if (Array.isArray(response)) {
+          return response;
+        }
+        // Sinon, on essaie d'extraire le tableau de la réponse
+        return response?.content || response?.data || [response] || [];
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des lignes de commande fournisseur:', error);
+        return of([]);
+      })
+    );
+  }
+
+  // ===== MÉTHODES DE CALCUL =====
+
+  // Calculer le total d'une commande
+  calculerTotalCommande(lignes: LigneCommandeClientDto[] | LigneCommandeFournisseurDto[]): number {
+    let total = 0;
+    lignes.forEach((ligne: any) => {
+      if (ligne.prixUnitaire && ligne.quantite) {
+        total += +ligne.quantite * +ligne.prixUnitaire;
       }
-    ];
-    return of(mockLignes);
+    });
+    return Math.floor(total);
   }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -30,7 +31,7 @@ public class Utilisateur extends AbstractEntity {
   private String email;
 
   @Column(name = "datedenaissance")
-  private Instant dateDeNaissance;
+  private LocalDate dateDeNaissance;
 
   @Column(name = "motdepasse")
   private String motDePasse;
@@ -49,6 +50,4 @@ public class Utilisateur extends AbstractEntity {
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "utilisateur")
   @JsonIgnore
   private List<Roles> roles;
-
-
 }

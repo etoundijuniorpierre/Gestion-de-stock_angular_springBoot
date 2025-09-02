@@ -35,6 +35,14 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
+    path: 'dashboard/nouvellecategorie',
+    renderMode: RenderMode.Server
+  },
+  {
+    path: 'dashboard/nouvellecategorie/:id',
+    renderMode: RenderMode.Server
+  },
+  {
     path: 'dashboard/mouvementsStock',
     renderMode: RenderMode.Server
   },
