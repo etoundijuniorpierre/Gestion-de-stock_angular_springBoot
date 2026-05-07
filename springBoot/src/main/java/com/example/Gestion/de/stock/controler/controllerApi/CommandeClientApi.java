@@ -2,8 +2,10 @@ package com.example.Gestion.de.stock.controler.controllerApi;
 
 import static com.example.Gestion.de.stock.utils.Constants.APP_ROOT;
 
-import com.example.Gestion.de.stock.dto.CommandeClientDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeClientDto;
+import com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto;
+import com.example.Gestion.de.stock.dto.request.LigneCommandeClientRequestDto;
+import com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeClientResponseDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,19 +27,19 @@ public interface CommandeClientApi {
   @Operation(summary = "Créer une commande client", description = "Enregistre une nouvelle commande client")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Commande client créée",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "400", description = "Données de commande invalides")
   })
-  ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
+  ResponseEntity<CommandeClientResponseDto> save(@RequestBody CommandeClientRequestDto dto);
 
   @PatchMapping(value = "/update/etat/{idCommande}/{etatCommande}")
   @Operation(summary = "Mettre à jour l'état d'une commande", description = "Modifie l'état d'une commande client existante")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "État de commande mis à jour",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande non trouvée")
   })
-  ResponseEntity<CommandeClientDto> updateEtatCommande(
+  ResponseEntity<CommandeClientResponseDto> updateEtatCommande(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "Nouvel état de la commande") @PathVariable("etatCommande") EtatCommande etatCommande);
 
@@ -45,10 +47,10 @@ public interface CommandeClientApi {
   @Operation(summary = "Mettre à jour la quantité d'une ligne de commande", description = "Modifie la quantité d'un article dans une commande client")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Quantité mise à jour",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande ou ligne de commande non trouvée")
   })
-  ResponseEntity<CommandeClientDto> updateQuantiteCommande(
+  ResponseEntity<CommandeClientResponseDto> updateQuantiteCommande(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande,
           @Parameter(description = "Nouvelle quantité") @PathVariable("quantite") BigDecimal quantite);
@@ -57,10 +59,10 @@ public interface CommandeClientApi {
   @Operation(summary = "Mettre à jour le client d'une commande", description = "Modifie le client associé à une commande")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Client mis à jour",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande ou client non trouvé")
   })
-  ResponseEntity<CommandeClientDto> updateClient(
+  ResponseEntity<CommandeClientResponseDto> updateClient(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID du nouveau client") @PathVariable("idClient") Integer idClient);
 
@@ -68,10 +70,10 @@ public interface CommandeClientApi {
   @Operation(summary = "Mettre à jour l'article d'une ligne de commande", description = "Modifie l'article d'une ligne de commande existante")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Article mis à jour",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande, ligne de commande ou article non trouvé")
   })
-  ResponseEntity<CommandeClientDto> updateArticle(
+  ResponseEntity<CommandeClientResponseDto> updateArticle(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande,
           @Parameter(description = "ID du nouvel article") @PathVariable("idArticle") Integer idArticle);
@@ -80,10 +82,10 @@ public interface CommandeClientApi {
   @Operation(summary = "Supprimer une ligne de commande", description = "Supprime un article d'une commande client")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Ligne de commande supprimée",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande ou ligne de commande non trouvée")
   })
-  ResponseEntity<CommandeClientDto> deleteArticle(
+  ResponseEntity<CommandeClientResponseDto> deleteArticle(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande);
 
@@ -91,36 +93,36 @@ public interface CommandeClientApi {
   @Operation(summary = "Trouver une commande par ID", description = "Récupère une commande client par son identifiant")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Commande trouvée",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande non trouvée")
   })
-  ResponseEntity<CommandeClientDto> findById(@PathVariable Integer idCommandeClient);
+  ResponseEntity<CommandeClientResponseDto> findById(@PathVariable Integer idCommandeClient);
 
   @GetMapping(value = "/filter/{codeCommandeClient}")
   @Operation(summary = "Trouver une commande par code", description = "Récupère une commande client par son code")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Commande trouvée",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande non trouvée")
   })
-  ResponseEntity<CommandeClientDto> findByCode(@PathVariable("codeCommandeClient") String code);
+  ResponseEntity<CommandeClientResponseDto> findByCode(@PathVariable("codeCommandeClient") String code);
 
   @GetMapping(value = "/all")
   @Operation(summary = "Lister toutes les commandes", description = "Récupère la liste de toutes les commandes clients")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Liste des commandes",
-                  content = @Content(schema = @Schema(implementation = CommandeClientDto.class)))
+                  content = @Content(schema = @Schema(implementation = CommandeClientResponseDto.class)))
   })
-  ResponseEntity<List<CommandeClientDto>> findAll();
+  ResponseEntity<List<CommandeClientResponseDto>> findAll();
 
   @GetMapping(value = "/lignesCommande/{idCommande}")
   @Operation(summary = "Lister les lignes de commande", description = "Récupère toutes les lignes d'une commande client")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Lignes de commande trouvées",
-                  content = @Content(schema = @Schema(implementation = LigneCommandeClientDto.class))),
+                  content = @Content(schema = @Schema(implementation = LigneCommandeClientResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Commande non trouvée")
   })
-  ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(@PathVariable("idCommande") Integer idCommande);
+  ResponseEntity<List<LigneCommandeClientResponseDto>> findAllLignesCommandesClientByCommandeClientId(@PathVariable("idCommande") Integer idCommande);
 
   @DeleteMapping(value = "/delete/{idCommandeClient}")
   @Operation(summary = "Supprimer une commande", description = "Supprime une commande client par son identifiant")

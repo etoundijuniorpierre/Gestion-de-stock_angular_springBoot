@@ -5,7 +5,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.example.Gestion.de.stock.controler.controllerApi.MvtStkApi;
-import com.example.Gestion.de.stock.dto.MvtStkDto;
+import com.example.Gestion.de.stock.dto.request.MvtStkRequestDto;
+import com.example.Gestion.de.stock.dto.response.MvtStkResponseDto;
 import com.example.Gestion.de.stock.service.MvtStkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,27 +27,27 @@ public class MvtStkController implements MvtStkApi {
   }
 
   @Override
-  public List<MvtStkDto> mvtStkArticle(Integer idArticle) {
+  public List<MvtStkResponseDto> mvtStkArticle(Integer idArticle) {
     return service.mvtStkArticle(idArticle);
   }
 
   @Override
-  public MvtStkDto entreeStock(MvtStkDto dto) {
+  public MvtStkResponseDto entreeStock(MvtStkRequestDto dto) {
     return service.entreeStock(dto);
   }
 
   @Override
-  public MvtStkDto sortieStock(MvtStkDto dto) {
+  public MvtStkResponseDto sortieStock(MvtStkRequestDto dto) {
     return service.sortieStock(dto);
   }
 
   @Override
-  public MvtStkDto correctionStockPos(MvtStkDto dto) {
+  public MvtStkResponseDto correctionStockPos(MvtStkRequestDto dto) {
     return service.correctionStockPos(dto);
   }
 
   @Override
-  public MvtStkDto correctionStockNeg(MvtStkDto dto) {
+  public MvtStkResponseDto correctionStockNeg(MvtStkRequestDto dto) {
     return service.correctionStockNeg(dto);
   }
 }

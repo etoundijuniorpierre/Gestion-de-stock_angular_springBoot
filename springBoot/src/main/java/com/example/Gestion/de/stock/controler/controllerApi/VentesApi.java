@@ -1,6 +1,7 @@
 package com.example.Gestion.de.stock.controler.controllerApi;
 
-import com.example.Gestion.de.stock.dto.VentesDto;
+import com.example.Gestion.de.stock.dto.request.VentesRequestDto;
+import com.example.Gestion.de.stock.dto.response.VentesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,33 +21,33 @@ public interface VentesApi {
 
   @Operation(summary = "Créer une vente", description = "Permet d'enregistrer une vente")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Vente créée", content = @Content(schema = @Schema(implementation = VentesDto.class)))
+          @ApiResponse(responseCode = "200", description = "Vente créée", content = @Content(schema = @Schema(implementation = VentesResponseDto.class)))
   })
   @PostMapping(VENTES_ENDPOINT + "/create")
-  VentesDto save(@RequestBody VentesDto dto);
+  VentesResponseDto save(@RequestBody VentesRequestDto dto);
 
   @Operation(summary = "Rechercher une vente par ID", description = "Permet de rechercher une vente par son ID")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Vente trouvée", content = @Content(schema = @Schema(implementation = VentesDto.class))),
+          @ApiResponse(responseCode = "200", description = "Vente trouvée", content = @Content(schema = @Schema(implementation = VentesResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Aucune vente trouvée avec cet ID")
   })
   @GetMapping(VENTES_ENDPOINT + "/{idVente}")
-  VentesDto findById(@Parameter(description = "ID de la vente") @PathVariable("idVente") Integer id);
+  VentesResponseDto findById(@Parameter(description = "ID de la vente") @PathVariable("idVente") Integer id);
 
   @Operation(summary = "Rechercher une vente par code", description = "Permet de rechercher une vente par son code")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Vente trouvée", content = @Content(schema = @Schema(implementation = VentesDto.class))),
+          @ApiResponse(responseCode = "200", description = "Vente trouvée", content = @Content(schema = @Schema(implementation = VentesResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Aucune vente trouvée avec ce code")
   })
   @GetMapping(VENTES_ENDPOINT + "/{codeVente}")
-  VentesDto findByCode(@Parameter(description = "Code de la vente") @PathVariable("codeVente") String code);
+  VentesResponseDto findByCode(@Parameter(description = "Code de la vente") @PathVariable("codeVente") String code);
 
   @Operation(summary = "Liste de toutes les ventes", description = "Permet de récupérer toutes les ventes enregistrées")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Liste des ventes", content = @Content(schema = @Schema(implementation = VentesDto.class)))
+          @ApiResponse(responseCode = "200", description = "Liste des ventes", content = @Content(schema = @Schema(implementation = VentesResponseDto.class)))
   })
   @GetMapping(VENTES_ENDPOINT + "/all")
-  List<VentesDto> findAll();
+  List<VentesResponseDto> findAll();
 
   @Operation(summary = "Supprimer une vente", description = "Permet de supprimer une vente par son ID")
   @ApiResponses(value = {

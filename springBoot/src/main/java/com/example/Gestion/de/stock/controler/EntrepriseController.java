@@ -3,7 +3,8 @@ package com.example.Gestion.de.stock.controler;
 import java.util.List;
 
 import com.example.Gestion.de.stock.controler.controllerApi.EntrepriseApi;
-import com.example.Gestion.de.stock.dto.EntrepriseDto;
+import com.example.Gestion.de.stock.dto.request.EntrepriseRequestDto;
+import com.example.Gestion.de.stock.dto.response.EntrepriseResponseDto;
 import com.example.Gestion.de.stock.service.EntrepriseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,17 +20,17 @@ public class EntrepriseController implements EntrepriseApi {
   }
 
   @Override
-  public EntrepriseDto save(EntrepriseDto dto) {
+  public EntrepriseResponseDto save(EntrepriseRequestDto dto) {
     return entrepriseService.save(dto);
   }
 
   @Override
-  public EntrepriseDto findById(Integer id) {
+  public EntrepriseResponseDto findById(Integer id) {
     return entrepriseService.findById(id);
   }
 
   @Override
-  public List<EntrepriseDto> findAll() {
+  public List<EntrepriseResponseDto> findAll() {
     return entrepriseService.findAll();
   }
 

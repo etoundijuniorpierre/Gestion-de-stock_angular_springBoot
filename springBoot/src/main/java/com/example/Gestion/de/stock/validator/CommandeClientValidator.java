@@ -3,13 +3,13 @@ package com.example.Gestion.de.stock.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.Gestion.de.stock.dto.CommandeClientDto;
+import com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto;
 import org.springframework.util.StringUtils;
 
 public class CommandeClientValidator {
 
 
-  public static List<String> validate(CommandeClientDto dto) {
+  public static List<String> validate(CommandeClientRequestDto dto) {
     List<String> errors = new ArrayList<>();
     if (dto == null) {
       errors.add("Veuillez renseigner le code de la commande");
@@ -28,7 +28,7 @@ public class CommandeClientValidator {
     if (!StringUtils.hasLength(dto.getEtatCommande().toString())) {
       errors.add("Veuillez renseigner l'etat de la commande");
     }
-    if (dto.getClient() == null || dto.getClient().getId() == null) {
+    if (dto.getClientId() == null) {
       errors.add("Veuillez renseigner le client");
     }
 

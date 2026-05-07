@@ -3,15 +3,19 @@ package com.example.Gestion.de.stock.service.serviceImpl;
 
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.example.Gestion.de.stock.dto.ArticleDto;
-import com.example.Gestion.de.stock.dto.LigneVenteDto;
-import com.example.Gestion.de.stock.dto.MvtStkDto;
-import com.example.Gestion.de.stock.dto.VentesDto;
+import com.example.Gestion.de.stock.dto.mapper.ArticleMapper;
+import com.example.Gestion.de.stock.dto.mapper.LigneVenteMapper;
+import com.example.Gestion.de.stock.dto.mapper.VentesMapper;
+import com.example.Gestion.de.stock.dto.request.MvtStkRequestDto;
+import com.example.Gestion.de.stock.dto.request.VentesRequestDto;
+import com.example.Gestion.de.stock.dto.response.VentesResponseDto;
+import com.example.Gestion.de.stock.dto.response.MvtStkResponseDto;
 import com.example.Gestion.de.stock.exception.EntityNotFoundException;
 import com.example.Gestion.de.stock.exception.ErrorCodes;
 import com.example.Gestion.de.stock.exception.InvalidEntityException;
@@ -51,7 +55,7 @@ public class VentesServiceImpl implements VentesService {
   }
 
   @Override
-  public VentesDto save(VentesDto dto) {
+  public VentesResponseDto save(VentesRequestDto dto) {
     List<String> errors = VentesValidator.validate(dto);
     if (!errors.isEmpty()) {
       log.error("Ventes n'est pas valide");
@@ -60,58 +64,60 @@ public class VentesServiceImpl implements VentesService {
 
     List<String> articleErrors = new ArrayList<>();
 
-    dto.getLigneVentes().forEach(ligneVenteDto -> {
-      Optional<Article> article = articleRepository.findById(ligneVenteDto.getArticle().getId());
-      if (article.isEmpty()) {
-        articleErrors.add("Aucun article avec l'ID " + ligneVenteDto.getArticle().getId() + " n'a ete trouve dans la BDD");
-      }
-    });
+    if (dto.getLigneVentes() != null) {
+      dto.getLigneVentes().forEach(ligneVenteDto -> {
+        Optional<Article> article = articleRepository.findById(ligneVenteDto.getIdArticle());
+        if (article.isEmpty()) {
+          articleErrors.add("Aucun article avec l'ID " + ligneVenteDto.getIdArticle() + " n'a ete trouve dans la BDD");
+        }
+      });
+    }
 
     if (!articleErrors.isEmpty()) {
       log.error("One or more articles were not found in the DB, {}", errors);
       throw new InvalidEntityException("Un ou plusieurs articles n'ont pas ete trouve dans la BDD", ErrorCodes.VENTE_NOT_VALID, errors);
     }
 
-    Ventes savedVentes = ventesRepository.save(VentesDto.toEntity(dto));
+    Ventes savedVentes = ventesRepository.save(VentesMapper.toEntity(dto));
 
     dto.getLigneVentes().forEach(ligneVenteDto -> {
-      LigneVente ligneVente = LigneVenteDto.toEntity(ligneVenteDto);
+      LigneVente ligneVente = LigneVenteMapper.toEntity(ligneVenteDto);
       ligneVente.setVente(savedVentes);
       ligneVenteRepository.save(ligneVente);
       updateMvtStk(ligneVente);
     });
 
-    return VentesDto.fromEntity(savedVentes);
+    return VentesMapper.fromEntity(savedVentes);
   }
 
   @Override
-  public VentesDto findById(Integer id) {
+  public VentesResponseDto findById(Integer id) {
     if (id == null) {
       log.error("Ventes ID is NULL");
       return null;
     }
     return ventesRepository.findById(id)
-        .map(VentesDto::fromEntity)
+        .map(VentesMapper::fromEntity)
         .orElseThrow(() -> new EntityNotFoundException("Aucun vente n'a ete trouve dans la BDD", ErrorCodes.VENTE_NOT_FOUND));
   }
 
   @Override
-  public VentesDto findByCode(String code) {
+  public VentesResponseDto findByCode(String code) {
     if (!StringUtils.hasLength(code)) {
       log.error("Vente CODE is NULL");
       return null;
     }
     return ventesRepository.findVentesByCode(code)
-        .map(VentesDto::fromEntity)
+        .map(VentesMapper::fromEntity)
         .orElseThrow(() -> new EntityNotFoundException(
             "Aucune vente client n'a ete trouve avec le CODE " + code, ErrorCodes.VENTE_NOT_VALID
         ));
   }
 
   @Override
-  public List<VentesDto> findAll() {
+  public List<VentesResponseDto> findAll() {
     return ventesRepository.findAll().stream()
-        .map(VentesDto::fromEntity)
+        .map(VentesMapper::fromEntity)
         .collect(Collectors.toList());
   }
 
@@ -130,9 +136,9 @@ public class VentesServiceImpl implements VentesService {
   }
 
   private void updateMvtStk(LigneVente lig) {
-    MvtStkDto mvtStkDto = MvtStkDto.builder()
-        .article(ArticleDto.fromEntity(lig.getArticle()))
-        .dateMvt(Instant.now())
+    MvtStkRequestDto mvtStkDto = MvtStkRequestDto.builder()
+        .article(ArticleMapper.toRequestDto(lig.getArticle()))
+        .dateMvt(LocalDate.now())
         .typeMvt(TypeMvtStk.SORTIE)
         .sourceMvt(SourceMvtStk.VENTE)
         .quantite(lig.getQuantite())

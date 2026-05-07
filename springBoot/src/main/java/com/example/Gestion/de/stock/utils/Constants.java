@@ -1,23 +1,23 @@
 package com.example.Gestion.de.stock.utils;
 
-public interface Constants {
+public class Constants {
 
-    public static String APP_ROOT = "api/gestionDeStock";
+    public static final String APP_ROOT = "api/gestionDeStock";
 
-    String COMMANDE_FOURNISSEUR_ENDPOINT = APP_ROOT + "/commandesfournisseurs";
-    String CREATE_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/create";
-    String FIND_COMMANDE_FOURNISSEUR_BY_ID_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/{idCommandeFournisseur}";
-    String FIND_COMMANDE_FOURNISSEUR_BY_CODE_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/filter/{codeCommandeFournisseur}";
-    String FIND_ALL_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/all";
-    String DELETE_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/{idCommandeFournisseur}";
+    public static final String COMMANDE_FOURNISSEUR_ENDPOINT = APP_ROOT + "/commandesfournisseurs";
+    public static final String CREATE_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/create";
+    public static final String FIND_COMMANDE_FOURNISSEUR_BY_ID_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/{idCommandeFournisseur}";
+    public static final String FIND_COMMANDE_FOURNISSEUR_BY_CODE_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/filter/{codeCommandeFournisseur}";
+    public static final String FIND_ALL_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/all";
+    public static final String DELETE_COMMANDE_FOURNISSEUR_ENDPOINT = COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/{idCommandeFournisseur}";
 
-    String ENTREPRISE_ENDPOINT = APP_ROOT + "/entreprises";
+    public static final String ENTREPRISE_ENDPOINT = APP_ROOT + "/entreprises";
 
-    String FOURNISSEUR_ENDPOINT = APP_ROOT + "/fournisseurs";
+    public static final String FOURNISSEUR_ENDPOINT = APP_ROOT + "/fournisseurs";
 
-    String UTILISATEUR_ENDPOINT = APP_ROOT + "/utilisateurs";
+    public static final String UTILISATEUR_ENDPOINT = APP_ROOT + "/utilisateurs";
 
-    String VENTES_ENDPOINT = APP_ROOT + "/ventes";
+    public static final String VENTES_ENDPOINT = APP_ROOT + "/ventes";
 
-//    String AUTHENTICATION_ENDPOINT = APP_ROOT + "/auth";
+//    public static final String AUTHENTICATION_ENDPOINT = APP_ROOT + "/auth";
 }

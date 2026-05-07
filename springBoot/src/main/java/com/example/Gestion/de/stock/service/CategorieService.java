@@ -1,19 +1,20 @@
 package com.example.Gestion.de.stock.service;
 
 
-import com.example.Gestion.de.stock.dto.CategorieDto;
+import com.example.Gestion.de.stock.dto.request.CategorieRequestDto;
+import com.example.Gestion.de.stock.dto.response.CategorieResponseDto;
 
 import java.util.List;
 
 public interface CategorieService {
 
-  CategorieDto save(CategorieDto dto);
+  CategorieResponseDto save(CategorieRequestDto dto);
 
-  CategorieDto findById(Integer id);
+  CategorieResponseDto findById(Integer id);
 
-  CategorieDto findCategorieByCode(String code);
+  CategorieResponseDto findCategorieByCode(String code);
 
-  List<CategorieDto> findAll();
+  List<CategorieResponseDto> findAll();
 
   void delete(Integer id);
 

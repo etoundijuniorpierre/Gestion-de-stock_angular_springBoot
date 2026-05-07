@@ -16,16 +16,10 @@ public class HibernateUtil {
     static {
         try {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .configure("hibernate.cfg.xml") // Your Hibernate configuration XML
+                    .configure("hibernate.cfg.xml")
                     .build();
-
             MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-            // Add your annotated entity classes or mapping resources here
-            // metadataSources.addAnnotatedClass(YourEntity.class);
-
             MetadataImplementor metadata = (MetadataImplementor) metadataSources.buildMetadata();
-
-
 
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);

@@ -1,7 +1,9 @@
 package com.example.Gestion.de.stock.controler.controllerApi;
 
-import com.example.Gestion.de.stock.dto.CommandeFournisseurDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeFournisseurDto;
+import com.example.Gestion.de.stock.dto.request.CommandeFournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.request.LigneCommandeFournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.response.CommandeFournisseurResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeFournisseurResponseDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,57 +24,57 @@ public interface CommandeFournisseurApi {
 
   @Operation(summary = "Créer une commande fournisseur")
   @PostMapping(CREATE_COMMANDE_FOURNISSEUR_ENDPOINT)
-  CommandeFournisseurDto save(@RequestBody CommandeFournisseurDto dto);
+  CommandeFournisseurResponseDto save(@RequestBody CommandeFournisseurRequestDto dto);
 
   @Operation(summary = "Mettre à jour l'état d'une commande fournisseur")
   @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/etat/{idCommande}/{etatCommande}")
-  CommandeFournisseurDto updateEtatCommande(
+  CommandeFournisseurResponseDto updateEtatCommande(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "Nouvel état de la commande") @PathVariable("etatCommande") EtatCommande etatCommande);
 
   @Operation(summary = "Mettre à jour la quantité d'une ligne de commande")
   @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/quantite/{idCommande}/{idLigneCommande}/{quantite}")
-  CommandeFournisseurDto updateQuantiteCommande(
+  CommandeFournisseurResponseDto updateQuantiteCommande(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande,
           @Parameter(description = "Nouvelle quantité") @PathVariable("quantite") BigDecimal quantite);
 
   @Operation(summary = "Changer le fournisseur d'une commande")
   @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/fournisseur/{idCommande}/{idFournisseur}")
-  CommandeFournisseurDto updateFournisseur(
+  CommandeFournisseurResponseDto updateFournisseur(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID du nouveau fournisseur") @PathVariable("idFournisseur") Integer idFournisseur);
 
   @Operation(summary = "Changer l'article d'une ligne de commande")
   @PatchMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/update/article/{idCommande}/{idLigneCommande}/{idArticle}")
-  CommandeFournisseurDto updateArticle(
+  CommandeFournisseurResponseDto updateArticle(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande,
           @Parameter(description = "ID du nouvel article") @PathVariable("idArticle") Integer idArticle);
 
   @Operation(summary = "Supprimer un article d'une commande")
   @DeleteMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/delete/article/{idCommande}/{idLigneCommande}")
-  CommandeFournisseurDto deleteArticle(
+  CommandeFournisseurResponseDto deleteArticle(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande,
           @Parameter(description = "ID de la ligne de commande") @PathVariable("idLigneCommande") Integer idLigneCommande);
 
   @Operation(summary = "Trouver une commande fournisseur par son ID")
   @GetMapping(FIND_COMMANDE_FOURNISSEUR_BY_ID_ENDPOINT)
-  CommandeFournisseurDto findById(
+  CommandeFournisseurResponseDto findById(
           @Parameter(description = "ID de la commande fournisseur") @PathVariable("idCommandeFournisseur") Integer id);
 
   @Operation(summary = "Trouver une commande fournisseur par son code")
   @GetMapping(FIND_COMMANDE_FOURNISSEUR_BY_CODE_ENDPOINT)
-  CommandeFournisseurDto findByCode(
+  CommandeFournisseurResponseDto findByCode(
           @Parameter(description = "Code de la commande fournisseur") @PathVariable("codeCommandeFournisseur") String code);
 
   @Operation(summary = "Lister toutes les commandes fournisseurs")
   @GetMapping(FIND_ALL_COMMANDE_FOURNISSEUR_ENDPOINT)
-  List<CommandeFournisseurDto> findAll();
+  List<CommandeFournisseurResponseDto> findAll();
 
   @Operation(summary = "Lister toutes les lignes de commande d'une commande fournisseur")
   @GetMapping(COMMANDE_FOURNISSEUR_ENDPOINT + "/lignesCommande/{idCommande}")
-  List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(
+  List<LigneCommandeFournisseurResponseDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(
           @Parameter(description = "ID de la commande") @PathVariable("idCommande") Integer idCommande);
 
   @Operation(summary = "Supprimer une commande fournisseur")

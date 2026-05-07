@@ -1,24 +1,26 @@
 package com.example.Gestion.de.stock.service;
 
 
-import com.example.Gestion.de.stock.dto.ChangerMotDePasseUtilisateurDto;
-import com.example.Gestion.de.stock.dto.UtilisateurDto;
+import com.example.Gestion.de.stock.dto.request.ChangerMotDePasseUtilisateurDto;
+import com.example.Gestion.de.stock.dto.request.UtilisateurRequestDto;
+import com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto;
 
 import java.util.List;
 
 public interface UtilisateurService {
 
-  UtilisateurDto save(UtilisateurDto dto);
+  UtilisateurResponseDto save(UtilisateurRequestDto dto);
 
-  UtilisateurDto findById(Integer id);
+  UtilisateurResponseDto findById(Integer id);
 
-  List<UtilisateurDto> findAll();
+  List<UtilisateurResponseDto> findAll();
 
   void delete(Integer id);
 
-  UtilisateurDto findByEmail(String email);
+  UtilisateurResponseDto findByEmail(String email);
 
-  UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto);
+  UtilisateurResponseDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto);
+  
+  UtilisateurResponseDto updateUser(Integer id, UtilisateurRequestDto dto);
 
-
-}
+} 

@@ -1,17 +1,19 @@
 package com.example.Gestion.de.stock.service;
 
-import com.example.Gestion.de.stock.dto.FournisseurDto;
+import com.example.Gestion.de.stock.dto.request.FournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.response.FournisseurResponseDto;
 
 import java.util.List;
 
 public interface FournisseurService {
 
-  FournisseurDto save(FournisseurDto dto);
+  FournisseurResponseDto save(FournisseurRequestDto dto);
 
-  FournisseurDto findById(Integer id);
+  FournisseurResponseDto findById(Integer id);
 
-  List<FournisseurDto> findAll();
+  List<FournisseurResponseDto> findAll();
 
   void delete(Integer id);
 
+  FournisseurResponseDto update(Integer id, FournisseurRequestDto dto);
 }

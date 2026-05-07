@@ -1,6 +1,6 @@
 package com.example.Gestion.de.stock.service.strategy;
 
-import com.example.Gestion.de.stock.dto.EntrepriseDto;
+import com.example.Gestion.de.stock.dto.response.EntrepriseResponseDto;
 import com.example.Gestion.de.stock.exception.ErrorCodes;
 import com.example.Gestion.de.stock.exception.InvalidOperationException;
 import com.example.Gestion.de.stock.service.EntrepriseService;
@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 
 @Service("entrepriseStrategy")
 @Slf4j
-public class SaveEntreprisePhoto implements Strategy<EntrepriseDto> {
+public class SaveEntreprisePhoto implements Strategy<EntrepriseResponseDto> {
 
   private final PhotoStorageService photoStorageService;
   private final EntrepriseService entrepriseService;
@@ -27,13 +27,13 @@ public class SaveEntreprisePhoto implements Strategy<EntrepriseDto> {
   }
 
   @Override
-  public EntrepriseDto savePhoto(Integer id, InputStream photo, String titre) {
-    EntrepriseDto entreprise = entrepriseService.findById(id);
+  public EntrepriseResponseDto savePhoto(Integer id, InputStream photo, String titre) {
+    EntrepriseResponseDto entreprise = entrepriseService.findById(id);
     String urlPhoto = photoStorageService.savePhoto(photo, titre);
     if (!StringUtils.hasLength(urlPhoto)) {
       throw new InvalidOperationException("Erreur lors de l'enregistrement de photo de l'entreprise", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
     }
-    entreprise.setPhoto(urlPhoto);
-    return entrepriseService.save(entreprise);
+    // Note: Cannot directly update ResponseDto, need to convert to RequestDto
+    throw new InvalidOperationException("Photo update for Entreprise needs refactoring", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
   }
 }

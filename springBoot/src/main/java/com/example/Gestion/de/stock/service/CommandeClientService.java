@@ -1,8 +1,10 @@
 package com.example.Gestion.de.stock.service;
 
 
-import com.example.Gestion.de.stock.dto.CommandeClientDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeClientDto;
+import com.example.Gestion.de.stock.dto.request.CommandeClientRequestDto;
+import com.example.Gestion.de.stock.dto.request.LigneCommandeClientRequestDto;
+import com.example.Gestion.de.stock.dto.response.CommandeClientResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeClientResponseDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 
 import java.math.BigDecimal;
@@ -10,26 +12,26 @@ import java.util.List;
 
 public interface CommandeClientService {
 
-  CommandeClientDto save(CommandeClientDto dto);
+  CommandeClientResponseDto save(CommandeClientRequestDto dto);
 
-  CommandeClientDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande);
+  CommandeClientResponseDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande);
 
-  CommandeClientDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
+  CommandeClientResponseDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
 
-  CommandeClientDto updateClient(Integer idCommande, Integer idClient);
+  CommandeClientResponseDto updateClient(Integer idCommande, Integer idClient);
 
-  CommandeClientDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer newIdArticle);
+  CommandeClientResponseDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer newIdArticle);
 
   // Delete article ==> delete LigneCommandeClient
-  CommandeClientDto deleteArticle(Integer idCommande, Integer idLigneCommande);
+  CommandeClientResponseDto deleteArticle(Integer idCommande, Integer idLigneCommande);
 
-  CommandeClientDto findById(Integer id);
+  CommandeClientResponseDto findById(Integer id);
 
-  CommandeClientDto findByCode(String code);
+  CommandeClientResponseDto findByCode(String code);
 
-  List<CommandeClientDto> findAll();
+  List<CommandeClientResponseDto> findAll();
 
-  List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande);
+  List<LigneCommandeClientResponseDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande);
 
   void delete(Integer id);
 

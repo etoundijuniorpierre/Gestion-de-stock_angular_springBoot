@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -23,7 +23,7 @@ public class CommandeFournisseur extends AbstractEntity {
   private String code;
 
   @Column(name = "datecommande")
-  private Instant dateCommande;
+  private LocalDate dateCommande;
 
   @Column(name = "etatcommande")
   @Enumerated(EnumType.STRING)

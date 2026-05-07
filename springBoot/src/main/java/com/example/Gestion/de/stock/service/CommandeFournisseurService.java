@@ -1,8 +1,10 @@
 package com.example.Gestion.de.stock.service;
 
 
-import com.example.Gestion.de.stock.dto.CommandeFournisseurDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeFournisseurDto;
+import com.example.Gestion.de.stock.dto.request.CommandeFournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.request.LigneCommandeFournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.response.CommandeFournisseurResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeFournisseurResponseDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 
 import java.math.BigDecimal;
@@ -10,26 +12,26 @@ import java.util.List;
 
 public interface CommandeFournisseurService {
 
-  CommandeFournisseurDto save(CommandeFournisseurDto dto);
+  CommandeFournisseurResponseDto save(CommandeFournisseurRequestDto dto);
 
-  CommandeFournisseurDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande);
+  CommandeFournisseurResponseDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande);
 
-  CommandeFournisseurDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
+  CommandeFournisseurResponseDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite);
 
-  CommandeFournisseurDto updateFournisseur(Integer idCommande, Integer idFournisseur);
+  CommandeFournisseurResponseDto updateFournisseur(Integer idCommande, Integer idFournisseur);
 
-  CommandeFournisseurDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle);
+  CommandeFournisseurResponseDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle);
 
   // Delete article ==> delete LigneCommandeFournisseur
-  CommandeFournisseurDto deleteArticle(Integer idCommande, Integer idLigneCommande);
+  CommandeFournisseurResponseDto deleteArticle(Integer idCommande, Integer idLigneCommande);
 
-  CommandeFournisseurDto findById(Integer id);
+  CommandeFournisseurResponseDto findById(Integer id);
 
-  CommandeFournisseurDto findByCode(String code);
+  CommandeFournisseurResponseDto findByCode(String code);
 
-  List<CommandeFournisseurDto> findAll();
+  List<CommandeFournisseurResponseDto> findAll();
 
-  List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande);
+  List<LigneCommandeFournisseurResponseDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande);
 
   void delete(Integer id);
 

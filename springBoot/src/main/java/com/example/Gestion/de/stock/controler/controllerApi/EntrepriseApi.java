@@ -2,7 +2,8 @@ package com.example.Gestion.de.stock.controler.controllerApi;
 
 import static com.example.Gestion.de.stock.utils.Constants.ENTREPRISE_ENDPOINT;
 
-import com.example.Gestion.de.stock.dto.EntrepriseDto;
+import com.example.Gestion.de.stock.dto.request.EntrepriseRequestDto;
+import com.example.Gestion.de.stock.dto.response.EntrepriseResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,25 +21,25 @@ public interface EntrepriseApi {
 
   @Operation(summary = "Créer une entreprise", description = "Permet d'enregistrer ou de modifier une entreprise")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Entreprise créée ou modifiée", content = @Content(schema = @Schema(implementation = EntrepriseDto.class)))
+          @ApiResponse(responseCode = "200", description = "Entreprise créée ou modifiée", content = @Content(schema = @Schema(implementation = EntrepriseResponseDto.class)))
   })
   @PostMapping(ENTREPRISE_ENDPOINT + "/create")
-  EntrepriseDto save(@RequestBody EntrepriseDto dto);
+  EntrepriseResponseDto save(@RequestBody EntrepriseRequestDto dto);
 
   @Operation(summary = "Rechercher une entreprise par ID", description = "Recherche une entreprise à partir de son ID")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Entreprise trouvée", content = @Content(schema = @Schema(implementation = EntrepriseDto.class))),
+          @ApiResponse(responseCode = "200", description = "Entreprise trouvée", content = @Content(schema = @Schema(implementation = EntrepriseResponseDto.class))),
           @ApiResponse(responseCode = "404", description = "Entreprise non trouvée")
   })
   @GetMapping(ENTREPRISE_ENDPOINT + "/{idEntreprise}")
-  EntrepriseDto findById(@Parameter(description = "ID de l'entreprise") @PathVariable("idEntreprise") Integer id);
+  EntrepriseResponseDto findById(@Parameter(description = "ID de l'entreprise") @PathVariable("idEntreprise") Integer id);
 
   @Operation(summary = "Lister toutes les entreprises", description = "Renvoie la liste de toutes les entreprises enregistrées")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Liste des entreprises", content = @Content(schema = @Schema(implementation = EntrepriseDto.class)))
+          @ApiResponse(responseCode = "200", description = "Liste des entreprises", content = @Content(schema = @Schema(implementation = EntrepriseResponseDto.class)))
   })
   @GetMapping(ENTREPRISE_ENDPOINT + "/all")
-  List<EntrepriseDto> findAll();
+  List<EntrepriseResponseDto> findAll();
 
   @Operation(summary = "Supprimer une entreprise", description = "Suppression d'une entreprise par son ID")
   @ApiResponses(value = {

@@ -1,6 +1,6 @@
 package com.example.Gestion.de.stock.service.strategy;
 
-import com.example.Gestion.de.stock.dto.ClientDto;
+import com.example.Gestion.de.stock.dto.response.ClientResponseDto;
 import com.example.Gestion.de.stock.exception.ErrorCodes;
 import com.example.Gestion.de.stock.exception.InvalidOperationException;
 import com.example.Gestion.de.stock.service.ClientService;
@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 
 @Service("clientStrategy")
 @Slf4j
-public class SaveClientPhoto implements Strategy<ClientDto> {
+public class SaveClientPhoto implements Strategy<ClientResponseDto> {
 
   private final PhotoStorageService photoStorageService;
   private final ClientService clientService;
@@ -26,13 +26,13 @@ public class SaveClientPhoto implements Strategy<ClientDto> {
   }
 
   @Override
-  public ClientDto savePhoto(Integer id, InputStream photo, String titre) {
-    ClientDto client = clientService.findById(id);
+  public ClientResponseDto savePhoto(Integer id, InputStream photo, String titre) {
+    ClientResponseDto client = clientService.findById(id);
     String urlPhoto = photoStorageService.savePhoto(photo, titre);
     if (!StringUtils.hasLength(urlPhoto)) {
       throw new InvalidOperationException("Erreur lors de l'enregistrement de photo du client", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
     }
-    client.setPhoto(urlPhoto);
-    return clientService.save(client);
+    // Note: Cannot directly update ResponseDto, need to convert to RequestDto
+    throw new InvalidOperationException("Photo update for Client needs refactoring", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
   }
 }

@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.example.Gestion.de.stock.controler.controllerApi.CommandeFournisseurApi;
-import com.example.Gestion.de.stock.dto.CommandeFournisseurDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeFournisseurDto;
+import com.example.Gestion.de.stock.dto.request.CommandeFournisseurRequestDto;
+import com.example.Gestion.de.stock.dto.response.CommandeFournisseurResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeFournisseurResponseDto;
 import com.example.Gestion.de.stock.model.enumElem.EtatCommande;
 import com.example.Gestion.de.stock.service.CommandeFournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,52 +24,52 @@ public class CommandeFournisseurController implements CommandeFournisseurApi {
   }
 
   @Override
-  public CommandeFournisseurDto save(CommandeFournisseurDto dto) {
+  public CommandeFournisseurResponseDto save(CommandeFournisseurRequestDto dto) {
     return commandeFournisseurService.save(dto);
   }
 
   @Override
-  public CommandeFournisseurDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande) {
+  public CommandeFournisseurResponseDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande) {
     return commandeFournisseurService.updateEtatCommande(idCommande, etatCommande);
   }
 
   @Override
-  public CommandeFournisseurDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite) {
+  public CommandeFournisseurResponseDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite) {
     return commandeFournisseurService.updateQuantiteCommande(idCommande, idLigneCommande, quantite);
   }
 
   @Override
-  public CommandeFournisseurDto updateFournisseur(Integer idCommande, Integer idFournisseur) {
+  public CommandeFournisseurResponseDto updateFournisseur(Integer idCommande, Integer idFournisseur) {
     return commandeFournisseurService.updateFournisseur(idCommande, idFournisseur);
   }
 
   @Override
-  public CommandeFournisseurDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
+  public CommandeFournisseurResponseDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
     return commandeFournisseurService.updateArticle(idCommande, idLigneCommande, idArticle);
   }
 
   @Override
-  public CommandeFournisseurDto deleteArticle(Integer idCommande, Integer idLigneCommande) {
+  public CommandeFournisseurResponseDto deleteArticle(Integer idCommande, Integer idLigneCommande) {
     return commandeFournisseurService.deleteArticle(idCommande, idLigneCommande);
   }
 
   @Override
-  public CommandeFournisseurDto findById(Integer id) {
+  public CommandeFournisseurResponseDto findById(Integer id) {
     return commandeFournisseurService.findById(id);
   }
 
   @Override
-  public CommandeFournisseurDto findByCode(String code) {
+  public CommandeFournisseurResponseDto findByCode(String code) {
     return commandeFournisseurService.findByCode(code);
   }
 
   @Override
-  public List<CommandeFournisseurDto> findAll() {
+  public List<CommandeFournisseurResponseDto> findAll() {
     return commandeFournisseurService.findAll();
   }
 
   @Override
-  public List<LigneCommandeFournisseurDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande) {
+  public List<LigneCommandeFournisseurResponseDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer idCommande) {
     return commandeFournisseurService.findAllLignesCommandesFournisseurByCommandeFournisseurId(idCommande);
   }
 

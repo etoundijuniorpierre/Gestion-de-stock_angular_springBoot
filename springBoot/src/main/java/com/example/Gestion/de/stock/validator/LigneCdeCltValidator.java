@@ -1,5 +1,7 @@
 package com.example.Gestion.de.stock.validator;
-import com.example.Gestion.de.stock.dto.LigneCommandeClientDto;
+
+import com.example.Gestion.de.stock.dto.request.LigneCommandeClientRequestDto;
+import com.example.Gestion.de.stock.model.entity.LigneCommandeClient;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,29 +9,57 @@ import java.util.List;
 
 public class LigneCdeCltValidator {
 
-  // TODO to be implemented
-  public static List<String> validate(LigneCommandeClientDto dto) {
+  public static List<String> validate(LigneCommandeClientRequestDto ligneCommandeClientDto) {
     List<String> errors = new ArrayList<>();
 
-    if(dto == null) {
+    if(ligneCommandeClientDto == null) {
       errors.add("Veuillez renseigner une quantité");
       errors.add("Veuillez renseigner un prix ");
       errors.add("Veuillez renseigner le client");
       errors.add("Veuillez renseigne l'article");
       return errors;
     }
-     if(dto.getQuantite()==null || dto.getQuantite().compareTo(BigDecimal.ONE)==0){
+     if(ligneCommandeClientDto.getQuantite()==null || ligneCommandeClientDto.getQuantite().compareTo(BigDecimal.ONE)==0){
        errors.add("Veuillez renseigner une quantite");
 
     }
-    if(dto.getPrixUnitaire()==null || dto.getPrixUnitaire().compareTo(BigDecimal.ONE)==0){
+    if(ligneCommandeClientDto.getPrixUnitaire()==null || ligneCommandeClientDto.getPrixUnitaire().compareTo(BigDecimal.ONE)==0){
       errors.add("Veuillez renseigner un prix");
 
     }
-    if(dto.getCommandeClient()==null || dto.getCommandeClient().getId() == null) {
+    if(ligneCommandeClientDto.getCommandeClient()==null) {
       errors.add("Veuillez renseigner une commande");
     }
-    if(dto.getArticle()==null || dto.getArticle().getId() == null) {
+    if(ligneCommandeClientDto.getIdArticle() == null) {
+      errors.add("Veuillez renseigner une commande");
+    }
+
+    return errors;
+  }
+
+  // TODO to be implemented
+  public static List<String> validateEntity(LigneCommandeClient ligneCommandeClient) {
+    List<String> errors = new ArrayList<>();
+
+    if(ligneCommandeClient == null) {
+      errors.add("Veuillez renseigner une quantité");
+      errors.add("Veuillez renseigner un prix ");
+      errors.add("Veuillez renseigner le client");
+      errors.add("Veuillez renseigne l'article");
+      return errors;
+    }
+     if(ligneCommandeClient.getQuantite()==null || ligneCommandeClient.getQuantite().compareTo(BigDecimal.ONE)==0){
+       errors.add("Veuillez renseigner une quantite");
+
+    }
+    if(ligneCommandeClient.getPrixUnitaire()==null || ligneCommandeClient.getPrixUnitaire().compareTo(BigDecimal.ONE)==0){
+      errors.add("Veuillez renseigner un prix");
+
+    }
+    if(ligneCommandeClient.getCommandeClient()==null || ligneCommandeClient.getCommandeClient().getId() == null) {
+      errors.add("Veuillez renseigner une commande");
+    }
+    if(ligneCommandeClient.getArticle()==null || ligneCommandeClient.getArticle().getId() == null) {
       errors.add("Veuillez renseigner une commande");
     }
 

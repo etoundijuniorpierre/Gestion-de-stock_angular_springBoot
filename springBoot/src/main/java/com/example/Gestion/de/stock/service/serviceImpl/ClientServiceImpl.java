@@ -1,15 +1,18 @@
 package com.example.Gestion.de.stock.service.serviceImpl;
 
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.Gestion.de.stock.dto.ClientDto;
+import com.example.Gestion.de.stock.dto.mapper.AdresseMapper;
+import com.example.Gestion.de.stock.dto.mapper.ClientMapper;
+import com.example.Gestion.de.stock.dto.request.ClientRequestDto;
+import com.example.Gestion.de.stock.dto.response.ClientResponseDto;
 import com.example.Gestion.de.stock.exception.EntityNotFoundException;
 import com.example.Gestion.de.stock.exception.ErrorCodes;
 import com.example.Gestion.de.stock.exception.InvalidEntityException;
 import com.example.Gestion.de.stock.exception.InvalidOperationException;
+import com.example.Gestion.de.stock.model.entity.Client;
 import com.example.Gestion.de.stock.model.entity.CommandeClient;
 import com.example.Gestion.de.stock.repository.ClientRepository;
 import com.example.Gestion.de.stock.repository.CommandeClientRepository;
@@ -33,28 +36,26 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public ClientDto save(ClientDto dto) {
+  public ClientResponseDto save(ClientRequestDto dto) {
     List<String> errors = ClientValidator.validate(dto);
     if (!errors.isEmpty()) {
       log.error("Client is not valid {}", dto);
       throw new InvalidEntityException("Le client n'est pas valide", ErrorCodes.CLIENT_NOT_VALID, errors);
     }
 
-    return ClientDto.fromEntity(
-        clientRepository.save(
-            ClientDto.toEntity(dto)
-        )
-    );
+    Client client = ClientMapper.toEntity(dto);
+    Client savedClient = clientRepository.save(client);
+    return ClientMapper.fromEntity(savedClient);
   }
 
   @Override
-  public ClientDto findById(Integer id) {
+  public ClientResponseDto findById(Integer id) {
     if (id == null) {
       log.error("Client ID is null");
       return null;
     }
     return clientRepository.findById(id)
-        .map(ClientDto::fromEntity)
+        .map(ClientMapper::fromEntity)
         .orElseThrow(() -> new EntityNotFoundException(
             "Aucun Client avec l'ID = " + id + " n' ete trouve dans la BDD",
             ErrorCodes.CLIENT_NOT_FOUND)
@@ -62,9 +63,9 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public List<ClientDto> findAll() {
+  public List<ClientResponseDto> findAll() {
     return clientRepository.findAll().stream()
-        .map(ClientDto::fromEntity)
+        .map(ClientMapper::fromEntity)
         .collect(Collectors.toList());
   }
 
@@ -80,5 +81,32 @@ public class ClientServiceImpl implements ClientService {
           ErrorCodes.CLIENT_ALREADY_IN_USE);
     }
     clientRepository.deleteById(id);
+  }
+
+  @Override
+  public ClientResponseDto update(Integer id, ClientRequestDto dto) {
+    if (id == null) {
+      log.error("Client ID is null");
+      throw new InvalidOperationException("Impossible de mettre à jour un client avec un ID NULL",
+              ErrorCodes.CLIENT_NOT_VALID);
+    }
+
+    Client existingClient = clientRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(
+                    "Aucun client avec l'ID = " + id + " n'a été trouvé dans la BDD",
+                    ErrorCodes.CLIENT_NOT_FOUND
+            ));
+
+    List<String> errors = ClientValidator.validate(dto);
+    if (!errors.isEmpty()) {
+      log.error("Client is not valid {}", dto);
+      throw new InvalidEntityException("Le client n'est pas valide", ErrorCodes.CLIENT_NOT_VALID, errors);
+    }
+
+    Client updatedClient = ClientMapper.toEntity(dto);
+    updatedClient.setId(id); // Preserve the ID
+    Client savedClient = clientRepository.save(updatedClient);
+
+    return ClientMapper.fromEntity(savedClient);
   }
 }

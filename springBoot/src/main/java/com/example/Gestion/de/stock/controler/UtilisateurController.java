@@ -3,8 +3,9 @@ package com.example.Gestion.de.stock.controler;
 import java.util.List;
 
 import com.example.Gestion.de.stock.controler.controllerApi.UtilisateurApi;
-import com.example.Gestion.de.stock.dto.ChangerMotDePasseUtilisateurDto;
-import com.example.Gestion.de.stock.dto.UtilisateurDto;
+import com.example.Gestion.de.stock.dto.request.ChangerMotDePasseUtilisateurDto;
+import com.example.Gestion.de.stock.dto.request.UtilisateurRequestDto;
+import com.example.Gestion.de.stock.dto.response.UtilisateurResponseDto;
 import com.example.Gestion.de.stock.service.UtilisateurService;
 import com.example.Gestion.de.stock.service.UnsplashApiService; // <--- NEW IMPORT for the dedicated Unsplash API service
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UtilisateurController implements UtilisateurApi {
   }
 
   @Override
-  public UtilisateurDto save(UtilisateurDto dto) {
+  public UtilisateurResponseDto save(UtilisateurRequestDto dto) {
     if (dto.getPhoto() == null || dto.getPhoto().isEmpty()) {
       // Use the dedicated Unsplash API service for fetching
       String randomPhotoUrl = unsplashApiService.getRandomPhotoUrl("profile"); // <--- METHOD CALL CHANGED
@@ -33,22 +34,27 @@ public class UtilisateurController implements UtilisateurApi {
   }
 
   @Override
-  public UtilisateurDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto) {
+  public UtilisateurResponseDto updateUser(Integer id, UtilisateurRequestDto dto) {
+    return utilisateurService.updateUser(id, dto);
+  }
+
+  @Override
+  public UtilisateurResponseDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto) {
     return utilisateurService.changerMotDePasse(dto);
   }
 
   @Override
-  public UtilisateurDto findById(Integer id) {
+  public UtilisateurResponseDto findById(Integer id) {
     return utilisateurService.findById(id);
   }
 
   @Override
-  public UtilisateurDto findByEmail(String email) {
+  public UtilisateurResponseDto findByEmail(String email) {
     return utilisateurService.findByEmail(email);
   }
 
   @Override
-  public List<UtilisateurDto> findAll() {
+  public List<UtilisateurResponseDto> findAll() {
     return utilisateurService.findAll();
   }
 

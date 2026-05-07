@@ -1,31 +1,31 @@
 package com.example.Gestion.de.stock.service;
 
-
-import com.example.Gestion.de.stock.dto.ArticleDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeClientDto;
-import com.example.Gestion.de.stock.dto.LigneCommandeFournisseurDto;
-import com.example.Gestion.de.stock.dto.LigneVenteDto;
-
+import com.example.Gestion.de.stock.dto.response.LigneCommandeClientResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneCommandeFournisseurResponseDto;
+import com.example.Gestion.de.stock.dto.response.LigneVenteResponseDto;
+import com.example.Gestion.de.stock.dto.request.ArticleRequestDto;
+import com.example.Gestion.de.stock.dto.response.ArticleResponseDto;
 import java.util.List;
 
 public interface ArticleService {
 
-  ArticleDto save(ArticleDto dto);
+  ArticleResponseDto save(ArticleRequestDto dto);
 
-  ArticleDto findById(Integer id);
+  ArticleResponseDto findById(Integer id);
 
-  ArticleDto findArticleByCodeArticle(String codeArticle);
+  ArticleResponseDto findArticleByCodeArticle(String codeArticle);
 
-  List<ArticleDto> findAll();
+  List<ArticleResponseDto> findAll();
 
-  List<LigneVenteDto> findHistoriqueVentes(Integer idArticle);
+  List<LigneVenteResponseDto> findHistoriqueVentes(Integer idArticle);
 
-  List<LigneCommandeClientDto> findHistoriqueCommandeClient(Integer idArticle);
+  List<LigneCommandeClientResponseDto> findHistoriqueCommandeClient(Integer idArticle);
 
-  List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle);
+  List<LigneCommandeFournisseurResponseDto> findHistoriqueCommandeFournisseur(Integer idArticle);
 
-  List<ArticleDto> findAllArticleByIdCategorie(Integer idCategorie);
+  List<ArticleResponseDto> findAllArticleByIdCategorie(Integer idCategorie);
 
   void deleteById(Integer id);
 
+  ArticleResponseDto update(Integer id, ArticleRequestDto dto);
 }

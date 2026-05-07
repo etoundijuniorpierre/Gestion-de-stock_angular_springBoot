@@ -2,7 +2,7 @@ package com.example.Gestion.de.stock.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @MappedSuperclass
@@ -13,18 +13,18 @@ public abstract class AbstractEntity {
     private Integer id;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
-    private Instant creationDate;
+    private LocalDate creationDate;
 
     @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    private LocalDate lastModifiedDate;
 
     @PrePersist
     public void prePersist() {
-        this.creationDate = Instant.now();
+        this.creationDate = LocalDate.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.lastModifiedDate = Instant.now();
+        this.lastModifiedDate = LocalDate.now();
     }
 }

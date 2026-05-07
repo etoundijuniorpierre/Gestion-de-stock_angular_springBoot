@@ -4,11 +4,14 @@ package com.example.Gestion.de.stock.service.serviceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.Gestion.de.stock.dto.CategorieDto;
+import com.example.Gestion.de.stock.dto.mapper.CategorieMapper;
+import com.example.Gestion.de.stock.dto.request.CategorieRequestDto;
+import com.example.Gestion.de.stock.dto.response.CategorieResponseDto;
 import com.example.Gestion.de.stock.exception.EntityNotFoundException;
 import com.example.Gestion.de.stock.exception.InvalidEntityException;
 import com.example.Gestion.de.stock.exception.InvalidOperationException;
 import com.example.Gestion.de.stock.model.entity.Article;
+import com.example.Gestion.de.stock.model.entity.Categorie;
 import com.example.Gestion.de.stock.repository.ArticleRepository;
 import com.example.Gestion.de.stock.repository.CategorieRepository;
 import com.example.Gestion.de.stock.service.CategorieService;
@@ -34,25 +37,25 @@ public class CategorieServiceImpl implements CategorieService {
   }
 
   @Override
-  public CategorieDto save(CategorieDto dto) {
+  public CategorieResponseDto save(CategorieRequestDto dto) {
     List<String> errors = CategorieValidator.validate(dto);
     if (!errors.isEmpty()) {
       log.error("Article is not valid {}", dto);
       throw new InvalidEntityException("La categorie n'est pas valide", ErrorCodes.CATEGORIE_NOT_VALID, errors);
     }
-    return CategorieDto.fromEntity(
-        categorieRepository.save(CategorieDto.toEntity(dto))
-    );
+    Categorie categorie = CategorieMapper.toEntity(dto);
+    Categorie savedCategorie = categorieRepository.save(categorie);
+    return CategorieMapper.fromEntity(savedCategorie);
   }
 
   @Override
-  public CategorieDto findById(Integer id) {
+  public CategorieResponseDto findById(Integer id) {
     if (id == null) {
       log.error("Categorie ID is null");
       return null;
     }
     return categorieRepository.findById(id)
-            .map(CategorieDto::fromEntity)
+            .map(CategorieMapper::fromEntity)
             .orElseThrow(() -> new EntityNotFoundException(
                     "Aucune categorie avec l'ID = 0 n' ete trouve dans la BDD",
                     ErrorCodes.CATEGORIE_NOT_VALID
@@ -60,13 +63,13 @@ public class CategorieServiceImpl implements CategorieService {
   }
 
 
-  public CategorieDto findCategorieByCode(String code) {
+  public CategorieResponseDto findCategorieByCode(String code) {
     if (!StringUtils.hasLength(code)) {
       log.error("Categorie CODE is null");
       return null;
     }
     return categorieRepository.findCategorieByCode(code)
-        .map(CategorieDto::fromEntity)
+        .map(CategorieMapper::fromEntity)
         .orElseThrow(() -> new EntityNotFoundException(
             "Aucune categorie avec le CODE = " + code + " n' ete trouve dans la BDD",
             ErrorCodes.CATEGORIE_NOT_FOUND)
@@ -74,9 +77,9 @@ public class CategorieServiceImpl implements CategorieService {
   }
 
   @Override
-  public List<CategorieDto> findAll() {
+  public List<CategorieResponseDto> findAll() {
     return categorieRepository.findAll().stream()
-        .map(CategorieDto::fromEntity)
+        .map(CategorieMapper::fromEntity)
         .collect(Collectors.toList());
   }
 

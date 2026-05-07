@@ -1,18 +1,20 @@
 package com.example.Gestion.de.stock.service;
 
 
-import com.example.Gestion.de.stock.dto.ClientDto;
+import com.example.Gestion.de.stock.dto.request.ClientRequestDto;
+import com.example.Gestion.de.stock.dto.response.ClientResponseDto;
 
 import java.util.List;
 
 public interface ClientService {
 
-  ClientDto save(ClientDto dto);
+  ClientResponseDto save(ClientRequestDto dto);
 
-  ClientDto findById(Integer id);
+  ClientResponseDto findById(Integer id);
 
-  List<ClientDto> findAll();
+  List<ClientResponseDto> findAll();
 
   void delete(Integer id);
 
+    ClientResponseDto update(Integer id, ClientRequestDto dto);
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -22,7 +22,7 @@ public class Ventes extends AbstractEntity {
   private String code;
 
   @Column(name = "datevente")
-  private Instant dateVente;
+  private LocalDate dateVente;
 
   @Column(name = "commentaire")
   private String commentaire;

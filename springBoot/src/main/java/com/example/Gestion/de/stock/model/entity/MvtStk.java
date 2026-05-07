@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -22,7 +22,7 @@ import java.util.List;
 public class MvtStk extends AbstractEntity {
 
   @Column(name = "datemvt")
-  private Instant dateMvt;
+  private LocalDate dateMvt;
 
   @Column(name = "quantite")
   private BigDecimal quantite;

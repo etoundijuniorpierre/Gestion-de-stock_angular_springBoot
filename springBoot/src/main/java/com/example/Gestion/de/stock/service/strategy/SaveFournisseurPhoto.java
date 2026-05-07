@@ -2,7 +2,7 @@ package com.example.Gestion.de.stock.service.strategy;
 
 import java.io.InputStream;
 
-import com.example.Gestion.de.stock.dto.FournisseurDto;
+import com.example.Gestion.de.stock.dto.response.FournisseurResponseDto;
 import com.example.Gestion.de.stock.exception.ErrorCodes;
 import com.example.Gestion.de.stock.exception.InvalidOperationException;
 import com.example.Gestion.de.stock.service.FournisseurService;
@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 
 @Service("fournisseurStrategy")
 @Slf4j
-public class SaveFournisseurPhoto implements Strategy<FournisseurDto> {
+public class SaveFournisseurPhoto implements Strategy<FournisseurResponseDto> {
 
   private final PhotoStorageService photoStorageService;
   private final FournisseurService fournisseurService;
@@ -30,13 +30,13 @@ public class SaveFournisseurPhoto implements Strategy<FournisseurDto> {
 
 
   @Override
-  public FournisseurDto savePhoto(Integer id, InputStream photo, String titre) {
-    FournisseurDto fournisseur = fournisseurService.findById(id);
+  public FournisseurResponseDto savePhoto(Integer id, InputStream photo, String titre) {
+    FournisseurResponseDto fournisseur = fournisseurService.findById(id);
     String urlPhoto = photoStorageService.savePhoto(photo, titre);
     if (!StringUtils.hasLength(urlPhoto)) {
       throw new InvalidOperationException("Erreur lors de l'enregistrement de photo du fournisseur", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
     }
-    fournisseur.setPhoto(urlPhoto);
-    return fournisseurService.save(fournisseur);
+    // Note: Cannot directly update ResponseDto, need to convert to RequestDto
+    throw new InvalidOperationException("Photo update for Fournisseur needs refactoring", ErrorCodes.UPDATE_PHOTO_EXCEPTION);
   }
 }

@@ -4,7 +4,8 @@ package com.example.Gestion.de.stock.controler;
 import java.util.List;
 
 import com.example.Gestion.de.stock.controler.controllerApi.VentesApi;
-import com.example.Gestion.de.stock.dto.VentesDto;
+import com.example.Gestion.de.stock.dto.request.VentesRequestDto;
+import com.example.Gestion.de.stock.dto.response.VentesResponseDto;
 import com.example.Gestion.de.stock.service.VentesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,22 +21,22 @@ public class VentesController implements VentesApi {
   }
 
   @Override
-  public VentesDto save(VentesDto dto) {
+  public VentesResponseDto save(VentesRequestDto dto) {
     return ventesService.save(dto);
   }
 
   @Override
-  public VentesDto findById(Integer id) {
+  public VentesResponseDto findById(Integer id) {
     return ventesService.findById(id);
   }
 
   @Override
-  public VentesDto findByCode(String code) {
+  public VentesResponseDto findByCode(String code) {
     return ventesService.findByCode(code);
   }
 
   @Override
-  public List<VentesDto> findAll() {
+  public List<VentesResponseDto> findAll() {
     return ventesService.findAll();
   }
 
