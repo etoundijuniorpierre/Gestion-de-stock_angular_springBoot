@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { GestionDesArticlesService } from '../../../gs-api/src/api/gestionDesArticles.service';
 import { ClientsService } from '../../../gs-api/src/api/clients.service';
 import { FournisseurService } from '../../../gs-api/src/api/fournisseur.service';
@@ -22,7 +23,11 @@ export interface DashboardStats {
 })
 export class DashboardService {
 
+  /** Endpoint d'agrégation côté serveur (parité avec la version React). */
+  private readonly statsUrl = '/api/gestionDeStock/statistiques/summary';
+
   constructor(
+    private http: HttpClient,
     private articlesService: GestionDesArticlesService,
     private clientsService: ClientsService,
     private fournisseursService: FournisseurService,
@@ -32,6 +37,27 @@ export class DashboardService {
   ) {}
 
   getStatistiques(): Observable<DashboardStats> {
+    // Priorité à l'agrégation serveur (1 seul appel, comptage exact via COUNT SQL).
+    // Repli sur l'agrégation client historique si l'endpoint est absent
+    // (ex. backend pas encore reconstruit) pour ne jamais casser le dashboard.
+    return this.http.get<DashboardStats>(this.statsUrl).pipe(
+      map((data) => ({
+        totalArticles: data?.totalArticles ?? 0,
+        totalClients: data?.totalClients ?? 0,
+        totalFournisseurs: data?.totalFournisseurs ?? 0,
+        totalCommandesClients: data?.totalCommandesClients ?? 0,
+        totalCommandesFournisseurs: data?.totalCommandesFournisseurs ?? 0,
+        totalVentes: data?.totalVentes ?? 0
+      })),
+      catchError((err) => {
+        console.warn('⚠️ [Dashboard] Endpoint /statistiques/summary indisponible, repli sur l\'agrégation client:', err?.status);
+        return this.getStatistiquesFallback();
+      })
+    );
+  }
+
+  /** Agrégation côté client (6 appels) — repli si l'endpoint serveur est absent. */
+  private getStatistiquesFallback(): Observable<DashboardStats> {
     return forkJoin({
       articles: this.articlesService.findAll8().pipe(catchError(() => of([]))),
       clients: this.clientsService.findAll6().pipe(catchError(() => of([]))),

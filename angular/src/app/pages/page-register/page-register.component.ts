@@ -133,7 +133,12 @@ export class PageRegisterComponent implements OnInit {
           
           // Stocker l'origine pour la redirection
           localStorage.setItem('origin', 'inscription');
-          
+
+          // Forcer le changement de mot de passe : le AuthGuard redirigera vers
+          // /dashboard/changer-mot-passe sur toute route tant que ce flag est actif
+          // (parité avec la version React : register.jsx -> mustChangePassword = 'true')
+          localStorage.setItem('mustChangePassword', 'true');
+
           // Rediriger vers le changement de mot de passe
           this.router.navigate(['/dashboard', 'changer-mot-passe']);
         } else {

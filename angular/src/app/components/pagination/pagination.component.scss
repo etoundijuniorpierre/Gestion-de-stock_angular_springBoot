@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "../../styles/_variables" as *;
+@use "../../../styles/_variables" as *;
 
 // Using global variables from styles.scss
 
@@ -12,7 +12,16 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 
   &__btn {
-    @extend .btn;
+    // Style de base bouton (équivalent .btn Bootstrap, mais self-contained :
+    // @extend ne peut pas cibler une classe globale depuis un style scopé).
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
     border-radius: 0;
     border: 1px solid $border-color;
     margin-left: -1px;
