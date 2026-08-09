@@ -1,5 +1,7 @@
-@use 'sass:color';
-@use '../../../styles.scss' as *;
+@use "sass:color";
+@use "../../styles/_variables" as *;
+
+// Using global variables from styles.scss
 
 .pagination {
   display: inline-flex;
@@ -17,7 +19,7 @@
     padding: 0.5rem 0.75rem;
     font-size: $font-size-sm;
     background-color: $white;
-    color: $text-color;
+    color: $dark-color;
 
     &:first-child {
       margin-left: 0;

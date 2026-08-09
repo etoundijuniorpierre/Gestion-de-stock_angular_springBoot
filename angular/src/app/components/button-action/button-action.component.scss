@@ -1,4 +1,7 @@
-@use '../../../styles.scss' as *;
+@use "sass:color";
+@use "../../styles/_variables" as *;
+
+// Using global variables from styles.scss
 
 // Composant Button Action - Styles améliorés
 .d-flex {

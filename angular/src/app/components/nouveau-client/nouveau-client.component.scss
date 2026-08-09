@@ -1,4 +1,7 @@
-@use '../../../styles.scss' as *;
+@use "sass:color";
+@use "../../styles/_variables" as *;
+
+// Using global variables from styles.scss
 
 // Composant Nouveau Client - Styles améliorés et standardisés
 .client-form-container {

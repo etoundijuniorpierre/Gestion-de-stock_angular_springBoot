@@ -1,5 +1,7 @@
-@use 'sass:color';
-@use '../../../styles.scss' as *;
+@use "sass:color";
+@use "../../styles/_variables" as *;
+
+// Using global variables from styles.scss
 
 // Styles pour le composant Header - Améliorés
 .header-container {

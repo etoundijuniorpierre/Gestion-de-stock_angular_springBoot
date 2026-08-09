@@ -13,7 +13,7 @@ export class ApplicationGuardService implements CanActivate {
   ) { }
 
   canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
+    if (this.authService.isLoggedIn()) {
       return true; // Permettre l'accès si authentifié
     } else {
       // Rediriger vers login seulement si pas authentifié

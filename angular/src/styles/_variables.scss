@@ -1,0 +1,95 @@
+// Import SASS modules
+@use "sass:color";
+
+// Import Bootstrap mixins
+@use "bootstrap/scss/mixins" as *;
+
+// Simple transition mixin
+@mixin transition($properties: all, $duration: 0.3s, $timing: ease) {
+  transition: $properties $duration $timing;
+}
+
+// Simple box-shadow mixin
+@mixin box-shadow($shadow) {
+  box-shadow: $shadow;
+}
+
+// Variables globales - Palette vive et moderne
+$white: #ffffff; // Blanc pur
+$primary-color: #6366f1; // Bleu vif moderne (Indigo)
+$primary-hover: #4f46e5;
+$primary-light: #818cf8;
+$primary-dark: #4338ca;
+
+$success-color: #10b981; // Vert émeraude vif
+$success-hover: #059669;
+$success-light: #34d399;
+$success-dark: #047857;
+
+$danger-color: #ef4444; // Rouge vif
+$danger-hover: #dc2626;
+$danger-light: #f87171;
+$danger-dark: #b91c1c;
+
+$warning-color: #f59e0b; // Orange vif
+$warning-hover: #d97706;
+$warning-light: #fbbf24;
+$warning-dark: #b45309;
+
+$info-color: #06b6d4; // Cyan vif
+$info-hover: #0891b2;
+$info-light: #22d3ee;
+$info-dark: #0e7490;
+
+$accent-color: #8b5cf6; // Violet vif
+$accent-hover: #7c3aed;
+$accent-light: #a78bfa;
+$accent-dark: #6d28d9;
+
+// Couleurs neutres
+$dark-color: #1f2937; // Gris foncé moderne
+$light-color: #f9fafb; // Blanc cassé moderne
+$secondary-color: #6b7280; // Gris moderne
+$border-color: #e5e7eb; // Gris clair moderne
+$text-muted: #9ca3af;
+$background-light: #ffffff;
+$background-dark: #111827;
+$shadow-color: rgba(0, 0, 0, 0.15);
+
+// Couleurs additionnelles pour un thème plus riche
+$gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
+$gradient-success: linear-gradient(135deg, #10b981, #06b6d4);
+$gradient-danger: linear-gradient(135deg, #ef4444, #f59e0b);
+$gradient-warning: linear-gradient(135deg, #f59e0b, #fbbf24);
+$gradient-info: linear-gradient(135deg, #06b6d4, #3b82f6);
+
+// Espacements standardisés
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+
+// Bordures et coins
+$border-radius: 0.5rem; // 8px (default)
+$border-radius-sm: 0.375rem; // 6px
+$border-radius-md: 0.5rem; // 8px
+$border-radius-lg: 0.75rem; // 12px
+$border-radius-xl: 1rem; // 16px
+
+// Tailles de police
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875rem; // 14px
+$font-size-md: 1rem; // 16px
+$font-size-lg: 1.25rem; // 20px
+$font-size-xl: 1.5rem; // 24px
+
+// Hauteurs standard
+$height-sm: 32px;
+$height-md: 40px;
+$height-lg: 48px;
+
+// Ombres
+$shadow-sm: 0 2px 4px $shadow-color;
+$shadow-md: 0 4px 8px $shadow-color;
+$shadow-lg: 0 8px 16px $shadow-color;

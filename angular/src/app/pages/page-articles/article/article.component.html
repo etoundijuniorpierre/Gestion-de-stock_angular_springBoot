@@ -57,7 +57,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let article of getCurrentPageArticles()">
+          <tr *ngFor="let article of getCurrentPageArticles">
             <td>
               <div class="article-photo">
                 <img 
@@ -83,7 +83,7 @@
               <button 
                 type="button" 
                 class="btn btn-sm btn-danger"
-                (click)="supprimerArticle(article.id)"
+                (click)="supprimerArticle(article.id!)"
                 title="Supprimer">
                 <i class="fas fa-trash"></i>
               </button>

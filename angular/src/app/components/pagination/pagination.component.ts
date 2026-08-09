@@ -9,19 +9,19 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class PaginationComponent {
-  @Input() currentPage = 1;
-  @Input() totalPages = 1;
-  @Input() showInfo = true;
-  @Input() showFirstLast = true;
-  @Input() maxVisiblePages = 5;
-  @Input() itemsPerPage = 15;
+  @Input() currentPage: number = 1;
+  @Input() totalPages: number = 1;
+  @Input() showInfo: boolean = true;
+  @Input() showFirstLast: boolean = true;
+  @Input() maxVisiblePages: number = 5;
+  @Input() itemsPerPage: number = 15;
   
   @Output() pageChange = new EventEmitter<number>();
   
-  isChangingPage = false;
+  public isChangingPage: boolean = false;
 
   // Calculer les pages visibles
-  getVisiblePages(): number[] {
+  public getVisiblePages(): number[] {
     const pages: number[] = [];
     const half = Math.floor(this.maxVisiblePages / 2);
     let start = Math.max(1, this.currentPage - half);
@@ -37,7 +37,7 @@ export class PaginationComponent {
     return pages;
   }
 
-  goToPage(page: number): void {
+  public goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
       this.isChangingPage = true;
       setTimeout(() => {
@@ -47,30 +47,31 @@ export class PaginationComponent {
     }
   }
 
-  goToFirstPage(): void {
+  public goToFirstPage(): void {
     this.goToPage(1);
   }
 
-  goToPreviousPage(): void {
+  public goToPreviousPage(): void {
     this.goToPage(this.currentPage - 1);
   }
 
-  goToNextPage(): void {
+  public goToNextPage(): void {
     this.goToPage(this.currentPage + 1);
   }
 
-  goToLastPage(): void {
+  public goToLastPage(): void {
     this.goToPage(this.totalPages);
   }
 
-  isFirstPage(): boolean {
+  public isFirstPage(): boolean {
     return this.currentPage === 1;
   }
 
-  isLastPage(): boolean {
+  public isLastPage(): boolean {
     return this.currentPage === this.totalPages;
   }
 
-  hasMultiplePages(): boolean {
+  public hasMultiplePages(): boolean {
     return this.totalPages > 1;
   }
+}

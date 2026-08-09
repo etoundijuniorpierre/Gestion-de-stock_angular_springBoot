@@ -1,4 +1,7 @@
-@import "../../../styles";
+@use "sass:color";
+@use "../../../styles/_variables" as *;
+
+// Using global variables from styles.scss
 
 .article-container {
   .article-header {

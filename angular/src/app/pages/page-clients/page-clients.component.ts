@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CltfrsService } from '../../services/cltfrs/cltfrs.service';
 import { DetailCltComponent } from '../../components/detail-clt/detail-clt.component';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { ButtonActionComponent } from '../../components/button-action/button-action.component';
 import { SearchService } from '../../services/search/search.service';
 import { Subscription } from 'rxjs';
 
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './page-clients.component.html',
   styleUrls: ['./page-clients.component.scss'],
   standalone: true,
-  imports: [CommonModule, DetailCltComponent, PaginationComponent]
+  imports: [CommonModule, DetailCltComponent, PaginationComponent, ButtonActionComponent]
 })
 export class PageClientsComponent implements OnInit, OnDestroy {
   listClient: Array<any> = [];
