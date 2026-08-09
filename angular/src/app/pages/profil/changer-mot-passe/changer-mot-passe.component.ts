@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-changer-mot-passe',
@@ -23,11 +24,11 @@ export class ChangerMotPasseComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    // Vérifier si l'utilisateur est authentifié
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
       return;
@@ -35,7 +36,7 @@ export class ChangerMotPasseComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.currentPassword || !this.newPassword || !this.confirmPassword) {
+    if (!this.newPassword || !this.confirmPassword) {
       this.message = { type: 'error', text: 'Veuillez remplir tous les champs' };
       return;
     }
@@ -45,28 +46,42 @@ export class ChangerMotPasseComponent implements OnInit {
       return;
     }
 
-    if (this.newPassword.length < 6) {
-      this.message = { type: 'error', text: 'Le mot de passe doit contenir au moins 6 caractères' };
-      return;
+    const connectedUserStr = localStorage.getItem('connectedUser');
+    let userId: number | undefined;
+    if (connectedUserStr) {
+      try {
+        const u = JSON.parse(connectedUserStr);
+        userId = u.id;
+      } catch (e) {}
     }
+
+    const dto = {
+      id: userId,
+      motDePasse: this.newPassword,
+      confirmMotDePasse: this.confirmPassword
+    };
 
     this.isLoading = true;
     this.message = { type: '', text: '' };
 
-    // TODO: Implémenter l'appel API pour changer le mot de passe
-    // Pour l'instant, nous simulons une réussite
-    setTimeout(() => {
-      this.isLoading = false;
-      this.message = { type: 'success', text: 'Mot de passe changé avec succès!' };
-      
-      // Supprimer l'indicateur de changement de mot de passe
-      localStorage.removeItem('mustChangePassword');
-      
-      // Rediriger vers le dashboard après 2 secondes
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']);
-      }, 2000);
-    }, 1500);
+    this.userService.changerMotDePasse(dto).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (res && res.error) {
+          this.message = { type: 'error', text: 'Erreur lors de la modification du mot de passe' };
+        } else {
+          this.message = { type: 'success', text: 'Mot de passe changé avec succès !' };
+          localStorage.removeItem('mustChangePassword');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard', 'vue-ensemble']);
+          }, 2000);
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.message = { type: 'error', text: err.error?.message || 'Erreur lors du changement de mot de passe' };
+      }
+    });
   }
 
   togglePasswordVisibility(field: string): void {
@@ -84,6 +99,6 @@ export class ChangerMotPasseComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard', 'vue-ensemble']);
   }
 }

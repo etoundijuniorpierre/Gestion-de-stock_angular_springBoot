@@ -1,0 +1,28 @@
+<div *ngIf="isOpen" class="confirmation-popup-overlay" (click)="onBackdropClick($event)">
+  <div class="confirmation-popup">
+    <div class="confirmation-popup-header">
+      <h5 class="confirmation-popup-title">
+        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+        {{ title }}
+      </h5>
+      <button type="button" class="btn-close" (click)="onCancel()" aria-label="Fermer"></button>
+    </div>
+    
+    <div class="confirmation-popup-body">
+      <p class="confirmation-popup-message mb-0">
+        {{ message }}
+      </p>
+    </div>
+    
+    <div class="confirmation-popup-footer">
+      <button type="button" class="btn {{ confirmButtonClass }}" (click)="onConfirm()">
+        <i class="fas fa-check me-1"></i>
+        {{ confirmText }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        <i class="fas fa-times me-1"></i>
+        {{ cancelText }}
+      </button>
+    </div>
+  </div>
+</div>

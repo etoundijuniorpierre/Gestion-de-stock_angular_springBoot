@@ -135,7 +135,7 @@ export class PageRegisterComponent implements OnInit {
           localStorage.setItem('origin', 'inscription');
           
           // Rediriger vers le changement de mot de passe
-          this.router.navigate(['/dashboard', 'changermotdepasse']);
+          this.router.navigate(['/dashboard', 'changer-mot-passe']);
         } else {
           this.errorsMsg.push('Erreur lors de la connexion automatique');
         }

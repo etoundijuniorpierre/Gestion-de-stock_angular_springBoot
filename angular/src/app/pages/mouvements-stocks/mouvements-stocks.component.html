@@ -1,69 +1,72 @@
 <div class="col mouvements-stocks">
-  <div class="row m-3">
+  <div class="row m-3 align-items-center">
     <div class="col-md-8 p-0">
-      <h1>Mouvements du stock</h1>
+      <h1 class="h3 mb-0">
+        <i class="fas fa-warehouse text-primary me-2"></i>
+        Mouvements du stock
+      </h1>
     </div>
-    <div class="col-md-4 p-0 text-right">
+    <div class="col-md-4 p-0 text-end">
       <app-button-action
-      [isImporterVisible]="false"
-      [isNouveauVisible]="false"
+        [isImporterVisible]="false"
+        [isNouveauVisible]="false"
       ></app-button-action>
     </div>
   </div>
-  <!-- Sélection d'article -->
-  <div class="row m-3">
-    <div class="col-md-6">
-      <label for="articleSelect" class="form-label">Sélectionner un article</label>
-      <select class="form-control" id="articleSelect" (change)="onArticleSelect($any($event.target).selectedOptions[0]._value)">
-        <option value="">-- Choisir un article --</option>
-        <option *ngFor="let article of articles" [value]="article">
-          {{ article.codeArticle }} - {{ article.designation }}
-        </option>
-      </select>
-    </div>
-    <div class="col-md-6" *ngIf="selectedArticle">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title">Stock actuel</h6>
-          <p class="card-text">
-            <strong>Article:</strong> {{ selectedArticle.designation }}<br>
-            <strong>Stock réel:</strong> <span class="badge bg-primary">{{ stockReel }}</span>
-          </p>
-        </div>
-      </div>
-    </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger mx-3">
+    <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMsg }}
   </div>
-  <div class="col">
+
+  <div *ngIf="isLoading" class="text-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement des mouvements de stock...</span>
+    </div>
+    <p class="text-muted mt-2">Récupération des articles et de leur historique de stock...</p>
+  </div>
+
+  <div *ngIf="!isLoading && articles.length === 0" class="alert alert-info mx-3">
+    <i class="fas fa-info-circle me-2"></i> Aucun mouvement de stock trouvé.
+  </div>
+
+  <div *ngIf="!isLoading && articles.length > 0 && filteredArticles.length === 0" class="alert alert-warning mx-3">
+    <i class="fas fa-search me-2"></i> Aucun mouvement ne correspond à votre recherche "{{ searchTerm }}".
+  </div>
+
+  <div class="col mx-3" *ngIf="!isLoading && getCurrentPageArticles.length > 0">
     <div class="accordion" id="mvtStkDetails">
-      <div class="card">
-        <div class="card-body" id="headingOne">
-          <button class="btn btn-block text-left" type="button" 
-                  (click)="toggleCollapseOne()" 
-                  [attr.aria-expanded]="getAriaExpandedOne()" 
-                  aria-controls="collapseOne">
-            <app-detail-mvt-stk-article 
-              *ngIf="selectedArticle"
-              [article]="selectedArticle" 
-              [stockActuel]="stockReel">
-            </app-detail-mvt-stk-article>
-          </button>
-        </div>
-        <div [id]="'collapseOne'" 
-             [class]="getCollapseOneClass()" 
-             aria-labelledby="headingOne" 
-             data-parent="#mvtStkDetails" 
-             style="max-height: 300px; overflow-y: scroll;">
-          <div class="card-body">
-            <div *ngIf="isLoading" class="text-center">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Chargement...</span>
+      <div class="card mb-3 shadow-sm border-0" *ngFor="let article of getCurrentPageArticles">
+        <div class="card-body p-0">
+          <button 
+            class="btn btn-block text-start w-100 p-0 border-0 bg-transparent" 
+            type="button" 
+            (click)="toggleCollapse(article.id)"
+          >
+            <div class="d-flex justify-content-between align-items-center p-3">
+              <app-detail-mvt-stk-article 
+                [article]="article" 
+                [stockActuel]="article.stockActuel || 0">
+              </app-detail-mvt-stk-article>
+              <div class="ms-2">
+                <i class="fas fa-chevron-down" [class.rotated]="isExpanded(article.id)"></i>
               </div>
             </div>
-            <div *ngIf="!isLoading && mouvementsStock.length === 0" class="text-center">
-              <p>Aucun mouvement de stock trouvé pour cet article.</p>
+          </button>
+        </div>
+        
+        <div [class]="isExpanded(article.id) ? 'collapse show' : 'collapse'">
+          <div class="card-body bg-light border-top">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-bold mb-0 text-secondary">Historique des mouvements</h6>
+              <span class="badge bg-secondary">{{ article.mouvements?.length || 0 }} mouvement(s)</span>
             </div>
+
+            <div *ngIf="!article.mouvements || article.mouvements.length === 0" class="text-muted small p-2 text-center">
+              Aucun mouvement répertorié pour cet article.
+            </div>
+
             <app-detail-mvt-stk 
-              *ngFor="let mouvement of mouvementsStock" 
+              *ngFor="let mouvement of article.mouvements" 
               [mouvement]="mouvement">
             </app-detail-mvt-stk>
           </div>
@@ -71,9 +74,14 @@
       </div>
     </div>
   </div>
-  <div class="row mb-3">
-    <div class=" col-md-12 text-center">
-      <app-pagination></app-pagination>
+
+  <div class="row mb-3" *ngIf="filteredArticles.length > 0">
+    <div class="col-md-12 text-center">
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
     </div>
   </div>
 </div>

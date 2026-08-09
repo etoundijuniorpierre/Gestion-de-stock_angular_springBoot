@@ -78,4 +78,20 @@ export class ArticleService {
       })
     );
   }
+
+  findAllArticlesByCategory(idCategory: number): Observable<ArticleDto[]> {
+    return this.gestionDesArticlesService.findAllArticleByIdCategorie(idCategory).pipe(
+      map((response: any) => {
+        if (Array.isArray(response)) {
+          return response;
+        }
+        return response?.content || response?.data || [response] || [];
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des articles par catégorie:', error);
+        return of([]);
+      })
+    );
+  }
 }
+

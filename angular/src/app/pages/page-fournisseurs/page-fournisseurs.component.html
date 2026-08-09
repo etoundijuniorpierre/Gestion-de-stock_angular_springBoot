@@ -2,24 +2,52 @@
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Gestion des Fournisseurs</h1>
+        <h1 class="h3">
+          <i class="fas fa-truck text-primary me-2"></i>
+          Liste des fournisseurs
+        </h1>
         <button class="btn btn-primary" (click)="nouveauFournisseur()">
-          <i class="fas fa-plus"></i> Nouveau Fournisseur
+          <i class="fas fa-plus me-1"></i> Nouveau Fournisseur
         </button>
       </div>
 
+      <div *ngIf="errorMsg" class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMsg }}
+      </div>
+
+      <div *ngIf="loading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <!-- Message si aucun fournisseur -->
+      <div class="alert alert-info" *ngIf="!loading && listFournisseurs.length === 0">
+        <i class="fas fa-info-circle me-2"></i> Aucun fournisseur n'a encore été enregistré.
+      </div>
+
+      <div class="alert alert-warning" *ngIf="!loading && listFournisseurs.length > 0 && filteredFournisseurs.length === 0">
+        <i class="fas fa-search me-2"></i> Aucun fournisseur ne correspond à votre recherche "{{ searchTerm }}".
+      </div>
+
       <!-- Liste des fournisseurs -->
-      <div class="col m-3" *ngIf="listFournisseurs.length">
+      <div class="col my-3" *ngIf="!loading && getCurrentPageFournisseurs.length">
         <app-detail-frs 
-          *ngFor="let fournisseur of listFournisseurs"
+          *ngFor="let fournisseur of getCurrentPageFournisseurs"
           [fournisseur]="fournisseur"
           (suppressionResult)="handleSuppression($event)">
         </app-detail-frs>
       </div>
 
-      <!-- Message si aucun fournisseur -->
-      <div class="alert alert-info" *ngIf="!listFournisseurs.length">
-        Aucun fournisseur trouvé. Créez votre premier fournisseur !
+      <!-- Pagination -->
+      <div class="row mb-3" *ngIf="filteredFournisseurs.length > 0">
+        <div class="col-md-12 text-center">
+          <app-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination>
+        </div>
       </div>
     </div>
   </div>

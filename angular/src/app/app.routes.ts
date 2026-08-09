@@ -6,6 +6,7 @@ import { ArticleComponent } from './pages/page-articles/article/article.componen
 import { NouvelArticleComponent } from './pages/page-articles/nouvel-article/nouvel-article.component';
 import { PageCategoriesComponent } from './pages/categories/page-categories/page-categories.component';
 import { NouvelleCategorieComponent } from './pages/categories/nouvelle-categorie/nouvelle-categorie.component';
+import { CategorieDetailsComponent } from './pages/categories/categorie-details/categorie-details.component';
 import { PageStatistiquesComponent } from './pages/page-statistiques/page-statistiques.component';
 import { PageClientsComponent } from './pages/page-clients/page-clients.component';
 import { PageFournisseursComponent } from './pages/page-fournisseurs/page-fournisseurs.component';
@@ -19,8 +20,8 @@ import { MouvementsStocksComponent } from './pages/mouvements-stocks/mouvements-
 import { PageVueEnsembleComponent } from './pages/page-vue-ensemble/page-vue-ensemble.component';
 import { PageUtilisateurComponent } from './pages/utilisateur/page-utilisateur/page-utilisateur.component';
 import { NouvelUtilisateurComponent } from './pages/utilisateur/nouvel-utilisateur/nouvel-utilisateur.component';
+import { UtilisateurDetailsComponent } from './pages/utilisateur/utilisateur-details/utilisateur-details.component';
 import { ChangerMotPasseComponent } from './pages/profil/changer-mot-passe/changer-mot-passe.component';
-import { ApplicationGuardService } from './services/guard/application-guard.service';
 import { AuthGuardService } from './services/guard/auth.guard.service';
 
 export const routes: Routes = [
@@ -37,29 +38,39 @@ export const routes: Routes = [
       { path: '', redirectTo: 'statistiques', pathMatch: 'full' },
       { path: 'statistiques', component: PageStatistiquesComponent, title: 'Statistiques' },
       { path: 'articles', component: ArticleComponent, title: 'Articles' },
+      { path: 'article', component: ArticleComponent, title: 'Articles' },
       { path: 'nouvel-article', component: NouvelArticleComponent, title: 'Nouvel Article' },
+      { path: 'nouvel-article/:id', component: NouvelArticleComponent, title: 'Modifier Article' },
       { path: 'categories', component: PageCategoriesComponent, title: 'Catégories' },
       { path: 'nouvellecategorie', component: NouvelleCategorieComponent, title: 'Nouvelle Catégorie' },
       { path: 'nouvellecategorie/:id', component: NouvelleCategorieComponent, title: 'Modifier Catégorie' },
-      { path: 'mouvementsStock', component: MouvementsStocksComponent, title: 'MouvementsStock' },
+      { path: 'categorie-details/:id', component: CategorieDetailsComponent, title: 'Détails Catégorie' },
+      { path: 'mouvementsStock', component: MouvementsStocksComponent, title: 'Mouvements Stock' },
+      { path: 'mouvements-stocks', component: MouvementsStocksComponent, title: 'Mouvements Stock' },
       { path: 'clients', component: PageClientsComponent, title: 'Clients' },
       { path: 'nouveauclient', component: NouveauClientComponent, title: 'Nouveau Client' },
       { path: 'nouveauclient/:id', component: NouveauClientComponent, title: 'Modifier Client' },
-      { path: 'commandesClient', component: PageCommandesClientsComponent, title: 'CommandesClient' },
-      { path: 'commandesclient', component: PageCommandesClientsComponent, title: 'CommandesClient' },
+      { path: 'commandesClient', component: PageCommandesClientsComponent, title: 'Commandes Client' },
+      { path: 'commandesclient', component: PageCommandesClientsComponent, title: 'Commandes Client' },
+      { path: 'commandes-clients', component: PageCommandesClientsComponent, title: 'Commandes Client' },
       { path: 'nouvellecommandeclt', component: NouveauCmdCltComponent, title: 'Nouvelle Commande Client' },
+      { path: 'nouvellecommandeclt/:id', component: NouveauCmdCltComponent, title: 'Modifier Commande Client' },
       { path: 'fournisseurs', component: PageFournisseursComponent, title: 'Fournisseurs' },
       { path: 'nouveaufournisseur', component: NouveauFournisseurComponent, title: 'Nouveau Fournisseur' },
       { path: 'nouveaufournisseur/:id', component: NouveauFournisseurComponent, title: 'Modifier Fournisseur' },
-      { path: 'commandesFournisseur', component: PageCommandesFournisseursComponent, title: 'CommandesFournisseur' },
-      { path: 'commandesfournisseur', component: PageCommandesFournisseursComponent, title: 'CommandesFournisseur' },
+      { path: 'commandesFournisseur', component: PageCommandesFournisseursComponent, title: 'Commandes Fournisseur' },
+      { path: 'commandesfournisseur', component: PageCommandesFournisseursComponent, title: 'Commandes Fournisseur' },
+      { path: 'commandes-fournisseurs', component: PageCommandesFournisseursComponent, title: 'Commandes Fournisseur' },
       { path: 'nouvellecommandefrs', component: NouveauCmdFrsComponent, title: 'Nouvelle Commande Fournisseur' },
+      { path: 'nouvellecommandefrs/:id', component: NouveauCmdFrsComponent, title: 'Modifier Commande Fournisseur' },
       { path: 'utilisateurs', component: PageUtilisateurComponent, title: 'Utilisateurs' },
       { path: 'nouvelutilisateur', component: NouvelUtilisateurComponent, title: 'Nouvel Utilisateur' },
+      { path: 'nouvelutilisateur/:id', component: NouvelUtilisateurComponent, title: 'Modifier Utilisateur' },
+      { path: 'utilisateur-details/:id', component: UtilisateurDetailsComponent, title: 'Détails Utilisateur' },
       { path: 'vueDensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' },
       { path: 'vue-ensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' },
-      { path: 'article', component: ArticleComponent, title: 'Articles' },
-      { path: 'changer-mot-passe', component: ChangerMotPasseComponent, title: 'Changer mot de passe' }
+      { path: 'changer-mot-passe', component: ChangerMotPasseComponent, title: 'Changer mot de passe' },
+      { path: 'changermotdepasse', component: ChangerMotPasseComponent, title: 'Changer mot de passe' }
     ]
   }
 ];

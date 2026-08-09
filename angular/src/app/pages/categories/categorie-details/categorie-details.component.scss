@@ -1,0 +1,15 @@
+.categorie-details-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  .article-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #eef2f5;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

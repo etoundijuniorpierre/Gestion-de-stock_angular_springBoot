@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, of, map } from 'rxjs';
 import { CategorieDto } from '../../../gs-api/src/model/models';
 import { CategoriesService } from '../../../gs-api/src/api/categories.service';
+import { GestionDesArticlesService } from '../../../gs-api/src/api/gestionDesArticles.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  constructor(private categoriesService: CategoriesService) { }
+  constructor(
+    private categoriesService: CategoriesService,
+    private gestionDesArticlesService: GestionDesArticlesService
+  ) { }
 
   findAll(): Observable<CategorieDto[]> {
     return this.categoriesService.findAll7().pipe(
@@ -49,6 +53,18 @@ export class CategoryService {
         console.error('Erreur lors de la récupération de la catégorie:', error);
         return of({});
       })
+    );
+  }
+
+  isCategoryUsed(idCategory: number): Observable<boolean> {
+    return this.gestionDesArticlesService.findAllArticleByIdCategorie(idCategory).pipe(
+      map((articles: any) => {
+        if (Array.isArray(articles)) {
+          return articles.length > 0;
+        }
+        return (articles?.content?.length || 0) > 0;
+      }),
+      catchError(() => of(false))
     );
   }
 }

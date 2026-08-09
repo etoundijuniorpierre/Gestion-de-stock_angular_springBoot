@@ -194,4 +194,23 @@ export class CmdcltfrsService {
     });
     return Math.floor(total);
   }
+
+  updateEtatCommandeClient(idCommande: number, etatCommande: string): Observable<CommandeClientDto> {
+    return this.commandesClientsService.updateEtatCommande1(idCommande, etatCommande as any).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la mise à jour de l\'état de la commande client:', error);
+        return of({});
+      })
+    );
+  }
+
+  updateEtatCommandeFournisseur(idCommande: number, etatCommande: string): Observable<CommandeFournisseurDto> {
+    return this.commandesFournisseursService.updateEtatCommande(idCommande, etatCommande as any).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de la mise à jour de l\'état de la commande fournisseur:', error);
+        return of({});
+      })
+    );
+  }
 }
+

@@ -1,0 +1,68 @@
+<div class="categorie-details-container p-3">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+      <i class="fas fa-tags text-primary me-2"></i>
+      Détails de la catégorie
+    </h2>
+    <div>
+      <button className="btn btn-warning me-2" (click)="modifier()">
+        <i className="fas fa-pencil-alt me-1"></i> Modifier
+      </button>
+      <button className="btn btn-secondary" (click)="retour()">
+        <i className="fas fa-arrow-left me-1"></i> Retour
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="text-center p-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error && !loading" class="alert alert-danger">
+    <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div class="card mb-4 shadow-sm border-0">
+      <div class="card-body">
+        <h4 class="card-title text-primary font-weight-bold mb-3">
+          {{ category.code }} - {{ category.designation }}
+        </h4>
+        <p class="text-muted mb-0">ID Catégorie : {{ category.id }}</p>
+      </div>
+    </div>
+
+    <h4 class="mb-3">
+      <i class="fas fa-boxes text-secondary me-2"></i>
+      Articles rattachés ({{ articles.length }})
+    </h4>
+
+    <div *ngIf="articles.length === 0" class="alert alert-info">
+      <i class="fas fa-info-circle me-2"></i>
+      Aucun article n'est associé à cette catégorie.
+    </div>
+
+    <div *ngIf="articles.length > 0" class="row g-3">
+      <div *ngFor="let article of articles" class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 article-card">
+          <div class="card-body d-flex align-items-center">
+            <img 
+              [src]="article.photo || 'assets/product.png'" 
+              (error)="onImageError($event)" 
+              alt="Article" 
+              class="rounded me-3" 
+              style="width: 60px; height: 60px; object-fit: cover;"
+            />
+            <div>
+              <h6 class="mb-1 fw-bold">{{ article.designation }}</h6>
+              <div class="text-muted small">Code: {{ article.codeArticle }}</div>
+              <div class="text-success fw-bold mt-1">{{ article.prixUnitaireTtc || article.prixUnitaireHt }} €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

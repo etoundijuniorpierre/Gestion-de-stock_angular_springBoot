@@ -1,20 +1,43 @@
 <div class="col">
-  <div class="row m-3">
+  <div class="row m-3 align-items-center">
     <div class="col-md-8 p-0">
-      <h1>Commandes Fournisseurs</h1>
+      <h1 class="h3 mb-0">
+        <i class="fas fa-truck-loading text-primary me-2"></i>
+        Commandes Fournisseurs
+      </h1>
     </div>
-    <div class="col-md-4 text-right">
+    <div class="col-md-4 text-end">
       <app-button-action
         [isImporterVisible]="false"
         (clickEvent)="nouvelleCommande()"
       ></app-button-action>
     </div>
   </div>
-  <div class="col m-3" >
-    <div class="accordion" id="accordionExample" *ngFor="let cmd of listeCommandes">
-      <div class="card">
-        <div class="card-body" id="headingOne">
-          <button class="btn btn-block text-left" type="button" data-toggle="collapse"
+
+  <div class="col m-3">
+    <div *ngIf="errorMsg" class="alert alert-danger">
+      <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMsg }}
+    </div>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+
+    <!-- Message si aucune commande -->
+    <div class="alert alert-info" *ngIf="!isLoading && listeCommandes.length === 0">
+      <i class="fas fa-info-circle me-2"></i> Aucune commande fournisseur n'a encore été enregistrée.
+    </div>
+
+    <div class="alert alert-warning" *ngIf="!isLoading && listeCommandes.length > 0 && filteredCommandes.length === 0">
+      <i class="fas fa-search me-2"></i> Aucune commande ne correspond à votre recherche "{{ searchTerm }}".
+    </div>
+
+    <div class="accordion" id="accordionExample" *ngFor="let cmd of filteredCommandes">
+      <div class="card mb-3 shadow-sm border-0">
+        <div class="card-body p-0" id="headingOne">
+          <button class="btn btn-block text-left w-100 p-0 border-0 bg-transparent text-start" type="button" data-toggle="collapse"
                   [attr.data-target]="'#collapseOne'+cmd.id"
                   aria-expanded="true"
                   aria-controls="collapseOne">
@@ -24,32 +47,44 @@
           </button>
         </div>
         <div id="collapseOne{{cmd.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample"
-             style="max-height: 300px;
-        overflow-y: scroll">
+             style="max-height: 300px; overflow-y: auto">
           <div class="card-body">
             <app-detail-cmd
-            *ngFor="let ligne of mapLignesCommande.get(cmd.id || 0)"
-            [ligneCommande]="ligne"
+              *ngFor="let ligne of mapLignesCommande.get(cmd.id || 0)"
+              [ligneCommande]="ligne"
             ></app-detail-cmd>
           </div>
         </div>
-          <div class="card-footer">
-            <div class="row">
-              <div class="col-md-6 text-left">
-                <h5>{{mapLignesCommande.get(cmd.id || 0)?.length || 0}} lignes de commande</h5>
-              </div>
-              <div class="col-md-6 text-right">
-                <h5>Total commande: {{ calculerTotalCommande(cmd.id) }}€</h5>
-              </div>
-            </div>
+        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+          <div>
+            <span class="fw-bold me-3">{{ mapLignesCommande.get(cmd.id || 0)?.length || 0 }} lignes de commande</span>
+            <span class="fw-bold text-success">Total: {{ calculerTotalCommande(cmd.id) }} €</span>
           </div>
+
+          <div class="d-flex gap-2">
+            <button 
+              *ngIf="isCommandeModifiable(cmd.etatCommande)" 
+              class="btn btn-sm btn-outline-secondary" 
+              (click)="modifierCommande(cmd.id)"
+            >
+              <i class="fas fa-edit me-1"></i> Modifier
+            </button>
+            <button 
+              *ngIf="isCommandeValidable(cmd.etatCommande)" 
+              class="btn btn-sm btn-outline-success" 
+              (click)="validerCommande(cmd.id)"
+            >
+              <i class="fas fa-check me-1"></i> Valider
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row mb-3" *ngIf="listeCommandes.length">
-    <div class=" col-md-12 text-center">
+
+  <div class="row mb-3" *ngIf="filteredCommandes.length > 0">
+    <div class="col-md-12 text-center">
       <app-pagination></app-pagination>
     </div>
   </div>
-
 </div>

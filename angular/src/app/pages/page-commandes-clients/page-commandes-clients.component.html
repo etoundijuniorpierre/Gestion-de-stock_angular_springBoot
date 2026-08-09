@@ -2,26 +2,51 @@
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Commandes Clients</h1>
+        <h1 class="h3 mb-0">
+          <i class="fas fa-shopping-cart text-primary me-2"></i>
+          Commandes Clients
+        </h1>
         <button class="btn btn-primary" (click)="nouvelleCommande()">
-          <i class="fas fa-plus"></i> Nouvelle Commande
+          <i class="fas fa-plus me-1"></i> Nouvelle Commande
         </button>
       </div>
 
+      <div *ngIf="errorMsg" class="alert alert-danger">
+        <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMsg }}
+      </div>
+
+      <div *ngIf="isLoading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+
+      <!-- Message si aucune commande -->
+      <div class="alert alert-info" *ngIf="!isLoading && listeCommandes.length === 0">
+        <i class="fas fa-info-circle me-2"></i> Aucune commande client n'a encore été enregistrée.
+      </div>
+
+      <div class="alert alert-warning" *ngIf="!isLoading && listeCommandes.length > 0 && filteredCommandes.length === 0">
+        <i class="fas fa-search me-2"></i> Aucune commande ne correspond à votre recherche "{{ searchTerm }}".
+      </div>
+
       <!-- Liste des commandes -->
-      <div class="row" *ngIf="listeCommandes.length">
-        <div class="col-12 mb-3" *ngFor="let cmd of listeCommandes">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
+      <div class="row" *ngIf="!isLoading && filteredCommandes.length > 0">
+        <div class="col-12 mb-3" *ngFor="let cmd of filteredCommandes">
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 text-primary font-weight-bold">
                 Commande {{ cmd.code }} - {{ cmd.dateCommande | date:'dd/MM/yyyy' }}
               </h5>
+              <span class="badge" [ngClass]="cmd.etatCommande === 'VALIDEE' ? 'bg-success' : cmd.etatCommande === 'LIVREE' ? 'bg-info' : 'bg-warning'">
+                {{ cmd.etatCommande || 'N/A' }}
+              </span>
             </div>
             <div class="card-body">
-              <div class="row">
+              <div class="row mb-3">
                 <div class="col-md-6">
                   <strong>État:</strong> {{ cmd.etatCommande || 'N/A' }}<br>
-                  <strong>Total:</strong> {{ cmd.id ? calculerTotalCommande(cmd.id) : 0 }}€
+                  <strong>Total:</strong> {{ cmd.id ? calculerTotalCommande(cmd.id) : 0 }} €
                 </div>
                 <div class="col-md-6">
                   <strong>Client:</strong><br>
@@ -30,10 +55,10 @@
               </div>
               
               <!-- Lignes de commande -->
-              <div class="mt-3" *ngIf="cmd.id && mapLignesCommande.get(cmd.id)?.length">
-                <h6>Lignes de commande ({{ mapLignesCommande.get(cmd.id)?.length }})</h6>
+              <div class="mt-3" *ngIf="cmd.id && getLignesCommande(cmd.id).length > 0">
+                <h6>Lignes de commande ({{ getLignesCommande(cmd.id).length }})</h6>
                 <div class="table-responsive">
-                  <table class="table table-sm">
+                  <table class="table table-sm table-striped">
                     <thead>
                       <tr>
                         <th>Article</th>
@@ -43,27 +68,40 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let ligne of mapLignesCommande.get(cmd.id)">
+                      <tr *ngFor="let ligne of getLignesCommande(cmd.id)">
                         <td>{{ ligne.article?.designation }}</td>
                         <td>{{ ligne.quantite }}</td>
-                        <td>{{ ligne.prixUnitaire }}€</td>
-                        <td>{{ (ligne.quantite && ligne.prixUnitaire ? ligne.quantite * ligne.prixUnitaire : 0) | number:'1.2-2' }}€</td>
+                        <td>{{ ligne.prixUnitaire }} €</td>
+                        <td>{{ (ligne.quantite && ligne.prixUnitaire ? ligne.quantite * ligne.prixUnitaire : 0) | number:'1.2-2' }} €</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="text-right">
-                  <strong>Total commande: {{ cmd.id ? calculerTotalCommande(cmd.id) : 0 }}€</strong>
+                <div class="text-end fw-bold text-success">
+                  Total commande: {{ cmd.id ? calculerTotalCommande(cmd.id) : 0 }} €
                 </div>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="d-flex gap-2 mt-3 pt-2 border-top">
+                <button 
+                  *ngIf="isCommandeModifiable(cmd.etatCommande)" 
+                  class="btn btn-sm btn-outline-secondary" 
+                  (click)="modifierCommande(cmd.id)"
+                >
+                  <i class="fas fa-edit me-1"></i> Modifier
+                </button>
+                <button 
+                  *ngIf="isCommandeValidable(cmd.etatCommande)" 
+                  class="btn btn-sm btn-outline-success" 
+                  (click)="validerCommande(cmd.id)"
+                >
+                  <i class="fas fa-check me-1"></i> Valider
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Message si aucune commande -->
-      <div class="alert alert-info" *ngIf="!listeCommandes.length">
-        Aucune commande client trouvée.
       </div>
     </div>
   </div>

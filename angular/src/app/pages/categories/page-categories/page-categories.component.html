@@ -1,74 +1,86 @@
 <div class="col">
-    <div class="row m-3">
-      <div class="col-md-8 p-0">
-        <h1>Liste des catégories</h1>
-      </div>
-      <div class="col-md-4 text-right">
-        <app-button-action
-          (clickEvent)="nouvelleCategory()"
-        ></app-button-action>
+  <div class="row m-3 align-items-center">
+    <div class="col-md-8 p-0">
+      <h1 class="h3 mb-0">
+        <i class="fas fa-tags text-primary me-2"></i>
+        Liste des catégories
+      </h1>
+    </div>
+    <div class="col-md-4 text-end">
+      <app-button-action (clickEvent)="nouvelleCategory()"></app-button-action>
+    </div>
+  </div>
+
+  <div class="col m-3">
+    <div class="alert alert-danger" *ngIf="errorMsgs">
+      <i class="fas fa-exclamation-triangle me-2"></i> {{ errorMsgs }}
+    </div>
+
+    <div *ngIf="loading" class="text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
       </div>
     </div>
-    <div class="col m-3">
-      <div class="row col-md-12 alert alert-danger" *ngIf="errorMsgs">
-        {{ errorMsgs }}
-      </div>
-      <div class="row col-md-12 custom-border mb-3 p-3" *ngFor="let cat of listCategories">
+
+    <div *ngIf="!loading && listCategories.length === 0" class="alert alert-info">
+      <i class="fas fa-info-circle me-2"></i> Aucune catégorie n'a encore été enregistrée.
+    </div>
+
+    <div *ngIf="!loading && listCategories.length > 0 && filteredCategories.length === 0" class="alert alert-warning">
+      <i class="fas fa-search me-2"></i> Aucune catégorie ne correspond à votre recherche "{{ searchTerm }}".
+    </div>
+
+    <div *ngIf="!loading">
+      <div class="row col-md-12 custom-border mb-3 p-3 align-items-center shadow-sm rounded" *ngFor="let cat of getCurrentPageCategories">
         <div class="col-md-3 custom-border-right">
-          <strong>Code:</strong> {{cat.code || 'N/A'}}
+          <strong>Code:</strong> {{ cat.code || 'N/A' }}
+          <span *ngIf="cat.id && usedCategories.has(cat.id)" class="badge bg-secondary ms-2" title="Cette catégorie est utilisée par des articles">
+            <i class="fas fa-link me-1"></i> Utilisée
+          </span>
         </div>
         <div class="col-md-4 custom-border-right">
-          <strong>Désignation:</strong> {{cat.designation || 'N/A'}}
+          <strong>Désignation:</strong> {{ cat.designation || 'N/A' }}
         </div>
-        <div class="col-md-3">
-          <div class="row">
-            <div class="col-md-4">
-              <button type="button" class="btn btn-link" (click)="modifierCategory(cat.id)">
-                <i class="fas fa-pencil-alt"></i>&nbsp;Modifier
-              </button>
-            </div>
-            <div class="col-md-4">
-              <button type="button" class="btn btn-link text-danger" data-toggle="modal" data-target="#modalDeleteCat"
-                      (click)="selectCatPourSupprimer(cat.id)">
-                <i class="fas fa-trash-alt"></i>&nbsp;Supprimer
-              </button>
-            </div>
-            <div class="col-md-4">
-              <button type="button" class="btn btn-link">
-                <i class="far fa-list-alt"></i>&nbsp;Détails
-              </button>
-            </div>
+        <div class="col-md-5">
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-outline-info btn-sm" (click)="voirDetailsCategorie(cat.id)">
+              <i class="far fa-list-alt me-1"></i> Détails
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="modifierCategory(cat.id)">
+              <i class="fas fa-pencil-alt me-1"></i> Modifier
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-outline-danger btn-sm" 
+              [disabled]="cat.id ? usedCategories.has(cat.id) : false"
+              [title]="cat.id && usedCategories.has(cat.id) ? 'Cette catégorie est utilisée par des articles' : 'Supprimer'"
+              (click)="selectCatPourSupprimer(cat.id)"
+            >
+              <i class="fas fa-trash-alt me-1"></i> Supprimer
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="row mb-3" *ngIf="listCategories.length > 0">
-      <div class=" col-md-12 text-center">
-        <app-pagination></app-pagination>
-      </div>
+  </div>
+
+  <div class="row mb-3" *ngIf="filteredCategories.length > 0">
+    <div class="col-md-12 text-center">
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
     </div>
   </div>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="modalDeleteCat" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-       aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Confirmation</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Êtes-vous sûr de vouloir supprimer cette catégorie ?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="annulerSuppressionCat()">
-            <i class="fas fa-ban"></i>&nbsp;Annuler</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="confirmerEtSupprimerCat()">
-            <i class="fas fa-trash-alt"></i>&nbsp;Supprimer</button>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
+
+<app-confirmation-popup
+  [isOpen]="showDeleteModal"
+  title="Confirmation de suppression"
+  message="Êtes-vous sûr de vouloir supprimer cette catégorie ?"
+  confirmText="Supprimer"
+  cancelText="Annuler"
+  (confirm)="confirmerEtSupprimerCat()"
+  (cancel)="annulerSuppressionCat()"
+></app-confirmation-popup>
