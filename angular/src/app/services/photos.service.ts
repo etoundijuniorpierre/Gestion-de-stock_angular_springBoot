@@ -48,7 +48,7 @@ export class PhotosService {
   }
 
   getPhotoUrl(id: number, context: string): string {
-    // Retourner l'URL de la photo
-    return `assets/photos/${context}/${id}.jpg`;
+    if (!id || !context) return 'assets/product.png';
+    return `/api/gestionDeStock/photos/${context}_${id}`;
   }
 }

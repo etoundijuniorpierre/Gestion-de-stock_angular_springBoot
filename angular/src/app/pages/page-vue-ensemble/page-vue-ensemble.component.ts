@@ -1,14 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Stats {
-  totalArticles: number;
-  totalClients: number;
-  totalFournisseurs: number;
-  totalCommandesClients: number;
-  totalCommandesFournisseurs: number;
-  totalVentes: number;
-}
+import { DashboardService, DashboardStats } from '../../services/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-page-vue-ensemble',
@@ -18,7 +10,7 @@ interface Stats {
   standalone: true
 })
 export class PageVueEnsembleComponent implements OnInit {
-  stats: Stats = {
+  stats: DashboardStats = {
     totalArticles: 0,
     totalClients: 0,
     totalFournisseurs: 0,
@@ -29,22 +21,24 @@ export class PageVueEnsembleComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
 
+  constructor(private dashboardService: DashboardService) {}
+
   ngOnInit(): void {
     this.fetchStats();
   }
 
   fetchStats(): void {
-    // Simulate API call
-    setTimeout(() => {
-      this.stats = {
-        totalArticles: 150,
-        totalClients: 45,
-        totalFournisseurs: 12,
-        totalCommandesClients: 23,
-        totalCommandesFournisseurs: 8,
-        totalVentes: 67
-      };
-      this.loading = false;
-    }, 1500);
+    this.loading = true;
+    this.dashboardService.getStatistiques().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Erreur chargement stats vue d\'ensemble:', err);
+        this.error = 'Impossible de charger les statistiques pour le moment.';
+        this.loading = false;
+      }
+    });
   }
 }
