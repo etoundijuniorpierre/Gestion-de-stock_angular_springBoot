@@ -19,7 +19,9 @@ import { MouvementsStocksComponent } from './pages/mouvements-stocks/mouvements-
 import { PageVueEnsembleComponent } from './pages/page-vue-ensemble/page-vue-ensemble.component';
 import { PageUtilisateurComponent } from './pages/utilisateur/page-utilisateur/page-utilisateur.component';
 import { NouvelUtilisateurComponent } from './pages/utilisateur/nouvel-utilisateur/nouvel-utilisateur.component';
+import { ChangerMotPasseComponent } from './pages/profil/changer-mot-passe/changer-mot-passe.component';
 import { ApplicationGuardService } from './services/guard/application-guard.service';
+import { AuthGuardService } from './services/guard/auth.guard.service';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -30,7 +32,7 @@ export const routes: Routes = [
     path: 'dashboard', 
     component: PageDashboardComponent, 
     title: 'Dashboard',
-    // canActivate: [ApplicationGuardService], // Temporairement désactivé
+    canActivate: [AuthGuardService],
     children: [
       { path: '', redirectTo: 'statistiques', pathMatch: 'full' },
       { path: 'statistiques', component: PageStatistiquesComponent, title: 'Statistiques' },
@@ -54,7 +56,10 @@ export const routes: Routes = [
       { path: 'nouvellecommandefrs', component: NouveauCmdFrsComponent, title: 'Nouvelle Commande Fournisseur' },
       { path: 'utilisateurs', component: PageUtilisateurComponent, title: 'Utilisateurs' },
       { path: 'nouvelutilisateur', component: NouvelUtilisateurComponent, title: 'Nouvel Utilisateur' },
-      { path: 'vueDensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' }
+      { path: 'vueDensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' },
+      { path: 'vue-ensemble', component: PageVueEnsembleComponent, title: 'Vue d\'ensemble' },
+      { path: 'article', component: ArticleComponent, title: 'Articles' },
+      { path: 'changer-mot-passe', component: ChangerMotPasseComponent, title: 'Changer mot de passe' }
     ]
   }
 ];

@@ -1,137 +1,112 @@
-<div class="vue-ensemble-container">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="mb-4">
-        <i class="fas fa-chart-pie text-primary"></i>
-        Vue d'ensemble du système
-      </h2>
+<div class="vue-ensemble">
+  <div class="vue-ensemble-header">
+    <div class="header-title">
+      <i class="fas fa-chart-line"></i>
+      <span>Vue d'ensemble</span>
     </div>
   </div>
   
-  <div class="row">
-    <div class="col-md-3 mb-4">
-      <div class="card text-center">
-        <div class="card-body">
-          <i class="fas fa-boxes fa-3x text-primary mb-3"></i>
-          <h5 class="card-title">Articles</h5>
-          <p class="card-text display-4">150</p>
-          <small class="text-muted">En stock</small>
-        </div>
+  <div class="vue-ensemble-content">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="d-flex justify-content-center align-items-center h-100">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
       </div>
     </div>
-    
-    <div class="col-md-3 mb-4">
-      <div class="card text-center">
-        <div class="card-body">
-          <i class="fas fa-users fa-3x text-success mb-3"></i>
-          <h5 class="card-title">Clients</h5>
-          <p class="card-text display-4">45</p>
-          <small class="text-muted">Actifs</small>
-        </div>
-      </div>
+
+    <!-- Error state -->
+    <div *ngIf="error" class="alert alert-danger m-3">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{error}}
     </div>
-    
-    <div class="col-md-3 mb-4">
-      <div class="card text-center">
-        <div class="card-body">
-          <i class="fas fa-truck fa-3x text-warning mb-3"></i>
-          <h5 class="card-title">Fournisseurs</h5>
-          <p class="card-text display-4">23</p>
-          <small class="text-muted">Partenaires</small>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-3 mb-4">
-      <div class="card text-center">
-        <div class="card-body">
-          <i class="fas fa-shopping-cart fa-3x text-info mb-3"></i>
-          <h5 class="card-title">Commandes</h5>
-          <p class="card-text display-4">67</p>
-          <small class="text-muted">Ce mois</small>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-md-8 mb-4">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="fas fa-chart-line text-primary"></i>
-            Évolution des ventes
-          </h5>
-        </div>
-        <div class="card-body">
-          <div class="chart-placeholder" style="height: 300px; background: linear-gradient(45deg, #f8f9fa, #e9ecef); display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-            <div class="text-center">
-              <i class="fas fa-chart-area fa-4x text-muted mb-3"></i>
-              <p class="text-muted">Graphique des ventes</p>
-              <small>Données en cours de chargement...</small>
+
+    <!-- Stats content -->
+    <div *ngIf="!loading && !error" class="row g-4 m-2">
+      <!-- Articles -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary rounded p-3 me-3">
+              <i class="fas fa-boxes fa-2x"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-1">Articles en stock</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalArticles}}</h3>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="fas fa-exclamation-triangle text-warning"></i>
-            Alertes
-          </h5>
-        </div>
-        <div class="card-body">
-          <div class="alert alert-warning">
-            <i class="fas fa-exclamation-circle"></i>
-            Stock faible pour 5 articles
-          </div>
-          <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i>
-            3 commandes en attente
-          </div>
-          <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i>
-            Toutes les livraisons à jour
+      
+      <!-- Clients -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-success bg-opacity-10 text-success rounded p-3 me-3">
+              <i class="fas fa-users fa-2x"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-1">Clients</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalClients}}</h3>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0">
-            <i class="fas fa-list text-primary"></i>
-            Activité récente
-          </h5>
+
+      <!-- Fournisseurs -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-info bg-opacity-10 text-info rounded p-3 me-3">
+              <i class="fas fa-truck fa-2x"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-1">Fournisseurs</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalFournisseurs}}</h3>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="list-group list-group-flush">
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <i class="fas fa-plus-circle text-success"></i>
-                <strong>Nouveau client</strong> - Entreprise ABC
-              </div>
-              <small class="text-muted">Il y a 2 heures</small>
+      </div>
+
+      <!-- Commandes Clients -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning rounded p-3 me-3">
+              <i class="fas fa-shopping-cart fa-2x"></i>
             </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <strong>Commande</strong> #CMD-2024-001 validée
-              </div>
-              <small class="text-muted">Il y a 4 heures</small>
+            <div>
+              <h6 class="text-muted mb-1">Commandes Clients</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalCommandesClients}}</h3>
             </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <div>
-                <i class="fas fa-truck text-warning"></i>
-                <strong>Livraison</strong> en cours pour 3 articles
-              </div>
-              <small class="text-muted">Il y a 6 heures</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commandes Fournisseurs -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-danger bg-opacity-10 text-danger rounded p-3 me-3">
+              <i class="fas fa-truck-loading fa-2x"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-1">Commandes Fournisseurs</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalCommandesFournisseurs}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ventes -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center">
+            <div class="stat-icon bg-secondary bg-opacity-10 text-secondary rounded p-3 me-3">
+              <i class="fas fa-cash-register fa-2x"></i>
+            </div>
+            <div>
+              <h6 class="text-muted mb-1">Ventes réalisées</h6>
+              <h3 class="mb-0 fw-bold">{{stats.totalVentes}}</h3>
             </div>
           </div>
         </div>

@@ -1,32 +1,96 @@
-.card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-}
+@import "../../../styles";
 
-.btn-group {
-  .btn {
-    margin-right: 0.25rem;
-    
-    &:last-child {
-      margin-right: 0;
+.clients {
+  .clients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $font-size-xl;
+      font-weight: 600;
+      color: $dark-color;
+
+      i {
+        color: $primary-color;
+        font-size: $font-size-lg;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: $spacing-sm;
     }
   }
+
+  .clients-content {
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+    min-height: 400px;
+    margin-bottom: $spacing-lg;
+
+    .alert {
+      margin: $spacing-md;
+      border-radius: $border-radius-md;
+      
+      i {
+        margin-right: $spacing-sm;
+      }
+    }
+
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      color: $primary-color;
+    }
+  }
+
+  .clients-pagination-footer {
+    display: flex;
+    justify-content: center;
+    padding: $spacing-lg;
+    background: $white;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+  }
 }
 
-.card-title {
-  color: #007bff;
-  font-weight: 600;
-}
+// Responsive design
+@media (max-width: 768px) {
+  .clients {
+    .clients-header {
+      flex-direction: column;
+      gap: $spacing-md;
+      text-align: center;
 
-.card-text {
-  color: #6c757d;
-  font-size: 0.9rem;
-  
-  strong {
-    color: #495057;
+      .header-title {
+        font-size: $font-size-lg;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .clients-content {
+      margin-bottom: $spacing-md;
+    }
+
+    .clients-pagination-footer {
+      padding: $spacing-md;
+    }
   }
 }

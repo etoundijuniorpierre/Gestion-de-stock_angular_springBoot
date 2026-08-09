@@ -10,7 +10,6 @@ export class EntrepriseService {
 
   constructor(private entreprisesService: EntreprisesService) { }
 
-  // Inscription d'une entreprise
   sinscrire(entreprise: EntrepriseDto): Observable<EntrepriseDto> {
     return this.entreprisesService.save3(entreprise).pipe(
       catchError((error) => {
@@ -20,7 +19,6 @@ export class EntrepriseService {
     );
   }
 
-  // Récupérer toutes les entreprises
   findAll(): Observable<EntrepriseDto[]> {
     return this.entreprisesService.findAll3().pipe(
       map((response: any) => {
@@ -36,7 +34,6 @@ export class EntrepriseService {
     );
   }
 
-  // Récupérer une entreprise par ID
   findById(id: number): Observable<EntrepriseDto> {
     return this.entreprisesService.findById3(id).pipe(
       catchError((error) => {
@@ -46,15 +43,12 @@ export class EntrepriseService {
     );
   }
 
-  // Mettre à jour une entreprise
   update(id: number, entreprise: EntrepriseDto): Observable<EntrepriseDto> {
-    // Note: update3 n'existe pas dans l'API, on lance une erreur
     const error = new Error('Méthode update non implémentée dans l\'API. Implémentation backend requise.');
     console.error(error.message);
     throw error;
   }
 
-  // Supprimer une entreprise
   delete(id: number): Observable<any> {
     return this.entreprisesService.delete3(id).pipe(
       catchError((error) => {

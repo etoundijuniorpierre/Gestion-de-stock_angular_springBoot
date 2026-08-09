@@ -11,14 +11,11 @@ export class CategoryService {
   constructor(private categoriesService: CategoriesService) { }
 
   findAll(): Observable<CategorieDto[]> {
-    // L'API retourne un seul objet, on le convertit en tableau
     return this.categoriesService.findAll7().pipe(
       map((response: any) => {
-        // Si la réponse est un tableau, on le retourne tel quel
         if (Array.isArray(response)) {
           return response;
         }
-        // Sinon, on essaie d'extraire le tableau de la réponse
         return response?.content || response?.data || [response] || [];
       }),
       catchError((error) => {

@@ -15,7 +15,6 @@ export class ArticleService {
   ) { }
 
   enregistrerArticle(articleDto: ArticleDto): Observable<ArticleDto> {
-    // Note: idEntreprise sera géré par le backend
     console.log('Tentative de sauvegarde de l\'article:', articleDto);
     console.log('Service utilisé:', this.gestionDesArticlesService);
     return this.gestionDesArticlesService.save8(articleDto).pipe(
@@ -35,11 +34,9 @@ export class ArticleService {
   findAllArticles(): Observable<ArticleDto[]> {
     return this.gestionDesArticlesService.findAll8().pipe(
       map((response: any) => {
-        // Si la réponse est un tableau, on le retourne tel quel
         if (Array.isArray(response)) {
           return response;
         }
-        // Sinon, on essaie d'extraire le tableau de la réponse
         return response?.content || response?.data || [response] || [];
       }),
       catchError((error) => {

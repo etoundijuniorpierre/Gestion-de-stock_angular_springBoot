@@ -1,23 +1,897 @@
+// Import SASS modules
+@use "sass:color";
+
 // Import Bootstrap
-@use 'bootstrap/scss/bootstrap' as *;
+@use "bootstrap/scss/bootstrap" as *;
 
 // Import FontAwesome
-@use '@fortawesome/fontawesome-free/css/all.css' as *;
+@use "@fortawesome/fontawesome-free/css/all.css" as *;
 
 // Import Bootstrap Icons
-@use 'bootstrap-icons/font/bootstrap-icons.css' as *;
+@use "bootstrap-icons/font/bootstrap-icons.css" as *;
 
-// Variables globales
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$success-color: #28a745;
-$danger-color: #dc3545;
-$warning-color: #ffc107;
-$info-color: #17a2b8;
-$light-color: #f8f9fa;
-$dark-color: #343a40;
+// Variables globales - Palette vive et moderne
+$primary-color: #6366f1; // Bleu vif moderne (Indigo)
+$primary-hover: #4f46e5;
+$primary-light: #818cf8;
+$primary-dark: #4338ca;
 
-// Styles personnalisés pour les composants
+$success-color: #10b981; // Vert émeraude vif
+$success-hover: #059669;
+$success-light: #34d399;
+$success-dark: #047857;
+
+$danger-color: #ef4444; // Rouge vif
+$danger-hover: #dc2626;
+$danger-light: #f87171;
+$danger-dark: #b91c1c;
+
+$warning-color: #f59e0b; // Orange vif
+$warning-hover: #d97706;
+$warning-light: #fbbf24;
+$warning-dark: #b45309;
+
+$info-color: #06b6d4; // Cyan vif
+$info-hover: #0891b2;
+$info-light: #22d3ee;
+$info-dark: #0e7490;
+
+$accent-color: #8b5cf6; // Violet vif
+$accent-hover: #7c3aed;
+$accent-light: #a78bfa;
+$accent-dark: #6d28d9;
+
+// Couleurs neutres
+$dark-color: #1f2937; // Gris foncé moderne
+$light-color: #f9fafb; // Blanc cassé moderne
+$secondary-color: #6b7280; // Gris moderne
+$border-color: #e5e7eb; // Gris clair moderne
+$text-muted: #9ca3af;
+$background-light: #ffffff;
+$background-dark: #111827;
+$shadow-color: rgba(0, 0, 0, 0.15);
+
+// Couleurs additionnelles pour un thème plus riche
+$gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
+$gradient-success: linear-gradient(135deg, #10b981, #06b6d4);
+$gradient-danger: linear-gradient(135deg, #ef4444, #f59e0b);
+$gradient-warning: linear-gradient(135deg, #f59e0b, #fbbf24);
+$gradient-info: linear-gradient(135deg, #06b6d4, #3b82f6);
+
+// Espacements standardisés
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+
+// Bordures et coins
+$border-radius-sm: 0.375rem; // 6px
+$border-radius-md: 0.5rem; // 8px
+$border-radius-lg: 0.75rem; // 12px
+$border-radius-xl: 1rem; // 16px
+
+// Hauteurs standard
+$height-sm: 32px;
+$height-md: 40px;
+$height-lg: 48px;
+
+// Ombres
+$shadow-sm: 0 2px 4px $shadow-color;
+$shadow-md: 0 4px 8px $shadow-color;
+$shadow-lg: 0 8px 16px $shadow-color;
+
+// Reset et configuration du viewport pour 100vw/100vh parfait
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; // Empêche le scroll global
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; // Double sécurité pour empêcher le scroll global
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 25%,
+    rgba(16, 185, 129, 0.1) 50%,
+    rgba(6, 182, 212, 0.1) 75%,
+    rgba(59, 130, 246, 0.1) 100%
+  );
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", sans-serif;
+  position: relative;
+
+  // Ajouter un pattern subtil pour plus de profondeur
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(99, 102, 241, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(139, 92, 246, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(16, 185, 129, 0.05) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Conteneur principal optimisé pour 100vw/100vh parfait
+.main-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  overflow: hidden; // Empêche le scroll au niveau du conteneur
+
+  .row {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+    &.no-flex-wrap {
+      flex-wrap: inherit !important;
+    }
+  }
+
+  // Menu latéral (col-md-2)
+  .card.col-md-2 {
+    flex: 0 0 16.666667%; // Équivalent de col-md-2
+    max-width: 16.666667%;
+    background-color: $light-color;
+    border: 1px solid $border-color;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; // Pas de scroll dans le menu
+
+    .col {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+
+      // Header du menu
+      .card.flex-shrink-0 {
+        flex-shrink: 0;
+        background: linear-gradient(
+          135deg,
+          $light-color,
+          darken($light-color, 5%)
+        );
+        border-bottom: 1px solid $border-color;
+        padding: $spacing-md;
+        text-align: center;
+
+        h4 {
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: $dark-color;
+        }
+
+        small {
+          color: $secondary-color;
+          font-size: 0.8rem;
+        }
+      }
+
+      // Menu scrollable
+      div.flex-grow-1 {
+        flex-grow: 1;
+        overflow-y: auto; // Scroll uniquement si nécessaire dans le menu
+        padding: $spacing-sm;
+
+        // Style du scrollbar
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba($dark-color, 0.3);
+          border-radius: 3px;
+
+          &:hover {
+            background: rgba($dark-color, 0.5);
+          }
+        }
+      }
+    }
+  }
+
+  // Contenu principal (col-md-10)
+  .card.col-md-10 {
+    flex: 0 0 83.333333%; // Équivalent de col-md-10
+    max-width: 83.333333%;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; // Pas de scroll au niveau principal
+
+    &.backgroung-grey {
+      background-color: $light-color;
+    }
+
+    .col {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+
+      // Header
+      .card.flex-shrink-0:first-of-type {
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #ffffff, darken($light-color, 2%));
+        border-bottom: 1px solid $border-color;
+        padding: $spacing-md;
+        min-height: 70px; // Hauteur fixe optimisée
+        max-height: 70px;
+        overflow: hidden;
+      }
+
+      // Contenu principal (router-outlet)
+      .card.flex-grow-1 {
+        flex-grow: 1;
+        overflow-y: auto; // Scroll uniquement dans le contenu
+        overflow-x: hidden;
+        background: #ffffff;
+        margin: $spacing-sm;
+        border-radius: $border-radius-lg;
+        box-shadow: $shadow-sm;
+
+        // Classes d'animation pour le contenu
+        &.main-content {
+          position: relative;
+
+          > * {
+            &.ng-enter {
+              animation: pageSlideIn 0.5s ease-out;
+            }
+
+            &.ng-enter-active {
+              animation: pageSlideIn 0.5s ease-out;
+            }
+
+            &.ng-leave {
+              animation: pageSlideOut 0.3s ease-in;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 1000;
+            }
+
+            &.ng-leave-active {
+              animation: pageSlideOut 0.3s ease-in;
+            }
+          }
+        }
+      }
+
+      // Style du scrollbar
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: $light-color;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba($dark-color, 0.3);
+        border-radius: 4px;
+
+        &:hover {
+          background: rgba($dark-color, 0.5);
+        }
+      }
+
+      // Contenu optimisé pour ne pas dépasser
+      > * {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+    }
+
+    // Footer
+    .card.flex-shrink-0:last-of-type {
+      flex-shrink: 0;
+      background: linear-gradient(
+        135deg,
+        $light-color,
+        darken($light-color, 5%)
+      );
+      border-top: 1px solid $border-color;
+      padding: $spacing-sm;
+      min-height: 60px; // Hauteur fixe optimisée
+      max-height: 60px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $secondary-color;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Styles spécifiques pour le menu avec une spécificité élevée
+#appMenuAccordion {
+  .card {
+    border: none !important;
+    margin-bottom: 0.25rem !important;
+    border-radius: $border-radius-md !important;
+    box-shadow: $shadow-sm !important;
+
+    .card-header {
+      background-color: transparent !important;
+      border: none !important;
+      padding: 0.5rem 1rem !important;
+
+      .btn-link {
+        color: $secondary-color !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+        padding: 0.5rem 0 !important;
+        border: none !important;
+        background: none !important;
+        @include transition;
+        width: 100%;
+        text-align: left;
+
+        &:hover {
+          color: $primary-color !important;
+          background-color: rgba($primary-color, 0.1) !important;
+        }
+
+        &:focus {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .card-body {
+      padding: 0 !important;
+
+      .list-group-item {
+        border: none !important;
+        padding: 0 !important;
+
+        a {
+          padding: 0.5rem 1rem 0.5rem 2rem !important;
+          color: $secondary-color !important;
+          text-decoration: none !important;
+          display: block !important;
+          @include transition;
+          border-radius: $border-radius-sm !important;
+
+          &:hover {
+            background-color: rgba($primary-color, 0.1) !important;
+            color: $primary-color !important;
+          }
+        }
+
+        &.bg-primary a {
+          color: white !important;
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styles pour les icônes FontAwesome - Tailles standardisées
+.fas,
+.fab {
+  text-align: center;
+
+  &.fa-xs {
+    font-size: 0.75rem;
+  } // 12px
+  &.fa-sm {
+    font-size: 0.875rem;
+  } // 14px
+  &.fa-md {
+    font-size: 1rem;
+  } //16px
+  &.fa-lg {
+    font-size: 1.25rem;
+  } // 20px
+  &.fa-xl {
+    font-size: 1.5rem;
+  } // 24px
+  &.fa-2x {
+    font-size: 2rem;
+  } // 32px
+  &.fa-3x {
+    font-size: 3rem;
+  } // 48px
+}
+
+// Classes utilitaires pour icônes
+.icon-primary {
+  color: $primary-color;
+}
+.icon-secondary {
+  color: $secondary-color;
+}
+.icon-success {
+  color: $success-color;
+}
+.icon-danger {
+  color: $danger-color;
+}
+.icon-warning {
+  color: $warning-color;
+}
+.icon-info {
+  color: $info-color;
+}
+.icon-light {
+  color: $light-color;
+}
+.icon-dark {
+  color: $dark-color;
+}
+
+// Boutons standardisés
+.btn {
+  border-radius: $border-radius-md;
+  font-weight: 500;
+  @include transition;
+  min-height: $height-md;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+
+  &:hover {
+    transform: translateY(-1px);
+    @include box-shadow($shadow-md);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Boutons principaux avec couleurs vives
+.btn-primary {
+  background: $gradient-primary;
+  border: 1px solid $primary-color;
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      $primary-hover,
+      color.adjust($primary-hover, $lightness: -10%)
+    );
+    border-color: $primary-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  }
+}
+
+.btn-success {
+  background: $gradient-success;
+  border: 1px solid $success-color;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      $success-color,
+      color.adjust($success-color, $lightness: -10%)
+    );
+    border-color: $success-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  }
+}
+
+.btn-danger {
+  background: $gradient-danger;
+  border: 1px solid $danger-color;
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      $danger-hover,
+      darken($danger-hover, 10%)
+    );
+    border-color: $danger-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+}
+
+.btn-warning {
+  background: $gradient-warning;
+  border: 1px solid $warning-color;
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      $warning-hover,
+      darken($warning-hover, 10%)
+    );
+    border-color: $warning-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  }
+}
+
+.btn-info {
+  background: $gradient-info;
+  border: 1px solid $info-color;
+  color: white;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, $info-hover, darken($info-hover, 10%));
+    border-color: $info-hover;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+  }
+}
+
+// Formulaires standardisés
+.form-control {
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  padding: $spacing-sm $spacing-md;
+  min-height: $height-md;
+  @include transition;
+  font-size: 0.875rem;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $secondary-color;
+    opacity: 0.7;
+  }
+}
+
+// Cartes standardisées avec design moderne
+.card {
+  border-radius: $border-radius-lg;
+  border: 1px solid $border-color;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  @include transition;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+
+  &:hover {
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.15),
+      0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.card-header {
+  background: linear-gradient(
+    135deg,
+    rgba(241, 245, 249, 0.9),
+    rgba(226, 232, 240, 0.9)
+  );
+  border-bottom: 1px solid $border-color;
+  border-radius: $border-radius-lg $border-radius-lg 0 0;
+  padding: $spacing-md;
+  font-weight: 600;
+  color: $dark-color;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: $gradient-primary;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+  }
+}
+
+.card-body {
+  padding: $spacing-lg;
+}
+
+// Espacements utilitaires
+.p-xs {
+  padding: $spacing-xs;
+}
+.p-sm {
+  padding: $spacing-sm;
+}
+.p-md {
+  padding: $spacing-md;
+}
+.p-lg {
+  padding: $spacing-lg;
+}
+.p-xl {
+  padding: $spacing-xl;
+}
+
+.m-xs {
+  margin: $spacing-xs;
+}
+.m-sm {
+  margin: $spacing-sm;
+}
+.m-md {
+  margin: $spacing-md;
+}
+.m-lg {
+  margin: $spacing-lg;
+}
+.m-xl {
+  margin: $spacing-xl;
+}
+
+.mt-xs {
+  margin-top: $spacing-xs;
+}
+.mt-sm {
+  margin-top: $spacing-sm;
+}
+.mt-md {
+  margin-top: $spacing-md;
+}
+.mt-lg {
+  margin-top: $spacing-lg;
+}
+.mt-xl {
+  margin-top: $spacing-xl;
+}
+
+.mb-xs {
+  margin-bottom: $spacing-xs;
+}
+.mb-sm {
+  margin-bottom: $spacing-sm;
+}
+.mb-md {
+  margin-bottom: $spacing-md;
+}
+.mb-lg {
+  margin-bottom: $spacing-lg;
+}
+.mb-xl {
+  margin-bottom: $spacing-xl;
+}
+
+// Classes utilitaires avec couleurs vives
+.text-primary {
+  color: $primary-color;
+}
+.text-secondary {
+  color: $secondary-color;
+}
+.text-success {
+  color: $success-color;
+}
+.text-danger {
+  color: $danger-color;
+}
+.text-warning {
+  color: $warning-color;
+}
+.text-info {
+  color: $info-color;
+}
+.text-light {
+  color: $light-color;
+}
+.text-dark {
+  color: $dark-color;
+}
+
+.text-primary-light {
+  color: $primary-light;
+}
+.text-success-light {
+  color: $success-light;
+}
+.text-danger-light {
+  color: $danger-light;
+}
+.text-warning-light {
+  color: $warning-light;
+}
+.text-info-light {
+  color: $info-light;
+}
+.text-accent {
+  color: $accent-color;
+}
+
+.bg-primary {
+  background-color: $primary-color;
+}
+.bg-secondary {
+  background-color: $secondary-color;
+}
+.bg-success {
+  background-color: $success-color;
+}
+.bg-danger {
+  background-color: $danger-color;
+}
+.bg-warning {
+  background-color: $warning-color;
+}
+.bg-info {
+  background-color: $info-color;
+}
+.bg-light {
+  background-color: $light-color;
+}
+.bg-dark {
+  background-color: $dark-color;
+}
+
+.bg-primary-light {
+  background-color: $primary-light;
+}
+.bg-success-light {
+  background-color: $success-light;
+}
+.bg-danger-light {
+  background-color: $danger-light;
+}
+.bg-warning-light {
+  background-color: $warning-light;
+}
+.bg-info-light {
+  background-color: $info-light;
+}
+.bg-accent {
+  background-color: $accent-color;
+}
+
+.bg-gradient-primary {
+  background: $gradient-primary;
+}
+.bg-gradient-success {
+  background: $gradient-success;
+}
+.bg-gradient-danger {
+  background: $gradient-danger;
+}
+.bg-gradient-warning {
+  background: $gradient-warning;
+}
+.bg-gradient-info {
+  background: $gradient-info;
+}
+
+.border-primary {
+  border-color: $primary-color;
+}
+.border-secondary {
+  border-color: $secondary-color;
+}
+.border-success {
+  border-color: $success-color;
+}
+.border-danger {
+  border-color: $danger-color;
+}
+.border-warning {
+  border-color: $warning-color;
+}
+.border-info {
+  border-color: $info-color;
+}
+.border-light {
+  border-color: $light-color;
+}
+.border-dark {
+  border-color: $dark-color;
+}
+.border-accent {
+  border-color: $accent-color;
+}
+
+// Classes utilitaires personnalisées
 .custom-border {
   border: solid #9ca1a6;
   border-radius: 5px;
@@ -48,225 +922,285 @@ $dark-color: #343a40;
   box-shadow: $shadow;
 }
 
-// Styles de base
-body {
-  background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-// Styles pour le conteneur principal
-.main-container {
-  margin: 50px;
-  height: calc(100vh - 100px); // Hauteur totale moins les marges
-  
-  .row {
-    min-height: 600px;
-    height: 100%; // Prend toute la hauteur disponible
-    
-    &.no-flex-wrap {
-      flex-wrap: inherit !important;
-    }
+// Animations de page
+@keyframes pageSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  
-  .card {
-    @include box-shadow;
-    border-radius: 0.375rem;
-    
-    &.col-md-2 {
-      background-color: $light-color;
-      border: 1px solid #dee2e6;
-      height: 100%; // Même hauteur que le dashboard
-    }
-    
-    &.col-md-10 {
-      background-color: #ffffff;
-      height: 100%; // Prend toute la hauteur disponible
-      
-      &.backgroung-grey {
-        background-color: $light-color;
-      }
-    }
-  }
-  
-  .min-height-80 {
-    min-height: 80px;
-  }
-  
-  .min-height-600 {
-    min-height: 600px;
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-// Styles spécifiques pour le menu avec une spécificité élevée
-#appMenuAccordion {
-  .card {
-    border: none !important;
-    margin-bottom: 0.25rem !important;
-    
-    .card-header {
-      background-color: transparent !important;
-      border: none !important;
-      padding: 0.5rem 1rem !important;
-      
-      .btn-link {
-        color: $secondary-color !important;
-        font-weight: 500 !important;
-        text-decoration: none !important;
-        padding: 0.5rem 0 !important;
-        border: none !important;
-        background: none !important;
-        @include transition;
-        
-        &:hover {
-          color: $primary-color !important;
-          background-color: rgba($primary-color, 0.1) !important;
-        }
-      }
-    }
-    
-    .card-body {
-      padding: 0 !important;
-      
-      .list-group-item {
-        border: none !important;
-        padding: 0 !important;
-        
-        a {
-          padding: 0.5rem 1rem 0.5rem 2rem !important;
-          color: $secondary-color !important;
-          text-decoration: none !important;
-          display: block !important;
-          @include transition;
-          
-          &:hover {
-            background-color: rgba($primary-color, 0.1) !important;
-            color: $primary-color !important;
-          }
-        }
-        
-        &.bg-primary a {
-          color: white !important;
-          
-          &:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-          }
-        }
-      }
-    }
+@keyframes pageSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-30px);
   }
 }
 
-// Styles pour les icônes FontAwesome
-.fas, .fab {
-  width: 16px;
-  text-align: center;
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes pageFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: blur(1px);
+  }
+}
+
+@keyframes loadingSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 // Animation pour les collapses
 .collapse {
-  @include transition(all, 1s);
+  @include transition(all, 0.5s);
 }
 
-// Styles utilitaires
-.text-primary-transparent {
-  color: rgba($primary-color, 0.8) !important;
+// Classes d'animations de page
+.page-transition-enter {
+  animation: pageSlideIn 0.4s ease-out;
 }
 
-.text-s-50 {
-  font-size: 0.875rem;
+.page-transition-exit {
+  animation: pageSlideOut 0.3s ease-in;
 }
 
-// /* You can add global styles to this file, and also import other style files */
-// body {
-//   background-color: #eff2f5 !important;
-// }
+.page-fade-enter {
+  animation: pageFadeIn 0.5s ease-out;
+}
 
-// .backgroung-grey {
-//   background-color: #eff2f5 !important;
-// }
-// .border-none {
-//   border: none !important;
-// }
+.page-fade-exit {
+  animation: pageFadeOut 0.3s ease-in;
+}
 
-// .min-height-80 {
-//   min-height: 80px;
-// }
+// Animation pour le contenu principal (router-outlet)
+.main-content {
+  &.page-enter-active {
+    animation: pageSlideIn 0.6s ease-out;
+  }
 
-// .custom-border-right {
-//   border-right: 2px solid #9ca1a6 !important; ;
-// }
-// .custom-border {
-//   border: solid #9ca1a6;
-//   border-radius: 5px;
-// }
-// .blue-color {
-//   color: #037bfe;
-// }
+  &.page-exit-active {
+    animation: pageSlideOut 0.4s ease-in;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+  }
+}
 
-// .hidden {
-//   display: none;
-// }
+// Effets de chargement
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba($primary-color, 0.3);
+  border-radius: 50%;
+  border-top-color: $primary-color;
+  animation: loadingSpin 1s linear infinite;
+}
 
-// .loader-overlay {
-//   position: absolute;
-//   width: 100%;
-//   z-index: 500000;
-//   top: 0;
-// }
+.loading-dots {
+  display: inline-flex;
+  gap: 4px;
 
-// .loader {
-//   height: 10px;
-//   width: 100%;
-//   position: relative;
-//   overflow: hidden;
-//   background-color: #FFF;
-// }
+  span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $primary-color;
+    animation: pulse 1.4s ease-in-out infinite both;
 
-// .loader:before {
-//   display: block;
-//   position: absolute;
-//   content: "";
-//   left: -200px;
-//   width: 200px;
-//   height: 10px;
-//   background-color: #007bff;
-//   animation: loading 2s linear infinite;
-// }
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0;
+    }
+  }
+}
 
-// @keyframes loading {
-//   from {
-//     left: -200px;
-//     width: 30%;
-//   }
-//   50% {
-//     width: 30%;
-//   }
-//   70% {
-//     width: 70%;
-//   }
-//   80% {
-//     left: 50%;
-//   }
-//   95% {
-//     left: 120%;
-//   }
-//   to {
-//     left: 100%;
-//   }
-// }
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    $light-color 25%,
+    rgba($border-color, 0.3) 50%,
+    $light-color 75%
+  );
+  background-size: 200% 100%;
+  animation: loadingSkeleton 1.5s infinite;
+  border-radius: $border-radius-md;
+}
 
-// #posts {
-//   margin: 20px 0;
-//   list-style-type: none;
-// }
+@keyframes loadingSkeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 
-// #about {
-//   margin: 20px;
-// }
+// Transitions pour les cartes
+.card {
+  &.slide-in {
+    animation: slideInUp 0.4s ease-out;
+  }
 
-// .alerts {
-//   margin: 20px 0;
-//   color: red;
-// }
+  &.fade-in {
+    animation: pageFadeIn 0.5s ease-out;
+  }
+}
+
+// Transitions pour les boutons
+.btn {
+  &.slide-in {
+    animation: slideInUp 0.3s ease-out;
+  }
+
+  &.bounce-in {
+    animation: bounceIn 0.6s ease-out;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Responsive design pour les écrans plus petits
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+
+    .card.col-md-2 {
+      flex: 0 0 auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 200px;
+    }
+
+    .card.col-md-10 {
+      flex: 1 1 auto;
+      max-width: 100%;
+      height: calc(100vh - 200px);
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .main-container {
+    .card.col-md-2 {
+      max-height: 150px;
+
+      .col .card.flex-shrink-0 {
+        padding: $spacing-sm;
+
+        h4 {
+          font-size: 1rem;
+        }
+
+        small {
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .card.col-md-10 {
+      .col .card.flex-shrink-0:first-of-type {
+        min-height: 60px;
+        max-height: 60px;
+        padding: $spacing-sm;
+      }
+
+      .col .card.flex-grow-1 {
+        margin: $spacing-xs;
+      }
+
+      .col .card.flex-shrink-0:last-of-type {
+        min-height: 50px;
+        max-height: 50px;
+        padding: $spacing-xs;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

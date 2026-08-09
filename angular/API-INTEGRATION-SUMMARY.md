@@ -46,6 +46,36 @@
 - **Utilisation**: Service `CltfrsService` mis à jour
 - **Endpoints**: `/gestionDeStock/fournisseurs/*`
 
+### 8. Commandes Clients
+- **Service**: `CommandesClientsService`
+- **Méthodes**: `save()`, `updateEtatCommande()`, `updateQuantiteCommande()`, `updateClient()`, `updateArticle()`, `deleteArticle()`, `findById()`, `findByCode()`, `findAll()`, `findAllLignesCommandesClientByCommandeClientId()`, `delete()`
+- **Utilisation**: À intégrer
+- **Endpoints**: `/gestionDeStock/commandesclients/*`
+
+### 9. Commandes Fournisseurs
+- **Service**: `CommandeFournisseurService`
+- **Méthodes**: `save()`, `updateEtatCommande()`, `updateQuantiteCommande()`, `updateFournisseur()`, `updateArticle()`, `deleteArticle()`, `findById()`, `findByCode()`, `findAll()`, `findAllLignesCommandesFournisseurByCommandeFournisseurId()`, `delete()`
+- **Utilisation**: À intégrer
+- **Endpoints**: `/gestionDeStock/commandesfournisseurs/*`
+
+### 10. Mouvements de Stock
+- **Service**: `MvtStkService`
+- **Méthodes**: `stockReelArticle()`, `mvtStkArticle()`, `entreeStock()`, `sortieStock()`, `correctionStockPos()`, `correctionStockNeg()`
+- **Utilisation**: À intégrer
+- **Endpoints**: `/gestionDeStock/mvtstk/*`
+
+### 11. Ventes
+- **Service**: `VentesService`
+- **Méthodes**: `save()`, `findById()`, `findByCode()`, `findAll()`, `delete()`
+- **Utilisation**: À intégrer
+- **Endpoints**: `/gestionDeStock/ventes/*`
+
+### 12. Photos
+- **Service**: `PhotosService`
+- **Méthodes**: `savePhoto()`
+- **Utilisation**: Déjà intégré dans les formulaires
+- **Endpoints**: `/gestionDeStock/photo/save/{id}/{title}/{context}`
+
 ## Composants Mis à Jour
 
 ### 1. PageRegisterComponent
@@ -133,8 +163,11 @@
 3. Tester l'authentification
 4. Tester la création d'articles avec catégories
 5. Tester la création de clients et fournisseurs
-6. Intégrer les autres services (commandes, etc.)
-7. Implémenter les méthodes manquantes (update, etc.)
+6. **Intégrer les services de commandes clients**
+7. **Intégrer les services de commandes fournisseurs**
+8. **Intégrer les services de mouvements de stock**
+9. **Intégrer les services de ventes**
+10. Implémenter les méthodes manquantes (update, etc.)
 
 ## Tests Recommandés
 
@@ -155,3 +188,20 @@
 2. Cliquer sur "Nouveau"
 3. Remplir le formulaire
 4. Vérifier l'enregistrement et la gestion des photos
+
+### Test des Commandes Clients
+1. Aller sur `/dashboard/commandes-clients`
+2. Créer une nouvelle commande
+3. Ajouter des articles et modifier quantités
+4. Tester les changements d'état et de client
+
+### Test des Mouvements de Stock
+1. Aller sur `/dashboard/mouvements-stocks`
+2. Tester les entrées de stock
+3. Tester les sorties de stock
+4. Tester les corrections positives/négatives
+
+### Test des Ventes
+1. Aller sur `/dashboard/ventes`
+2. Enregistrer une nouvelle vente
+3. Vérifier la mise à jour des stocks

@@ -1,26 +1,67 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Gestion des Clients</h1>
-        <button class="btn btn-primary" (click)="nouveauClient()">
-          <i class="fas fa-plus"></i> Nouveau Client
-        </button>
-      </div>
-
-      <!-- Liste des clients -->
-      <div class="col m-3" *ngIf="listClient.length">
-        <app-detail-clt 
-          *ngFor="let client of listClient"
-          [client]="client"
-          (suppressionResult)="handleSuppression($event)">
-        </app-detail-clt>
-      </div>
-
-      <!-- Message si aucun client -->
-      <div class="alert alert-info" *ngIf="!listClient.length">
-        Aucun client trouvé. Créez votre premier client !
-      </div>
+<div class="clients">
+  <div class="clients-header">
+    <div class="header-title">
+      <i class="fas fa-users"></i>
+      <span>Liste des clients</span>
     </div>
+    <div class="header-actions">
+      <app-button-action
+        [isNouveauVisible]="true"
+        [isExporterVisible]="false"
+        [isImporterVisible]="false"
+        (clickEvent)="nouveauClient()"
+        text="Nouveau Client">
+      </app-button-action>
+    </div>
+  </div>
+  
+  <div class="clients-content">
+    <!-- Loader -->
+    <div *ngIf="loading" class="text-center p-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p class="mt-2">Chargement des clients...</p>
+    </div>
+    
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMsg && !loading" class="alert alert-danger m-3">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{ errorMsg }}
+    </div>
+    
+    <!-- Aucun client -->
+    <div *ngIf="hasNoClients" class="alert alert-info d-flex align-items-center m-3">
+      <i class="fas fa-info-circle me-2"></i>
+      <div>Aucun client n'a encore été enregistré.</div>
+    </div>
+    
+    <!-- Aucun résultat de recherche -->
+    <div *ngIf="hasNoSearchResults" class="alert alert-warning d-flex align-items-center m-3">
+      <i class="fas fa-search me-2"></i>
+      <div>Aucun client ne correspond à votre recherche "{{ searchTerm }}".</div>
+    </div>
+    
+    <!-- Liste des clients -->
+    <div *ngIf="!loading && !errorMsg && filteredClients.length > 0" class="col m-3">
+      <app-detail-clt 
+        *ngFor="let client of getCurrentPageClients"
+        [client]="client"
+        (suppressionResult)="handleSuppression($event)">
+      </app-detail-clt>
+    </div>
+  </div>
+  
+  <!-- Pagination -->
+  <div *ngIf="showPagination" class="clients-pagination-footer">
+    <app-pagination 
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      [itemsPerPage]="itemsPerPage"
+      [showInfo]="true"
+      [showFirstLast]="true"
+      [maxVisiblePages]="5"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 </div>

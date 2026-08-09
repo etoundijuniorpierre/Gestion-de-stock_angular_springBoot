@@ -1,20 +1,27 @@
-<div class="d-flex">
-    <div class="p-2 flex-fill " *ngIf="isImporterVisible">
-      <button type="button" class="btn btn-warning">
-        <i class="fas fa-cloud-upload-alt"></i>&nbsp;
-        Importer
+<div class="button-action-container">
+  <div class="d-flex gap-3">
+    <!-- Bouton Importer -->
+    <div *ngIf="isImporterVisible" class="flex-fill">
+      <button type="button" class="btn btn-warning" (click)="bouttonImporterClick()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <span>Importer</span>
       </button>
     </div>
-    <div class="p-2 flex-fill " *ngIf="isExporterVisible">
-      <button type="button" class="btn btn-success">
-        <i class="fas fa-cloud-download-alt"></i>&nbsp;
-        Exporter
+    
+    <!-- Bouton Exporter -->
+    <div *ngIf="isExporterVisible" class="flex-fill">
+      <button type="button" class="btn btn-success" (click)="bouttonExporterClick()">
+        <i class="fas fa-cloud-download-alt"></i>
+        <span>Exporter</span>
       </button>
     </div>
-    <div class="p-2 flex-fill " *ngIf="isNouveauVisible">
-      <button type="button" class="btn btn-primary" (click)="bouttonNouveauClick()">
-        <i class="fas fa-plus"></i>&nbsp;
-        Nouveau
+    
+    <!-- Bouton Nouveau -->
+    <div *ngIf="isNouveauVisible" class="flex-fill">
+      <button type="button" [class]="buttonClass" (click)="bouttonNouveauClick()">
+        <i [class]="icon"></i>
+        <span>{{ text }}</span>
       </button>
     </div>
   </div>
+</div>

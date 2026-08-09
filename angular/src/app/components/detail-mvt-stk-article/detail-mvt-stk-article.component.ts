@@ -23,6 +23,7 @@ export class DetailMvtStkArticleComponent {
 
   // Modal state
   isModalOpen = false;
+  errorMessage = '';
 
   constructor(private mouvementStockService: MouvementStockService) {}
 
@@ -92,16 +93,31 @@ export class DetailMvtStkArticleComponent {
     if (this.correctionData.quantity && this.correctionData.type) {
       console.log('Stock correction submitted:', this.correctionData);
       
-      // Here you would typically send the data to your backend
-      // For now, we'll just log it and close the modal
+      // Send data to backend API
+      const correctionPayload = {
+        articleId: this.article.id,
+        quantity: parseFloat(this.correctionData.quantity),
+        type: this.correctionData.type,
+        date: new Date().toISOString()
+      };
       
-      // Simulate API call
-      setTimeout(() => {
-        alert(`Correction de stock appliquée: ${this.correctionData.quantity} (${this.correctionData.type})`);
-        this.closeCorrectionModal();
-      }, 500);
+      this.mouvementStockService.createMouvement(correctionPayload).subscribe({
+        next: (response) => {
+          console.log('Correction de stock réussie:', response);
+          this.errorMessage = '';
+          this.showSuccess(`Correction de stock appliquée: ${this.correctionData.quantity} (${this.correctionData.type})`);
+          this.closeCorrectionModal();
+          // Optionally emit event to refresh parent component
+          // this.correctionSuccess.emit(response);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la correction de stock:', error);
+          this.showError('Erreur lors de la correction de stock: ' + (error.message || 'Erreur inconnue'));
+        }
+      });
     } else {
-      alert('Veuillez remplir tous les champs');
+      // Afficher un message d'erreur plus élégant
+      this.showError('Veuillez remplir tous les champs obligatoires');
     }
   }
 
@@ -124,5 +140,60 @@ export class DetailMvtStkArticleComponent {
   // Prevent modal content clicks from closing modal
   onModalContentClick(event: Event): void {
     event.stopPropagation();
+  }
+
+  // Show success message
+  private showSuccess(message: string): void {
+    // You could use a toast service here
+    console.log('SUCCESS:', message);
+    // For now, use a more elegant alert alternative
+    if (typeof window !== 'undefined' && window.alert()) {
+      // Create a temporary success notification
+      const notification = document.createElement('div');
+      notification.className = 'alert alert-success alert-dismissible fade show position-fixed';
+      notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+      notification.innerHTML = `
+        <i class="fas fa-check-circle me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      `;
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 5000);
+    }
+  }
+
+  // Show error message
+  private showError(message: string): void {
+    console.error('ERROR:', message);
+    // You could use a toast service here
+    if (typeof window !== 'undefined' && window.alert()) {
+      // Create a temporary error notification
+      const notification = document.createElement('div');
+      notification.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+      notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+      notification.innerHTML = `
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      `;
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 8 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 8000);
+    }
   }
 }

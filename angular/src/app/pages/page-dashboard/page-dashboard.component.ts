@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
+import { PageTransitionComponent } from '../../components/page-transition/page-transition.component';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from '../../components/menu/menu.component';
-import { HeaderComponent } from '../../components/header/header.component';
+import { SidebarNavComponent } from '../../components/sidebar-nav/sidebar-nav.component';
+import { DashboardHeaderComponent } from '../../components/dashboard-header/dashboard-header.component';
 
 @Component({
   selector: 'app-page-dashboard',
-  imports: [RouterOutlet, MenuComponent, HeaderComponent],
+  imports: [RouterOutlet, SidebarNavComponent, DashboardHeaderComponent, PageTransitionComponent],
   templateUrl: './page-dashboard.component.html',
-  styleUrl: './page-dashboard.component.scss',
+  styleUrl: './dashboard.scss',
   standalone: true
 })
 export class PageDashboardComponent {

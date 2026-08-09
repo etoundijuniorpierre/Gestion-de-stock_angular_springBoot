@@ -106,45 +106,56 @@
   }
 }
 
-// Login button - Green gradient
+// Amélioration des boutons avec les classes standardisées
 .btn-primary {
-  background: linear-gradient(45deg, #28a745, #20c997);
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px 16px;
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  border: 1px solid $primary-color;
   color: white;
+  border-radius: $border-radius-md;
+  font-weight: 600;
+  padding: $spacing-md $spacing-lg;
+  min-height: $height-lg;
+  @include transition;
   
   &:hover {
-    background: linear-gradient(45deg, #218838, #1ea085);
+    background: linear-gradient(135deg, $primary-hover, darken($primary-hover, 10%));
+    border-color: $primary-hover;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
   }
   
   &:disabled {
-    background: linear-gradient(45deg, #6c757d, #6c757d);
+    background: linear-gradient(135deg, $secondary-color, darken($secondary-color, 10%));
+    border-color: $secondary-color;
     transform: none;
     box-shadow: none;
   }
+  
+  i {
+    font-size: 1rem;
+  }
 }
 
-// Register button - Purple gradient
 .btn-outline-primary {
-  border: 2px solid #493ee8;
-  color: #6f42c1;
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 12px 16px;
-  transition: all 0.3s ease;
+  border: 2px solid $primary-color;
+  color: $primary-color;
   background: transparent;
+  border-radius: $border-radius-md;
+  font-weight: 600;
+  padding: $spacing-md $spacing-lg;
+  min-height: $height-lg;
+  @include transition;
   
   &:hover {
-    background: linear-gradient(45deg, #493ee8, #493ee8);
-    border-color: #6f42c1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.4);
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+    border-color: $primary-hover;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+  }
+  
+  i {
+    font-size: 1rem;
   }
 }
 

@@ -1,0 +1,107 @@
+@use '../../../styles.scss' as *;
+
+// Composant Button Action - Styles améliorés
+.d-flex {
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.flex-fill {
+  flex: 1;
+  min-width: 120px; // Largeur minimale pour les boutons
+}
+
+.p-2 {
+  padding: $spacing-sm;
+}
+
+// Styles pour les boutons d'action
+.btn {
+  min-width: 120px;
+  height: $height-md;
+  border-radius: $border-radius-md;
+  font-weight: 500;
+  font-size: 0.875rem;
+  @include transition;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    @include box-shadow($shadow-md);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  i {
+    font-size: 0.875rem;
+  }
+}
+
+// Bouton Importer
+.btn-warning {
+  background: linear-gradient(135deg, $warning-color, darken($warning-color, 10%));
+  color: $dark-color;
+  
+  &:hover {
+    background: linear-gradient(135deg, darken($warning-color, 5%), darken($warning-color, 15%));
+    box-shadow: 0 4px 12px rgba($warning-color, 0.3);
+  }
+}
+
+// Bouton Exporter
+.btn-success {
+  background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+  color: white;
+  
+  &:hover {
+    background: linear-gradient(135deg, darken($success-color, 5%), darken($success-color, 15%));
+    box-shadow: 0 4px 12px rgba($success-color, 0.3);
+  }
+}
+
+// Bouton Nouveau
+.btn-primary {
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  color: white;
+  
+  &:hover {
+    background: linear-gradient(135deg, $primary-hover, darken($primary-hover, 10%));
+    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+  }
+}
+
+// Responsive pour mobile
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  .flex-fill {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

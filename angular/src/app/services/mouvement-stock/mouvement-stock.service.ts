@@ -125,4 +125,22 @@ export class MouvementStockService {
     };
     return this.correctionStockNeg(mvtStk);
   }
+
+  // Créer un mouvement de stock (méthode générique)
+  createMouvement(mouvementData: any): Observable<MvtStkDto> {
+    const mvtStk: MvtStkDto = {
+      dateMvt: mouvementData.date || new Date().toISOString(),
+      quantite: mouvementData.quantity,
+      article: { id: mouvementData.articleId },
+      typeMvt: mouvementData.type === 'positive' ? MvtStkDtoTypeMvtEnum.correctionPos : MvtStkDtoTypeMvtEnum.correctionNeg,
+      sourceMvt: MvtStkDtoSourceMvtEnum.commandeFournisseur
+    };
+    
+    // Appeler la méthode appropriée selon le type
+    if (mouvementData.type === 'positive') {
+      return this.correctionStockPos(mvtStk);
+    } else {
+      return this.correctionStockNeg(mvtStk);
+    }
+  }
 }

@@ -11,20 +11,31 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule]
 })
 export class ButtonActionComponent {
-  @Input()
-  isNouveauVisible = true;
-  @Input()
-  isExporterVisible = true;
-  @Input()
-  isImporterVisible = true;
-
-  @Output()
-  clickEvent = new EventEmitter();
+  @Input() isNouveauVisible = true;
+  @Input() isExporterVisible = true;
+  @Input() isImporterVisible = true;
+  @Input() text = 'Nouveau';
+  @Input() icon = 'fas fa-plus';
+  @Input() buttonClass = 'btn-primary';
+  
+  @Output() clickEvent = new EventEmitter<void>();
+  @Output() nouveauClick = new EventEmitter<void>();
+  @Output() exporterClick = new EventEmitter<void>();
+  @Output() importerClick = new EventEmitter<void>();
 
   constructor(private router: Router) { }
 
   bouttonNouveauClick(): void {
+    this.nouveauClick.emit();
     this.clickEvent.emit();
+  }
+
+  bouttonExporterClick(): void {
+    this.exporterClick.emit();
+  }
+
+  bouttonImporterClick(): void {
+    this.importerClick.emit();
   }
 }
 

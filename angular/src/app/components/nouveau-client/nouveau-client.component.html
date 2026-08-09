@@ -1,76 +1,95 @@
 <div class="col mb-3">
-  <div class="col-md-12 mb-3 mt-3">
-    <button (click)="fileInput.click()" style="background-color: transparent; border: none;">
-      <img [src]="imgUrl" class="rounded-circle" width="200px" height="200px" />
-      <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)">
-    </button>
-  </div>
-  <hr>
-  <div class="col-md-12">
-    <div class="col-md-12 mb-3">
-      <h2><i class="fas fa-info-circle blue-color"></i>&nbsp;Information du client</h2>
+  <div class="client-form-container">
+    <!-- Section Photo -->
+    <div class="photo-section">
+      <div class="photo-upload-btn" (click)="fileInput.click()">
+        <img [src]="imgUrl" alt="Photo du client" />
+        <input hidden type="file" #fileInput (change)="onFileInput(fileInput.files)">
+      </div>
     </div>
+    
+    <hr class="my-4">
+    
+    <!-- Section Informations -->
+    <div class="info-section">
+      <h2><i class="fas fa-info-circle icon-primary"></i>&nbsp;Information du client</h2>
+    </div>
+    <!-- Alertes d'erreur -->
     <div class="alert alert-danger" *ngIf="errorMsg.length > 0">
       <div *ngFor="let msg of errorMsg">
         {{ msg }}
       </div>
     </div>
-    <div class="col-md-12">
-      <form>
-        <div class="row mb-3">
-          <div class="col">
+    
+    <!-- Formulaire -->
+    <form class="client-form">
+      <div class="form-row">
+        <div class="row">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Nom"
-            name="nom" [(ngModel)]="client.nom">
+                   name="nom" [(ngModel)]="client.nom">
           </div>
-          <div class="col">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Adresse 1"
-            name="adresse1" [(ngModel)]="adresseDto.adresse1">
+                   name="adresse1" [(ngModel)]="adresseDto.adresse1">
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Prenom"
-            name="prenom" [(ngModel)]="client.prenom"
-            >
+      </div>
+      
+      <div class="form-row">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" placeholder="Prénom"
+                   name="prenom" [(ngModel)]="client.prenom">
           </div>
-          <div class="col">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Adresse 2"
                    name="adresse2" [(ngModel)]="adresseDto.adresse2">
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
+      </div>
+      
+      <div class="form-row">
+        <div class="row">
+          <div class="col-md-6 mb-3">
             <input type="email" class="form-control" placeholder="E-mail"
                    name="email" [(ngModel)]="client.mail">
           </div>
-          <div class="col">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Ville"
                    name="ville" [(ngModel)]="adresseDto.ville">
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Telephone"
+      </div>
+      
+      <div class="form-row">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <input type="tel" class="form-control" placeholder="Téléphone"
                    name="numtel" [(ngModel)]="client.numTel">
           </div>
-          <div class="col">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Code postal"
                    name="codepostal" [(ngModel)]="adresseDto.codePostale">
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col">
-            &nbsp;
+      </div>
+      
+      <div class="form-row">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <!-- Espace vide pour équilibrer -->
           </div>
-          <div class="col">
+          <div class="col-md-6 mb-3">
             <input type="text" class="form-control" placeholder="Pays"
                    name="pays" [(ngModel)]="adresseDto.pays">
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
-  <div class="col-md-12 text-right">
+  <!-- Boutons d'action -->
+  <div class="col-md-12 text-right mt-4">
     <button class="btn btn-danger mr-3" (click)="cancelClick()">
       <i class="fas fa-ban"></i>&nbsp;
       Annuler

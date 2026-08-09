@@ -1,0 +1,51 @@
+<header class="dashboard-header">
+    <div class="header-content">
+        <div class="header-left">
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Rechercher..." 
+                        aria-label="Recherche"
+                        [value]="searchTerm"
+                        (input)="onSearchTermChange($event)"
+                    />
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-greeting">
+                    <span class="greeting-text">Bonjour</span>
+                    <span *ngIf="connectedUser?.nom" class="user-name">&nbsp;{{ connectedUser.nom }}</span>
+                </div>
+                
+                <div class="user-actions">
+                    <button 
+                        class="profile-btn" 
+                        (click)="handleProfileClick()"
+                        title="Profil"
+                    >
+                        <img 
+                            [src]="getUserPhoto()" 
+                            class="user-avatar" 
+                            [alt]="'Photo de ' + (connectedUser?.nom || 'utilisateur')"
+                            (error)="onImageError($event)"
+                        />
+                    </button>
+                    
+                    <button 
+                        class="logout-btn" 
+                        (click)="handleLogout()"
+                        title="Déconnexion"
+                    >
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

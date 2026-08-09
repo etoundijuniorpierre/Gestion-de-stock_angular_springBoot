@@ -1,32 +1,109 @@
-<div class="col">
-  <div class="row m-3">
-    <div class="col-md-8 p-0">
-      <h1>Liste des articles</h1>
+<div class="article-container">
+  <div class="article-header">
+    <div class="header-title">
+      <i class="fas fa-boxes"></i>
+      <span>Gestion des Articles</span>
     </div>
-    <div class="col-md-4 text-right">
-      <app-button-action (clickEvent)="nouvelArticle()"></app-button-action>
+    <div class="header-actions">
+      <app-button-action
+        [isNouveauVisible]="true"
+        [isExporterVisible]="false"
+        [isImporterVisible]="false"
+        (clickEvent)="nouvelArticle()"
+        text="Nouvel Article">
+      </app-button-action>
     </div>
-    <div class="alert alert-danger" *ngIf="errorMsg">
-      {{ errorMsg }}
-    </div>
-  </div>
-
-  <div class="col m-3" *ngIf="listArticles.length">
-    <app-detail-article 
-      *ngFor="let article of listArticles"
-      [article]="article">
-    </app-detail-article>
   </div>
   
-  <div class="col m-3" *ngIf="!listArticles.length && !errorMsg">
-    <div class="alert alert-info">
-      Aucun article trouvé. Créez votre premier article !
-    </div>
+  <!-- Messages d'erreur -->
+  <div *ngIf="errorMsg" class="alert alert-danger m-3">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    {{ errorMsg }}
   </div>
 
-  <div class="row mb-3" *ngIf="listArticles.length">
-    <div class=" col-md-12 text-center">
-      <app-pagination></app-pagination>
+  <div class="article-content">
+    <!-- Loader -->
+    <div *ngIf="loading" class="text-center p-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p class="mt-2">Chargement des articles...</p>
     </div>
+    
+    <!-- Aucun article -->
+    <div *ngIf="hasNoArticles" class="alert alert-info d-flex align-items-center m-3">
+      <i class="fas fa-info-circle me-2"></i>
+      <div>Aucun article n'a encore été enregistré.</div>
+    </div>
+    
+    <!-- Aucun résultat de recherche -->
+    <div *ngIf="hasNoSearchResults" class="alert alert-warning d-flex align-items-center m-3">
+      <i class="fas fa-search me-2"></i>
+      <div>Aucun article ne correspond à votre recherche "{{ searchTerm }}".</div>
+    </div>
+    
+    <!-- Tableau des articles -->
+    <div *ngIf="!loading && !errorMsg && filteredArticles.length > 0" class="articles-table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Code</th>
+            <th>Désignation</th>
+            <th>Prix HT</th>
+            <th>Prix TTC</th>
+            <th>Catégorie</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let article of getCurrentPageArticles()">
+            <td>
+              <div class="article-photo">
+                <img 
+                  [src]="article.photo || 'assets/product.png'" 
+                  [alt]="'Photo de ' + article.designation"
+                  class="article-photo__img"
+                  (error)="onImageError($event)" />
+              </div>
+            </td>
+            <td>{{ article.codeArticle }}</td>
+            <td>{{ article.designation }}</td>
+            <td>{{ article.prixUnitaireHt }} €</td>
+            <td>{{ article.prixUnitaireTtc }} €</td>
+            <td>{{ article.categorie?.designation || 'N/A' }}</td>
+            <td>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-warning me-2"
+                (click)="modifierArticle(article.id)"
+                title="Modifier">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-danger"
+                (click)="supprimerArticle(article.id)"
+                title="Supprimer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Pagination -->
+  <div *ngIf="showPagination" class="article-pagination-footer">
+    <app-pagination 
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      [itemsPerPage]="itemsPerPage"
+      [showInfo]="true"
+      [showFirstLast]="true"
+      [maxVisiblePages]="5"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 </div>

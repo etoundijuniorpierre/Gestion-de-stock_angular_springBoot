@@ -1,24 +1,60 @@
-<div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-light">
-      <i class="fas fa-angle-double-left"></i>
-    </button>
-    <button type="button" class="btn btn-light">
-      <i class="fas fa-angle-left"></i>
-    </button>
+<div class="pagination" role="group" aria-label="Pagination">
+  <!-- Première page -->
+  <button *ngIf="showFirstLast"
+          type="button" 
+          class="pagination__btn pagination__btn--nav" 
+          [class.pagination__btn--disabled]="!hasMultiplePages() || isFirstPage()"
+          [disabled]="!hasMultiplePages() || isFirstPage()"
+          (click)="goToFirstPage()"
+          aria-label="Première page">
+    <i class="fas fa-angle-double-left"></i>
+  </button>
   
+  <!-- Page précédente -->
+  <button type="button" 
+          class="pagination__btn pagination__btn--nav" 
+          [class.pagination__btn--disabled]="!hasMultiplePages() || isFirstPage()"
+          [disabled]="!hasMultiplePages() || isFirstPage()"
+          (click)="goToPreviousPage()"
+          aria-label="Page précédente">
+    <i class="fas fa-angle-left"></i>
+  </button>
+
+  <!-- Pages numérotées -->
+  <button type="button" 
+          class="pagination__btn pagination__btn--page" 
+          *ngFor="let page of getVisiblePages()"
+          [class.pagination__btn--active]="page === currentPage"
+          (click)="goToPage(page)"
+          [attr.aria-label]="'Page ' + page"
+          [attr.aria-current]="page === currentPage ? 'page' : null">
+    {{ page }}
+  </button>
+
+  <!-- Page suivante -->
+  <button type="button" 
+          class="pagination__btn pagination__btn--nav" 
+          [class.pagination__btn--disabled]="!hasMultiplePages() || isLastPage()"
+          [disabled]="!hasMultiplePages() || isLastPage()"
+          (click)="goToNextPage()"
+          aria-label="Page suivante">
+    <i class="fas fa-angle-right"></i>
+  </button>
   
-    <button type="button" class="btn btn-light">1</button>
-    <button type="button" class="btn btn-light">2</button>
-    <button type="button" class="btn btn-light">3</button>
-    <button type="button" class="btn btn-light">4</button>
-    <button type="button" class="btn btn-light">5</button>
-    <button type="button" class="btn btn-light">6</button>
-  
-  
-    <button type="button" class="btn btn-light">
-      <i class="fas fa-angle-right"></i>
-    </button>
-    <button type="button" class="btn btn-light">
-      <i class="fas fa-angle-double-right"></i>
-    </button>
-  </div>
+  <!-- Dernière page -->
+  <button *ngIf="showFirstLast"
+          type="button" 
+          class="pagination__btn pagination__btn--nav" 
+          [class.pagination__btn--disabled]="!hasMultiplePages() || isLastPage()"
+          [disabled]="!hasMultiplePages() || isLastPage()"
+          (click)="goToLastPage()"
+          aria-label="Dernière page">
+    <i class="fas fa-angle-double-right"></i>
+  </button>
+</div>
+
+<!-- Informations de pagination -->
+<div class="pagination-info" *ngIf="showInfo">
+  Page <span class="current-page">{{ currentPage }}</span> 
+  sur <span class="total-pages">{{ totalPages }}</span>
+</div>
