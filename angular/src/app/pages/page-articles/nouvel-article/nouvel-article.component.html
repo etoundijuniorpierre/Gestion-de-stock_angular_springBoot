@@ -1,59 +1,76 @@
 <div class="col mb-3">
-  <div class="col-md-12 mb-3 mt-3">
-    <button style="background-color: transparent; border: none;">
-      <img src="favicon.ico" class="rounded-circle" width="200px" height="200px" />
-      <input hidden type="file">
+  <div class="col-md-12 mb-3 mt-3 d-flex flex-column align-items-center">
+    <button style="background-color: transparent; border: none; cursor: pointer;" (click)="fileInput.click()" type="button" title="Cliquez pour changer la photo">
+      <img [src]="imgUrl" class="rounded-circle border shadow-sm" width="160px" height="160px" style="object-fit: cover;" alt="Photo article" />
+      <span class="d-block text-muted small mt-2">
+        <i class="fas fa-camera me-1"></i> Cliquez pour ajouter une photo
+      </span>
     </button>
+    <input #fileInput hidden type="file" accept="image/*" (change)="onFileInput($event)">
   </div>
   <hr>
   <div class="col-md-12">
     <div class="col-md-12 mb-3">
-      <h2><i class="fas fa-info-circle blue-color"></i>&nbsp;Information de l'article</h2>
+      <h2>
+        <i class="fas fa-box text-primary me-2"></i>
+        <span>{{ isEditMode ? 'Modifier l\'article' : 'Nouvel article' }}</span>
+      </h2>
     </div>
     <div class="col-md-12">
       <!-- Messages d'erreur et de succès -->
       <div class="alert alert-danger" *ngIf="errorMsg">
         <div>
+          <i class="fas fa-exclamation-triangle me-2"></i>
           <span>{{ errorMsg }}</span>
         </div>
       </div>
       
       <div class="alert alert-success" *ngIf="successMsg">
         <div>
+          <i class="fas fa-check-circle me-2"></i>
           <span>{{ successMsg }}</span>
         </div>
       </div>
 
       <form>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Code article *</label>
             <input type="text" class="form-control" name="codearticle" placeholder="Code article" 
-                                       [(ngModel)]="article.codeArticle" required>
+                   [(ngModel)]="article.codeArticle" required>
           </div>
-          <div class="col">
-            <input type="text" class="form-control" name="designation" placeholder="Designation" 
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Désignation *</label>
+            <input type="text" class="form-control" name="designation" placeholder="Désignation" 
                    [(ngModel)]="article.designation" required>
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Prix unitaire HT (€) *</label>
             <input type="number" class="form-control" name="prixunitht" placeholder="Prix unitaire HT" 
-                   [(ngModel)]="article.prixUnitaireHt" required>
+                   [(ngModel)]="article.prixUnitaireHt" (ngModelChange)="calculerTtc()" required>
           </div>
-          <div class="col">
-            <input type="number" class="form-control" name="tauxtva" placeholder="Taux TVA" 
-                   [(ngModel)]="article.tauxTva">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Taux TVA (%)</label>
+            <input type="number" class="form-control" name="tauxtva" placeholder="Taux TVA (ex: 20)" 
+                   [(ngModel)]="article.tauxTva" (ngModelChange)="calculerTtc()">
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
-            <input type="number" class="form-control" name="prixunitttc" placeholder="Prix unitaire TTC" 
-                   [(ngModel)]="article.prixUnitaireTtc">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Prix unitaire TTC (€)</label>
+            <input type="number" class="form-control bg-light" name="prixunitttc" placeholder="Calculé automatiquement" 
+                   [(ngModel)]="article.prixUnitaireTtc" readonly>
+            <small class="form-text text-muted">
+              <i class="fas fa-calculator me-1"></i> Calculé automatiquement à partir du prix HT et de la TVA
+            </small>
           </div>
-          <div class="col">
-            <select class="form-control" name="cat" [(ngModel)]="article.categorie">
-              <option [value]="null">Sélectionner une catégorie</option>
-              <option *ngFor="let cat of categories" [value]="cat" [attr.data-id]="cat.id">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Catégorie *</label>
+            <select class="form-control" name="cat" [(ngModel)]="article.categorie" [compareWith]="compareCategory" required>
+              <option [ngValue]="null">-- Sélectionner une catégorie --</option>
+              <option *ngFor="let cat of categories" [ngValue]="cat">
                 {{ cat.designation }}
               </option>
             </select>
@@ -62,16 +79,14 @@
       </form>
     </div>
   </div>
-  <div class="col-md-12 d-flex justify-content-end">
-    <button class="btn btn-danger me-3" (click)="annuler()" [disabled]="isLoading">
-      <i class="fas fa-ban"></i>
-      &nbsp;
+  <div class="col-md-12 d-flex justify-content-end mt-4">
+    <button class="btn btn-secondary me-3" (click)="annuler()" [disabled]="isLoading">
+      <i class="fas fa-ban me-1"></i>
       Annuler
     </button>
     <button class="btn btn-primary" (click)="enregistrer()" [disabled]="isLoading">
-      <i class="fas fa-save"></i>
-      &nbsp;
-      <span *ngIf="!isLoading">Enregistrer</span>
+      <i class="fas fa-save me-1"></i>
+      <span *ngIf="!isLoading">{{ isEditMode ? 'Modifier' : 'Enregistrer' }}</span>
       <span *ngIf="isLoading">
         <i class="fas fa-spinner fa-spin me-2"></i>
         Enregistrement...

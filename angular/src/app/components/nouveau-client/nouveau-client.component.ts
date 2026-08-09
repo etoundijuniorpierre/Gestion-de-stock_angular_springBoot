@@ -55,19 +55,13 @@ export class NouveauClientComponent implements OnInit {
     // Mapper l'adresse
     this.client.adresse = this.adresseDto;
 
-    if (this.isEditMode) {
-      // Mode édition - Méthode non implémentée dans l'API
-      this.errorMsg = ['La fonctionnalité de modification n\'est pas encore disponible. Veuillez créer un nouveau client.'];
-      return;
-    } else {
-      // Mode création
-      this.cltFrsService.saveClient(this.client)
-        .subscribe((client: ClientDto) => {
-          this.savePhoto(client.id, client.nom);
-        }, (error: any) => {
-          this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde'];
-        });
-    }
+    // Mode création ou édition via API saveClient
+    this.cltFrsService.saveClient(this.client)
+      .subscribe((client: ClientDto) => {
+        this.savePhoto(client.id, client.nom);
+      }, (error: any) => {
+        this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde du client'];
+      });
   }
 
   cancelClick(): void {

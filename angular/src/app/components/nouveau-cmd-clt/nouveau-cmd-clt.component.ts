@@ -88,6 +88,12 @@ export class NouveauCmdCltComponent implements OnInit {
   ajouterLigneCommande(): void {
     this.checkLigneCommande();
     if (this.errorMsg.length === 0) {
+      const ligneCmd: LigneCommandeClientDto = {
+        article: this.searchedArticle,
+        quantite: +this.quantite,
+        prixUnitaire: this.searchedArticle.prixUnitaireHt || 0
+      };
+      this.lignesCommande.push(ligneCmd);
       this.calculerTotalCommande();
       this.searchedArticle = {};
       this.quantite = '';
@@ -140,7 +146,7 @@ export class NouveauCmdCltComponent implements OnInit {
             this.successMsg = 'Commande enregistrée avec succès !';
             this.isLoading = false;
             setTimeout(() => {
-              this.router.navigate(['dashboard', 'commandesclients']);
+              this.router.navigate(['dashboard', 'commandesclient']);
             }, 2000);
           },
           error: (error) => {
@@ -171,7 +177,7 @@ export class NouveauCmdCltComponent implements OnInit {
   }
 
   annuler(): void {
-    this.router.navigate(['dashboard', 'commandesclients']);
+    this.router.navigate(['dashboard', 'commandesclient']);
   }
 
   supprimerLigne(index: number): void {

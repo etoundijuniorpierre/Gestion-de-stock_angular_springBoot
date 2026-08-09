@@ -56,27 +56,20 @@ export class NouvelUtilisateurComponent implements OnInit {
     if (this.validateForm()) {
       this.isLoading = true;
       
-      if (this.isEditMode) {
-        // Mode édition - Méthode non implémentée dans l'API
-        this.errorMsg = 'La fonctionnalité de modification n\'est pas encore disponible. Veuillez créer un nouvel utilisateur.';
-        this.isLoading = false;
-        return;
-      } else {
-        this.userService.save(this.utilisateur).subscribe({
-          next: (utilisateurCree) => {
-            this.successMsg = 'Utilisateur créé avec succès !';
-            this.isLoading = false;
-            setTimeout(() => {
-              this.router.navigate(['dashboard', 'utilisateurs']);
-            }, 2000);
-          },
-          error: (error) => {
-            console.error('Erreur lors de la création:', error);
-            this.errorMsg = 'Erreur lors de la création de l\'utilisateur';
-            this.isLoading = false;
-          }
-        });
-      }
+      this.userService.save(this.utilisateur).subscribe({
+        next: (utilisateurCree) => {
+          this.successMsg = this.isEditMode ? 'Utilisateur modifié avec succès !' : 'Utilisateur créé avec succès !';
+          this.isLoading = false;
+          setTimeout(() => {
+            this.router.navigate(['dashboard', 'utilisateurs']);
+          }, 2000);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la sauvegarde:', error);
+          this.errorMsg = 'Erreur lors de la sauvegarde de l\'utilisateur';
+          this.isLoading = false;
+        }
+      });
     }
   }
 

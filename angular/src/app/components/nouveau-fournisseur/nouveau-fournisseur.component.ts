@@ -55,19 +55,13 @@ export class NouveauFournisseurComponent implements OnInit {
     // Mapper l'adresse
     this.fournisseur.adresse = this.adresseDto;
 
-    if (this.isEditMode) {
-      // Mode édition - Méthode non implémentée dans l'API
-      this.errorMsg = ['La fonctionnalité de modification n\'est pas encore disponible. Veuillez créer un nouveau fournisseur.'];
-      return;
-    } else {
-      // Mode création
-      this.cltFrsService.saveFournisseur(this.fournisseur)
-        .subscribe((fournisseur: FournisseurDto) => {
-          this.savePhoto(fournisseur.id, fournisseur.nom);
-        }, (error: any) => {
-          this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde'];
-        });
-    }
+    // Mode création ou édition via API saveFournisseur
+    this.cltFrsService.saveFournisseur(this.fournisseur)
+      .subscribe((fournisseur: FournisseurDto) => {
+        this.savePhoto(fournisseur.id, fournisseur.nom);
+      }, (error: any) => {
+        this.errorMsg = error.error?.errors || ['Erreur lors de la sauvegarde du fournisseur'];
+      });
   }
 
   cancelClick(): void {
